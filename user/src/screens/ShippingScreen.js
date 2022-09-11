@@ -7,7 +7,7 @@ import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions'
 import { ORDER_ADDRESS_MY_RESET } from '../Redux/Constants/OrderConstants';
 
 const ShippingScreen = ({ history }) => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     const dispatch = useDispatch();
     // const orderListMy = useSelector((state) => state.orderAddress);
     // const { success: successOrder, orderAddress, loading: loadingOrder } = orderListMy;

@@ -10,26 +10,26 @@ import Corousel from '../components/SlideCorousel/Corousel';
 import CorouselOder from '../components/SlideCorousel/CourouselOder';
 
 const HomeScreen = ({ match }) => {
-  window.scrollTo(0, 0);
-  const keyword = match.params.keyword;
-  const pageNumber = match.params.pageNumber;
-  const category = match.params.category;
+    // window.scrollTo(0, 0);
+    const keyword = match.params.keyword;
+    const pageNumber = match.params.pageNumber;
+    const category = match.params.category;
 
-  return (
-    <div>
-      <Header />
-      {/* <Silder /> */}
-      {(!keyword&&!category)?<Sliders />:""}
-      {(!keyword&&!category)?<Corousel />:""}
-      {(!keyword&&!category)?<CorouselOder />:""}
-      
-      <ShopSection category={category} keyword={keyword} pageNumber={pageNumber} />
+    return (
+        <div>
+            <Header />
+            {/* <Silder /> */}
+            {!keyword && !category ? <Sliders /> : ''}
+            {!keyword && !category ? <Corousel /> : ''}
+            {!keyword && !category ? <CorouselOder /> : ''}
 
-      <CalltoActionSection />
-      <ContactInfo />
-      <Footer />
-    </div>
-  );
+            <ShopSection category={category} keyword={keyword} pageNumber={pageNumber} />
+
+            <CalltoActionSection />
+            <ContactInfo />
+            <Footer />
+        </div>
+    );
 };
 
 export default HomeScreen;

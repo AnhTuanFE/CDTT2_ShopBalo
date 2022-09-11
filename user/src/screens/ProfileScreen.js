@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import ProfileTabs from '../components/profileComponents/ProfileTabs';
-import { getUserDetails } from '../Redux/Actions/userActions';
+import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions';
 import Orders from './../components/profileComponents/Orders';
 import moment from 'moment';
 import { listMyOrders } from '../Redux/Actions/OrderActions';
-
+import { ListAvatar } from '../Redux/Actions/avatarAction';
 const ProfileScreen = () => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
 
     const dispatch = useDispatch();
-
+    const userUpdate = useSelector((state) => state.userUpdateProfile);
+    const { success: successUpdate } = userUpdate;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const orderListMy = useSelector((state) => state.orderListMy);
@@ -19,10 +20,32 @@ const ProfileScreen = () => {
     const [buleanProfile, setBuleanProfile] = useState(true);
     const [buleanOrder, setBuleanOrder] = useState(false);
 
+    //get image
+    const listAvatar = useSelector((state) => state.avatarLoad);
+    const { avatar } = listAvatar;
+    // console.log(userInfo, 'user infor');
+    useEffect(() => {
+        dispatch(ListAvatar());
+    }, []);
+    const userDetail = useSelector((state) => state.userDetails);
+    const { user } = userDetail;
+    //logic
+    // const [valueAvatar, setValueAvatar] = useState();
+    // const returnAvatar = avatar.find((avtar) => {
+    //     if (userInfo.image !== undefined) {
+    //         if (userInfo.image === avtar._id) {
+    //             return true;
+    //         }
+    //     }
+    // });
+    // useEffect(() => {
+    //     setValueAvatar(returnAvatar);
+    // }, [returnAvatar]);
+    //hết
     useEffect(() => {
         dispatch(listMyOrders());
         dispatch(getUserDetails('profile'));
-    }, [dispatch]);
+    }, [dispatch, successUpdate]);
 
     return (
         <>
@@ -38,13 +61,38 @@ const ProfileScreen = () => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <div className="col-md-4" style={{ marginTop: '12px' }}>
+                                <div
+                                    className="col-md-4"
+                                    style={{
+                                        marginTop: '12px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                    }}
+                                >
                                     <img
-                                        src="./images/user.png"
-                                        alt="userprofileimage"
-                                        style={{ height: '100px', width: '100px' }}
+                                        // src={valueAvatar === undefined ? './images/user.png' : valueAvatar.url} // upload ảnh
+                                        src={user?.image?.url}
+                                        alt="Lỗi"
+                                        style={{
+                                            height: '100px',
+                                            width: '100px',
+                                            borderRadius: '50%',
+                                            border: '1px solid #ccc',
+                                            marginBottom: '5px',
+                                        }}
                                         className="fix-none"
                                     />
+                                    {/* Nút button Avatar */}
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary pay-button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                        style={{ fontSize: '14px' }}
+                                    >
+                                        Upload Avatar
+                                    </button>
                                 </div>
                                 <div className="col-md-8">
                                     <h5 className="author-card-name mb-2">

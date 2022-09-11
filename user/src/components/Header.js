@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../Redux/Actions/userActions';
 import { listCart } from '../Redux/Actions/cartActions';
+import { ListAvatar } from '../Redux/Actions/avatarAction';
 import NavBar from './navbar';
 
 const Header = () => {
@@ -37,6 +38,32 @@ const Header = () => {
             }
         }
     };
+
+    //get image
+    const listAvatar = useSelector((state) => state.avatarLoad);
+    const { avatar } = listAvatar;
+    useEffect(() => {
+        dispatch(ListAvatar());
+    }, []);
+    // login
+    const [loginAvatar, setLoginAvatar] = useState();
+    const returnAvatar = avatar.find((avtar) => {
+        if (userInfo !== null) {
+            if (userInfo !== undefined) {
+                if (userInfo.image !== undefined) {
+                    if (userInfo.image === avtar._id) {
+                        return true;
+                    }
+                }
+            }
+        }
+    });
+
+    useEffect(() => {
+        setLoginAvatar(returnAvatar);
+    }, [returnAvatar]);
+    //hết
+
     function avatarUser() {
         const stringUser = userInfo.name;
         const value = stringUser.slice(0, 1);
@@ -199,9 +226,17 @@ const Header = () => {
                                             aria-haspopup="true"
                                             aria-expanded="false"
                                         >
-                                            <div className="name-button__div">
-                                                <span className="name-button__span">{avatarUser()}</span>
-                                            </div>
+                                            <img
+                                                src={loginAvatar === undefined ? './images/user.png' : loginAvatar.url} // upload ảnh
+                                                alt="Lỗi"
+                                                style={{
+                                                    height: '45px',
+                                                    width: '45px',
+                                                    borderRadius: '50%',
+                                                    border: '1px solid #ccc',
+                                                }}
+                                                className="fix-none"
+                                            />
                                             <span className="name-button__p">{notiUser()}</span>
                                             {/* {userInfo.name} */}
                                         </button>

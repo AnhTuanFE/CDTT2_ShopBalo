@@ -29,6 +29,8 @@ const EditProductMain = (props) => {
 
     const productEdit = useSelector((state) => state.productEdit);
     const { loading, error, product } = productEdit;
+    // console.log(product);
+    // console.log(category);
 
     const productUpdate = useSelector((state) => state.productUpdate);
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;

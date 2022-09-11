@@ -1,5 +1,5 @@
 {
-  "name": "fashionShop",
+  "name": "BaloShop",
   "version": "0.1.0",
   "proxy": "http://localhost:5000",
   "private": true,
@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.24.0",
+    "i": "^0.3.7",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

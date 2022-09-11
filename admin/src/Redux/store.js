@@ -17,6 +17,7 @@ import {
     orderPaidReducer,
 } from './Reducers/OrderReducres';
 import { sliderCreateReducer, sliderDeleteReducer, sliderListReducer } from './Reducers/SliderListReducers';
+import { avatarCreateReducer, avatarDeleteReducer, avatarListReducer } from './Reducers/AvatarReduce';
 import {
     categoryAddReducer,
     categoryDeleteReducer,
@@ -40,6 +41,9 @@ const reducer = combineReducers({
     sliderList: sliderListReducer,
     deleteSlider: sliderDeleteReducer,
     sliderCreate: sliderCreateReducer,
+    avatarList: avatarListReducer,
+    deleteAvatar: avatarDeleteReducer,
+    avatarCreate: avatarCreateReducer,
     CategoryList: categoryListReducer,
     CategoryDelete: categoryDeleteReducer,
     CategoryAdd: categoryAddReducer,

@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema(
         country: {
             type: String,
         },
+        image: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'avatar',
+        },
     },
     {
         timestamps: true,

@@ -11,7 +11,7 @@ import axios from 'axios';
 import { ORDER_PAY_RESET } from '../Redux/Constants/OrderConstants';
 
 const OrderScreen = ({ match }) => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     const [sdkReady, setSdkReady] = useState(false);
     const orderId = match.params.id;
     const dispatch = useDispatch();

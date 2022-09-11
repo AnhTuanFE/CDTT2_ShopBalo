@@ -24,6 +24,7 @@ import {
     productbestseller,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
+import { Avatarload } from './Reducers/AvatarReducer';
 import { categoryListReducer } from './Reducers/CategoryReducers';
 
 const reducer = combineReducers({
@@ -47,6 +48,7 @@ const reducer = combineReducers({
     orderCancel: orderCancelReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
+    avatarLoad: Avatarload,
 });
 
 const cartItemsFromLocalStorage = localStorage.getItem('cartItems')

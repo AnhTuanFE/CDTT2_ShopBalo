@@ -1464,3 +1464,6 @@ textarea:focus {
 .rating-color i {
     color: red;
 }
+.corousel .slick-list {
+    max-height: 285px;
+}

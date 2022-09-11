@@ -10,7 +10,7 @@ import PayModal from '../components/Modal/PayModal';
 import { getUserDetails } from '../Redux/Actions/userActions';
 
 const PlaceOrderScreen = ({ history }) => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     // const userDetails = useSelector((state) => state.userDetails);
     // const { loading, user } = userDetails;
     const dispatch = useDispatch();

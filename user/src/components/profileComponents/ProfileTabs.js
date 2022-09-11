@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { updateUserPassword, updateUserProfile } from '../../Redux/Actions/userActions';
 import isEmpty from 'validator/lib/isEmpty';
 import { listCart } from '../../Redux/Actions/cartActions';
+import { ListAvatar } from '../../Redux/Actions/avatarAction';
 
 const ProfileTabs = () => {
     const [name, setName] = useState('');
@@ -17,6 +18,7 @@ const ProfileTabs = () => {
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
+    const [image, setImage] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [uploadProfile, setUploadProfile] = useState(true); //ghi chú
     const [uploadPassword, setUploadPassword] = useState(false); //ghi chú
@@ -32,6 +34,14 @@ const ProfileTabs = () => {
     };
 
     const dispatch = useDispatch();
+    // get avatar
+    const [avatarId, setAvatarId] = useState();
+    const listAvatar = useSelector((state) => state.avatarLoad);
+    const { avatar } = listAvatar;
+    useEffect(() => {
+        dispatch(ListAvatar());
+    }, []);
+    //hết
 
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
@@ -43,7 +53,6 @@ const ProfileTabs = () => {
         loading: updateLoading,
         error: errorUpdate,
     } = userUpdateProfile;
-
     // xư lý phần cập nhật mật khẩu
     // function removeProfile() {
     //   refProfile.current.style.display("none")
@@ -152,6 +161,7 @@ const ProfileTabs = () => {
             setAddress(user.address);
             setCity(user.city);
             setCountry(user.country);
+            setImage(user.image);
         }
         if (errorUpdate) {
             toastId.current = toast.error(error, Toastobjects);
@@ -164,7 +174,7 @@ const ProfileTabs = () => {
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address }));
+        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image: avatarId }));
 
         if (!toast.isActive(toastId.current)) {
             toastId.current = toast.success('Profile Updated', Toastobjects);
@@ -321,6 +331,20 @@ const ProfileTabs = () => {
                                 <p className="noti-validate">{objProfile.country}</p>
                             </div>
                         </div>
+                        {/* <div className="col-md-12">
+                            <div className="form">
+                                <label>Image</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    disabled
+                                    value={image}
+                                    // required
+                                    onChange={(e) => setImage(e.target.value)}
+                                />
+                                <p className="noti-validate"></p>
+                            </div>
+                        </div> */}
                         <div className="button-submit">
                             <button type="submit">Update Profile</button>
                         </div>
@@ -388,6 +412,95 @@ const ProfileTabs = () => {
                             <button type="submit">Update Password</button>
                         </div>
                     </form>
+                </div>
+                {/* modal Avatar */}
+                <div>
+                    <button
+                        style={{ display: 'none' }}
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                    >
+                        Launch static backdrop modal
+                    </button>
+
+                    <div
+                        class="modal fade"
+                        id="staticBackdrop"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
+                        tabindex="-1"
+                        aria-labelledby="staticBackdropLabel"
+                        aria-hidden="true"
+                    >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">
+                                        Avatar Mẫu
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    ></button>
+                                </div>
+                                <ul class="modal-body" style={{ display: 'flex', padding: '9px', flexWrap: 'wrap' }}>
+                                    {avatar?.map((data) => (
+                                        <li
+                                            key={data._id}
+                                            onClick={(e) => {
+                                                //console.log(e.target.id);
+                                                setAvatarId(e.target.id);
+                                            }}
+                                            style={{
+                                                listStyle: 'none',
+                                                padding: '9px',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <img
+                                                src={data.url}
+                                                id={data._id}
+                                                style={
+                                                    (avatarId === undefined ? image : avatarId) === data._id
+                                                        ? {
+                                                              height: '100px',
+                                                              width: '100px',
+                                                              borderRadius: '50%',
+                                                              border: '2px solid red',
+                                                          }
+                                                        : {
+                                                              height: '100px',
+                                                              width: '100px',
+                                                              borderRadius: '50%',
+                                                              border: '1px solid #ccc',
+                                                          }
+                                                }
+                                            ></img>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        onClick={() => {
+                                            setImage(avatarId);
+                                        }}
+                                        data-bs-dismiss="modal"
+                                    >
+                                        YES
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
