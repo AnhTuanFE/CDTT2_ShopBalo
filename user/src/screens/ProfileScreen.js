@@ -71,8 +71,7 @@ const ProfileScreen = () => {
                                     }}
                                 >
                                     <img
-                                        // src={valueAvatar === undefined ? './images/user.png' : valueAvatar.url} // upload ảnh
-                                        src={user?.image?.url}
+                                        src={user?.image || './images/user.png'}
                                         alt="Lỗi"
                                         style={{
                                             height: '100px',
@@ -84,15 +83,6 @@ const ProfileScreen = () => {
                                         className="fix-none"
                                     />
                                     {/* Nút button Avatar */}
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary pay-button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop"
-                                        style={{ fontSize: '14px' }}
-                                    >
-                                        Upload Avatar
-                                    </button>
                                 </div>
                                 <div className="col-md-8">
                                     <h5 className="author-card-name mb-2">

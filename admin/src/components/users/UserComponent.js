@@ -10,12 +10,12 @@ const UserComponent = () => {
     const dispatch = useDispatch();
 
     //get avatar
-    const avatarList = useSelector((state) => state.avatarList);
-    const { avatar } = avatarList;
+    // const avatarList = useSelector((state) => state.avatarList);
+    // const { avatar } = avatarList;
 
-    useEffect(() => {
-        dispatch(ListAvatar());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(ListAvatar());
+    // }, [dispatch]);
     //hết
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
@@ -25,22 +25,22 @@ const UserComponent = () => {
     }, [dispatch]);
 
     //find avtar
-    const accUser =
-        users !== undefined &&
-        users.map((user) => {
-            let avata = avatar.find((avtar) => {
-                return user.image === avtar._id;
-            });
-            user = {
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                image: avata === undefined ? undefined : avata.url,
-                isAdmin: user.isAdmin,
-            };
-            return user;
-        });
-    console.log(accUser);
+    // const accUser =
+    //     users !== undefined &&
+    //     users.map((user) => {
+    //         let avata = avatar.find((avtar) => {
+    //             return user.image === avtar._id;
+    //         });
+    //         user = {
+    //             _id: user._id,
+    //             name: user.name,
+    //             email: user.email,
+    //             image: avata === undefined ? undefined : avata.url,
+    //             isAdmin: user.isAdmin,
+    //         };
+    //         return user;
+    //     });
+    // console.log(accUser);
     //hết
     return (
         <section className="content-main">
@@ -89,13 +89,17 @@ const UserComponent = () => {
                         <Message variant="alert-danger">{error}</Message>
                     ) : (
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
-                            {accUser?.map((user) => (
+                            {users?.map((user) => (
                                 <div className="col" key={user._id}>
                                     <div className="card card-user shadow-sm">
                                         <div className="card-header">
                                             <img
                                                 className="img-md img-avatar"
-                                                src={user.image === undefined ? './images/user.png' : user.image}
+                                                src={
+                                                    user?.image?.url === undefined
+                                                        ? '/images/user.png'
+                                                        : user?.image?.url
+                                                }
                                                 alt="User pic"
                                             />
                                         </div>

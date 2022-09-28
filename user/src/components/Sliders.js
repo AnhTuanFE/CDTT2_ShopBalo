@@ -26,8 +26,8 @@ export default function Sliders() {
         cssEase: 'linear',
     };
     return (
-        <div className="Announcement">
-            <div class="container ">
+        <div className="Announcement Announcement-slider">
+            <div class="container container-slider">
                 <div class="row slider-row">
                     <Slider {...settings}>
                         {slider?.map((value, index) => {

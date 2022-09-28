@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../Redux/Actions/userActions';
+import { logout, updateUserProfile, getUserDetails } from '../Redux/Actions/userActions';
 import { listCart } from '../Redux/Actions/cartActions';
 import { ListAvatar } from '../Redux/Actions/avatarAction';
 import NavBar from './navbar';
@@ -11,7 +11,6 @@ const Header = () => {
     const [navbar, setNavbar] = useState(false);
     const dispatch = useDispatch();
     let history = useHistory();
-
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     const userLogin = useSelector((state) => state.userLogin);
@@ -38,31 +37,6 @@ const Header = () => {
             }
         }
     };
-
-    //get image
-    const listAvatar = useSelector((state) => state.avatarLoad);
-    const { avatar } = listAvatar;
-    useEffect(() => {
-        dispatch(ListAvatar());
-    }, []);
-    // login
-    const [loginAvatar, setLoginAvatar] = useState();
-    const returnAvatar = avatar.find((avtar) => {
-        if (userInfo !== null) {
-            if (userInfo !== undefined) {
-                if (userInfo.image !== undefined) {
-                    if (userInfo.image === avtar._id) {
-                        return true;
-                    }
-                }
-            }
-        }
-    });
-
-    useEffect(() => {
-        setLoginAvatar(returnAvatar);
-    }, [returnAvatar]);
-    //hết
 
     function avatarUser() {
         const stringUser = userInfo.name;
@@ -161,12 +135,20 @@ const Header = () => {
                                                 <i class="fas fa-user"></i>
                                             </button>
                                             <div className="dropdown-menu">
-                                                <Link className="dropdown-item" to="/login">
-                                                    Login
+                                                <Link
+                                                    className="dropdown-item"
+                                                    style={{ textTransform: 'capitalize' }}
+                                                    to="/login"
+                                                >
+                                                    Đăng nhập
                                                 </Link>
 
-                                                <Link className="dropdown-item" to="/register">
-                                                    Register
+                                                <Link
+                                                    className="dropdown-item"
+                                                    style={{ textTransform: 'capitalize' }}
+                                                    to="/register"
+                                                >
+                                                    Đăng kí
                                                 </Link>
                                             </div>
                                         </div>
@@ -181,7 +163,7 @@ const Header = () => {
                                     <form onSubmit={submitHandler} className="input-group">
                                         <input
                                             type="search"
-                                            className="form-control rounded search"
+                                            className="form-control rounded search button-search"
                                             placeholder="Search"
                                             onChange={(e) => setKeyword(e.target.value)}
                                         />
@@ -206,7 +188,7 @@ const Header = () => {
                                 <form onSubmit={submitHandler} className="input-group">
                                     <input
                                         type="search"
-                                        className="form-control rounded search"
+                                        className="form-control rounded search button-search"
                                         placeholder="Search"
                                         onChange={(e) => setKeyword(e.target.value)}
                                     />
@@ -227,7 +209,7 @@ const Header = () => {
                                             aria-expanded="false"
                                         >
                                             <img
-                                                src={loginAvatar === undefined ? './images/user.png' : loginAvatar.url} // upload ảnh
+                                                src={`/${userInfo?.image}` || '/images/logo.png'} // upload ảnh
                                                 alt="Lỗi"
                                                 style={{
                                                     height: '45px',
@@ -241,19 +223,32 @@ const Header = () => {
                                             {/* {userInfo.name} */}
                                         </button>
                                         <div className="dropdown-menu">
-                                            <Link className="dropdown-item" to="/profile">
-                                                Profile
+                                            <Link
+                                                className="dropdown-item"
+                                                style={{ textTransform: 'capitalize' }}
+                                                to="/profile"
+                                            >
+                                                Tài khoản của tôi
                                             </Link>
 
-                                            <Link className="dropdown-item" to="#" onClick={logoutHandler}>
-                                                Logout
+                                            <Link
+                                                className="dropdown-item"
+                                                to="#"
+                                                style={{ textTransform: 'capitalize' }}
+                                                onClick={logoutHandler}
+                                            >
+                                                Đăng xuất
                                             </Link>
                                         </div>
                                     </div>
                                 ) : (
                                     <>
-                                        <Link to="/register">Register</Link>
-                                        <Link to="/login">Login</Link>
+                                        <Link to="/register" style={{ textTransform: 'capitalize', fontWeight: '600' }}>
+                                            Đăng kí
+                                        </Link>
+                                        <Link to="/login" style={{ textTransform: 'capitalize', fontWeight: '600' }}>
+                                            Đăng nhập
+                                        </Link>
                                     </>
                                 )}
 

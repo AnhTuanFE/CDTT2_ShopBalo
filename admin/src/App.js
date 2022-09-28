@@ -20,13 +20,13 @@ import { listOrders } from './Redux/Actions/OrderActions';
 import { listUser } from './Redux/Actions/userActions';
 import SliderScreen from './screens/SliderScreen';
 import AvatarScreen from './screens/AvatarScreen';
+import CommentScreen from './screens/CommentScreen';
 
 function App() {
     const dispatch = useDispatch();
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    console.log(userInfo, 'haha');
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
             dispatch(listProducts());
@@ -55,6 +55,7 @@ function App() {
                     <PrivateRouter path="/order/:id" component={OrderDetailScreen} />
                     <PrivateRouter path="/addproduct" component={AddProduct} />
                     <PrivateRouter path="/users" component={UsersScreen} />
+                    <PrivateRouter path="/comment" component={CommentScreen} />
                     <PrivateRouter path="/slider" component={SliderScreen} />
                     <PrivateRouter path="/avatar" component={AvatarScreen} />
                     <PrivateRouter path="/product/:id/edit" component={ProductEditScreen} />

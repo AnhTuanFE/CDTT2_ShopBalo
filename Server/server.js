@@ -31,8 +31,8 @@ app.use('/api/category', categoryRoute);
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID);
 });
-app.use('/api/upload-profile-pic', Upload);
-
+app.use('/api/uploadAvatar', Upload);
+app.use(express.static('public'));
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);

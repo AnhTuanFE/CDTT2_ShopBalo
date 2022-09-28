@@ -14,6 +14,12 @@ import {
     PRODUCT_UPDATE_FAIL,
     PRODUCT_UPDATE_REQUEST,
     PRODUCT_UPDATE_SUCCESS,
+    PRODUCT_LIST_COMMENT_ALL_FAIL,
+    PRODUCT_LIST_COMMENT_ALL_REQUEST,
+    PRODUCT_LIST_COMMENT_ALL_SUCCESS,
+    PRODUCT_CREATE_COMMENTCHILD_FAIL,
+    PRODUCT_CREATE_COMMENTCHILD_REQUEST,
+    PRODUCT_CREATE_COMMENTCHILD_SUCCESS,
 } from '../Constants/ProductConstants';
 import axios from 'axios';
 import { logout } from './userActions';
@@ -25,17 +31,20 @@ export const listProducts =
             dispatch({ type: PRODUCT_LIST_REQUEST });
 
             const {
-              userLogin: { userInfo },
+                userLogin: { userInfo },
             } = getState();
 
             const config = {
-              headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-              },
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
             };
 
-            const { data } = await axios.get(`/api/products/admin?category=${category}&keyword=${keyword}&pageNumber=${pageNumber}`, config);
-          
+            const { data } = await axios.get(
+                `/api/products/admin?category=${category}&keyword=${keyword}&pageNumber=${pageNumber}`,
+                config,
+            );
+
             dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
         } catch (error) {
             const message = error.response && error.response.data.message ? error.response.data.message : error.message;
@@ -159,6 +168,50 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         }
         dispatch({
             type: PRODUCT_UPDATE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+//GET COMMENT PRODUCT
+export const ListProductCommentAll = () => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_LIST_COMMENT_ALL_REQUEST });
+        const { data } = await axios.get(`/api/products/ProductCommentAll`);
+        dispatch({ type: PRODUCT_LIST_COMMENT_ALL_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_LIST_COMMENT_ALL_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+// PRODUCT COMMENTCHILDS CREATE
+export const createProductCommentChild = (productId, question) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(`/api/products/${productId}/commentchild`, question, config);
+        dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_SUCCESS });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_CREATE_COMMENTCHILD_FAIL,
             payload: message,
         });
     }

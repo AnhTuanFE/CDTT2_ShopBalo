@@ -1,17 +1,29 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
+import multer from 'multer';
 import { protect, admin } from '../Middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import User from './../Models/UserModel.js';
-
+import path from 'path';
+import fs from 'fs';
+const __dirname = path.resolve();
 const userRouter = express.Router();
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/');
+    },
 
+    // By default, multer removes file extensions so let's add them back
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+});
 // LOGIN
 userRouter.post(
     '/login',
     asyncHandler(async (req, res) => {
         const { email, password } = req.body;
-        const user = await User.findOne({ email }).populate('image');
+        const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
             res.json({
@@ -79,22 +91,20 @@ userRouter.get(
     '/profile',
     protect,
     asyncHandler(async (req, res) => {
-        const user = await User.findById(req.user._id).populate('image');
-
+        const user = await User.findById(req.user._id);
         if (user) {
-            // res.json({
-            //     _id: user._id,
-            //     name: user.name,
-            //     email: user.email,
-            //     phone: user.phone,
-            //     isAdmin: user.isAdmin,
-            //     createdAt: user.createdAt,
-            //     address: user.address,
-            //     city: user.city,
-            //     country: user.country,
-            //     image: user.image,
-            // });
-            res.json(user);
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                isAdmin: user.isAdmin,
+                createdAt: user.createdAt,
+                address: user.address,
+                city: user.city,
+                country: user.country,
+                image: user.image,
+            });
         } else {
             res.status(404);
             throw new Error('User not found');
@@ -109,6 +119,11 @@ userRouter.put(
     asyncHandler(async (req, res) => {
         const user = await User.findById(req.user._id);
 
+        if (!!user?.image && req.body.image !== user.image) {
+            fs.unlink(path.join(__dirname, 'public', user.image), (err) => {
+                if (err) console.log('Delete old avatar have err:', err);
+            });
+        }
         if (user) {
             user.name = req.body.name || user.name;
             user.email = req.body.email || user.email;
@@ -116,6 +131,7 @@ userRouter.put(
             user.address = req.body.address || user.address;
             user.city = req.body.city || user.city;
             user.country = req.body.country || user.country;
+            //user.image = newImage === undefined ? user.image : newImage;
             user.image = req.body.image || user.image;
 
             if (req.body.password) {
@@ -138,6 +154,7 @@ userRouter.put(
                 address: user.address,
                 city: user.city,
                 country: user.country,
+                //image: newImage === undefined ? user.image : newImage,
                 image: user.image,
             });
         } else {

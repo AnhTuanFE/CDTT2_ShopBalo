@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import $ from 'jquery';
-import { useDispatch } from 'react-redux';
-import { logout } from '../Redux/Actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, login } from '../Redux/Actions/userActions';
 
 const Header = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.userLogin);
+    const { userInfo } = user;
     useEffect(() => {
         $('[data-trigger]').on('click', function (e) {
             e.preventDefault();
@@ -69,15 +71,25 @@ const Header = () => {
           </li> */}
                     <li className="dropdown nav-item">
                         <Link className="dropdown-toggle" data-bs-toggle="dropdown" to="#">
-                            <img className="img-xs rounded-circle" src="/images/favicon.png" alt="User" />
+                            <img
+                                className="img-xs"
+                                style={{
+                                    height: '40px',
+                                    width: '40px',
+                                    borderRadius: '50%',
+                                    border: '1px solid #ccc',
+                                }}
+                                src={userInfo?.image?.url || './images/user.png'}
+                                alt="User"
+                            />
                         </Link>
                         <div className="dropdown-menu dropdown-menu-end">
-                            <Link className="dropdown-item" to="/">
+                            {/* <Link className="dropdown-item" to="/">
                                 My profile
                             </Link>
                             <Link className="dropdown-item" to="#">
                                 Settings
-                            </Link>
+                            </Link> */}
                             <Link onClick={logoutHandler} className="dropdown-item text-danger" to="#">
                                 Exit
                             </Link>

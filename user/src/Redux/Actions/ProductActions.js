@@ -3,6 +3,12 @@ import {
     PRODUCT_CREATE_REVIEW_FAIL,
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS,
+    PRODUCT_CREATE_COMMENT_FAIL,
+    PRODUCT_CREATE_COMMENT_REQUEST,
+    PRODUCT_CREATE_COMMENT_SUCCESS,
+    PRODUCT_CREATE_COMMENTCHILD_FAIL,
+    PRODUCT_CREATE_COMMENTCHILD_REQUEST,
+    PRODUCT_CREATE_COMMENTCHILD_SUCCESS,
     PRODUCT_DETAILS_FAIL,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
@@ -79,7 +85,7 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         };
 
         await axios.post(`/api/products/${productId}/review`, review, config);
-        dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
+        dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS, payload: 'Cảm ơn bạn đã đánh giá' });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
@@ -87,6 +93,66 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         }
         dispatch({
             type: PRODUCT_CREATE_REVIEW_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// PRODUCT COMMENT CREATE
+export const createProductComment = (productId, comments) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_COMMENT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(`/api/products/${productId}/comment`, comments, config);
+        dispatch({ type: PRODUCT_CREATE_COMMENT_SUCCESS });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_CREATE_COMMENT_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// PRODUCT COMMENTCHILDS CREATE
+export const createProductCommentChild = (productId, question) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(`/api/products/${productId}/commentchild`, question, config);
+        dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_SUCCESS });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_CREATE_COMMENTCHILD_FAIL,
             payload: message,
         });
     }

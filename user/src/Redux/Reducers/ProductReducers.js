@@ -3,6 +3,14 @@ import {
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_RESET,
     PRODUCT_CREATE_REVIEW_SUCCESS,
+    PRODUCT_CREATE_COMMENT_FAIL,
+    PRODUCT_CREATE_COMMENT_REQUEST,
+    PRODUCT_CREATE_COMMENT_RESET,
+    PRODUCT_CREATE_COMMENT_SUCCESS,
+    PRODUCT_CREATE_COMMENTCHILD_FAIL,
+    PRODUCT_CREATE_COMMENTCHILD_REQUEST,
+    PRODUCT_CREATE_COMMENTCHILD_RESET,
+    PRODUCT_CREATE_COMMENTCHILD_SUCCESS,
     PRODUCT_DETAILS_FAIL,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
@@ -70,10 +78,43 @@ export const productCreateReviewReducer = (state = {}, action) => {
         case PRODUCT_CREATE_REVIEW_REQUEST:
             return { loading: true };
         case PRODUCT_CREATE_REVIEW_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: action.payload };
+        //return { loading: false, success: true };
         case PRODUCT_CREATE_REVIEW_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_CREATE_REVIEW_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT COMMENT CREATE
+export const productCreateCommentReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_CREATE_COMMENT_REQUEST:
+            return { loading: true };
+        case PRODUCT_CREATE_COMMENT_SUCCESS:
+            return { loading: false, success: true };
+        case PRODUCT_CREATE_COMMENT_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_CREATE_COMMENT_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT COMMENTCHILD CREATE
+export const productCreateCommentChildReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_CREATE_COMMENTCHILD_REQUEST:
+            return { loading: true };
+        case PRODUCT_CREATE_COMMENTCHILD_SUCCESS:
+            return { loading: false, success: true };
+        case PRODUCT_CREATE_COMMENTCHILD_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_CREATE_COMMENTCHILD_RESET:
             return {};
         default:
             return state;

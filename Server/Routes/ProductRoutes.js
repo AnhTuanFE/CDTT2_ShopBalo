@@ -15,7 +15,7 @@ productRoute.get(
         const page = Number(req.query.pageNumber) || 1;
         const rating = Number(req.query.rating) || 0;
         const maxPrice = Number(req.query.maxPrice) || 0;
-        const minPrice = Number(req.query.minPrice) || 0;
+        const minPrice = Number(req.query.minPrice == 0 ? 1 : req.query.minPrice) || 0;
         const sortProducts = Number(req.query.sortProducts) || 1;
         let search = {},
             sort = {};
@@ -89,6 +89,21 @@ productRoute.get(
         res.json(productSlice);
     }),
 );
+//GET ALL COMMENT
+productRoute.get(
+    '/ProductCommentAll',
+    asyncHandler(async (req, res) => {
+        let commentArr = [];
+        const products = await Product.find({}).sort({ _id: -1 });
+        const comments = products.filter((product) => product.comments != '');
+        for (let i = 0; i < comments.length; i++) {
+            commentArr.push(...comments[i].comments);
+        }
+        const commentSort = commentArr.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
+
+        res.json(commentSort);
+    }),
+);
 
 // ADMIN GET ALL PRODUCT WITHOUT SEARCH AND PEGINATION
 productRoute.get(
@@ -140,8 +155,9 @@ productRoute.post(
         const { rating, comment } = req.body;
         const product = await Product.findById(req.params.id);
         const order = await Order.find({ user: req.user._id });
+
+        let listOrder = [];
         if (order) {
-            let listOrder = [];
             for (let i = 0; i < order.length; i++) {
                 if (order[i].isPaid == true) {
                     listOrder = [...listOrder, ...order[i].orderItems];
@@ -150,14 +166,15 @@ productRoute.post(
             if (listOrder.filter((i) => i.product == req.params.id).length == 0) {
                 res.status(400);
                 // res.status(400).json(order);
-                throw new Error(`Can not review`);
+                throw new Error(`Không thể đánh giá`);
             }
         }
         if (product) {
-            const alreadyReviewed = product.reviews.find((r) => r.user.toString() === req.user._id.toString());
-            if (alreadyReviewed) {
+            const numOrderUser = listOrder.filter((i) => i.product == req.params.id).length;
+            const alreadyReviewed = product.reviews.filter((r) => r.user.toString() === req.user._id.toString()).length;
+            if (alreadyReviewed >= numOrderUser) {
                 res.status(400);
-                throw new Error('Product already Reviewed');
+                throw new Error('Sản phẩm đã được đánh giá');
             }
             const review = {
                 name: req.user.name,
@@ -172,6 +189,62 @@ productRoute.post(
 
             await product.save();
             res.status(201).json({ message: 'Reviewed Added' });
+        } else {
+            res.status(404);
+            throw new Error('Product not Found');
+        }
+    }),
+);
+
+// PRODUCT COMMENT
+productRoute.post(
+    '/:id/comment',
+    protect,
+    asyncHandler(async (req, res) => {
+        const { nameProduct, imageProduct, amountProduct, question } = req.body;
+        const product = await Product.findById(req.params.id);
+
+        if (product) {
+            const comment = {
+                name: req.user.name,
+                nameProduct,
+                imageProduct,
+                amountProduct: Number(amountProduct),
+                idProduct: req.params.id,
+                question,
+                user: req.user._id,
+            };
+            product.comments.push(comment);
+            product.numComments = product.comments.length;
+
+            await product.save();
+            res.status(201).json({ message: 'Comment Add Success' });
+        } else {
+            res.status(404);
+            throw new Error('Product not Found');
+        }
+    }),
+);
+
+// PRODUCT COMMENTCHILDS
+productRoute.post(
+    '/:id/commentchild',
+    protect,
+    asyncHandler(async (req, res) => {
+        const { questionChild, reviewId } = req.body;
+        const product = await Product.findById(req.params.id);
+        const commentUsers = product.comments;
+        const findComment = commentUsers.find((commentUser) => commentUser._id == reviewId);
+        if (product) {
+            const commentChild = {
+                name: req.user.name,
+                questionChild,
+                user: req.user._id,
+            };
+            findComment.commentChilds.push(commentChild);
+
+            await product.save();
+            res.status(201).json({ message: 'CommentChild Add Success' });
         } else {
             res.status(404);
             throw new Error('Product not Found');
@@ -208,7 +281,7 @@ productRoute.post(
     asyncHandler(async (req, res) => {
         const { name, price, description, category, image, countInStock } = req.body;
         const productExist = await Product.findOne({ name });
-        if (price <= 0 || countInStock < 0 || price >= 10000 || countInStock >= 10000) {
+        if (price <= 0 || countInStock < 0 || countInStock >= 10000) {
             res.status(400);
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
@@ -244,7 +317,7 @@ productRoute.put(
     asyncHandler(async (req, res) => {
         const { name, price, description, category, image, countInStock } = req.body;
         const product = await Product.findById(req.params.id);
-        if (price <= 0 || countInStock < 0 || price >= 10000 || countInStock >= 10000) {
+        if (price <= 0 || countInStock < 0 || countInStock >= 10000) {
             res.status(400);
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }

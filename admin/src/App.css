@@ -964,3 +964,9 @@ ul.row-sm {
     background-color: #fb5533;
     border: none;
 }
+.accordion-button {
+    padding: 0px 10px !important;
+}
+.accordion-button tr {
+    border-bottom: none !important;
+}

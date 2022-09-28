@@ -21,6 +21,7 @@ const ShippingScreen = ({ history }) => {
     const [city, setCity] = useState('');
     // const [postalCode, setPostalCode] = useState('');
     const [country, setCountry] = useState('');
+    const [image, setImage] = useState('');
 
     useEffect(() => {
         dispatch(getUserDetails('profile'));
@@ -31,6 +32,7 @@ const ShippingScreen = ({ history }) => {
             setAddress(user.address);
             setCity(user.city);
             setCountry(user.country);
+            setImage(user.image);
         }
     }, [dispatch, user]);
 
@@ -38,7 +40,7 @@ const ShippingScreen = ({ history }) => {
         e.preventDefault();
         history.push('/payment');
         dispatch(saveShippingAddress({ address, city, country }));
-        dispatch(updateUserProfile({ id: user._id, address, city, country }));
+        dispatch(updateUserProfile({ id: user._id, address, city, country, image }));
     };
     return (
         <>

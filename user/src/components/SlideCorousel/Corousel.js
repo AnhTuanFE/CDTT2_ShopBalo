@@ -17,71 +17,6 @@ export default function Corousel() {
         dispatch(ListProductAll());
     }, []);
 
-    //console.log(products)
-
-    // const products = [
-    //     {
-    //       id: 1,
-    //       image: 'https://m.media-amazon.com/images/I/711+-K5DG0L._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon'
-    //     },
-    //     {
-    //       id: 2,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon Essentials'
-    //     },
-    //     {
-    //       id: 3,
-    //       name: 'Amazon 1',
-    //       image: 'https://m.media-amazon.com/images/I/711+-K5DG0L._AC_UL480_FMwebp_QL65_.jpg'
-    //     },
-    //     {
-    //       id: 4,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 2'
-    //     },
-    //     {
-    //       id: 5,
-    //       image: 'https://m.media-amazon.com/images/I/711+-K5DG0L._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 3'
-    //     },
-    //     {
-    //       id: 6,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 4'
-    //     },
-    //     {
-    //       id: 7,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 5'
-    //     },
-    //     {
-    //       id: 8,
-    //       name: 'Amazon 6',
-    //       image: 'https://m.media-amazon.com/images/I/711+-K5DG0L._AC_UL480_FMwebp_QL65_.jpg'
-    //     },
-    //     {
-    //       id: 9,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 7'
-    //     },
-    //     {
-    //       id: 10,
-    //       image: 'https://m.media-amazon.com/images/I/711+-K5DG0L._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 8'
-    //     },
-    //     {
-    //       id: 11,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon 9'
-    //     },
-    //     {
-    //       id: 12,
-    //       image: 'https://m.media-amazon.com/images/I/61Ju0tiHWML._AC_UL480_FMwebp_QL65_.jpg',
-    //       name: 'Amazon  10'
-    //     }
-    // ]
-
     const settings = {
         dots: false,
         infinite: true,
@@ -92,7 +27,7 @@ export default function Corousel() {
 
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1200,
                 settings: {
                     slidesToShow: 4,
                     slidesToScroll: 4,
@@ -102,10 +37,10 @@ export default function Corousel() {
                 },
             },
             {
-                breakpoint: 600,
+                breakpoint: 700,
                 settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
                     initialSlide: 0,
                 },
             },
@@ -121,8 +56,12 @@ export default function Corousel() {
     };
     return (
         <div className="container corousel-container">
-            <h2>New Products</h2>
-            <div></div>
+            <h2 className="section-title">
+                <b></b>
+                <span className="section-title-main">Sản Phẩm Mới Nhất</span>
+                <b></b>
+            </h2>
+            {/* <div></div> */}
             <div className="corousel">
                 <Slider {...settings}>
                     {products?.map((product, index) => {
@@ -131,10 +70,10 @@ export default function Corousel() {
                                 <Link to={`/products/${product._id}`} className="corousel-link">
                                     <img src={product.image} className="corousel-img"></img>
                                     <p className="corousel-noti">{product.name}</p>
+                                    <p className="corousel-price">{product.price}đ</p>
                                     <div className="corousel-rating">
-                                        <Rating value={product.rating} text={`${product.numReviews} reviews`} />
+                                        <Rating value={product.rating} text={`(${product.numReviews})`} />
                                     </div>
-                                    <p className="corousel-price">${product.price}</p>
                                 </Link>
                             </div>
                         );

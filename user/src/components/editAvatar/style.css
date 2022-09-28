@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.cropper {
+    position: relative;
+    width: 347.644px !important;
+    height: 260.733px !important;
+}
+
+.viewer {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.output {
+    position: relative;
+    width: 300px;
+    overflow: hidden;
+    box-shadow: 0 0 32px rgba(0, 0, 0, 0.3);
+}
+
+.output img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+}
+.reactEasyCrop_CropArea {
+    width: 180px !important;
+    height: 180px !important;
+}
+.save-image {
+    padding: 3px 5px !important;
+    margin-top: 3px !important;
+    text-transform: inherit;
+}

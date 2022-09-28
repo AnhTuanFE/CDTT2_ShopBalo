@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../LoadingError/Error';
 import Toast from './../LoadingError/Toast';
@@ -8,6 +8,18 @@ import { updateUserPassword, updateUserProfile } from '../../Redux/Actions/userA
 import isEmpty from 'validator/lib/isEmpty';
 import { listCart } from '../../Redux/Actions/cartActions';
 import { ListAvatar } from '../../Redux/Actions/avatarAction';
+import App from '../editAvatar/index';
+import axios from 'axios';
+// import Demo from '../editAvatar/index';
+import ReactDOM from 'react-dom';
+import Cropper from 'react-easy-crop';
+import Slider from '@material-ui/core/Slider';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import ImgDialog from '../editAvatar/ImgDialog';
+import getCroppedImg from '../editAvatar/cropImage';
+import '../editAvatar/style.css';
 
 const ProfileTabs = () => {
     const [name, setName] = useState('');
@@ -18,11 +30,13 @@ const ProfileTabs = () => {
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState();
     const [confirmPassword, setConfirmPassword] = useState('');
     const [uploadProfile, setUploadProfile] = useState(true); //ghi chú
     const [uploadPassword, setUploadPassword] = useState(false); //ghi chú
     const [checkbox, setCheckbox] = useState('0');
+    const [checkFile, setCheckFile] = useState(true);
+    const [checkImage, setCheckImage] = useState(false);
     const toastId = React.useRef(null);
     const refProfile = useRef(); /// ghi chú
     const refSetPassword = useRef(); /// ghi chú
@@ -34,14 +48,6 @@ const ProfileTabs = () => {
     };
 
     const dispatch = useDispatch();
-    // get avatar
-    const [avatarId, setAvatarId] = useState();
-    const listAvatar = useSelector((state) => state.avatarLoad);
-    const { avatar } = listAvatar;
-    useEffect(() => {
-        dispatch(ListAvatar());
-    }, []);
-    //hết
 
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
@@ -53,17 +59,6 @@ const ProfileTabs = () => {
         loading: updateLoading,
         error: errorUpdate,
     } = userUpdateProfile;
-    // xư lý phần cập nhật mật khẩu
-    // function removeProfile() {
-    //   refProfile.current.style.display("none")
-    //   refSetPassword.current.style.display("block")
-
-    // }
-    // function setProfile() {
-    //   refProfile.current.style.display("block")
-    //   refSetPassword.current.style.display("none")
-
-    // }
 
     function checkProfile() {
         let x = Number(checkbox);
@@ -168,42 +163,91 @@ const ProfileTabs = () => {
         }
     }, [dispatch, user]);
 
-    // useEffect(() => {
-    //   dispatch(updateUserProfile({ id: user._id, oldPassword, password }));
-    // },[dispatch, success])
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image: avatarId }));
+        // const newUser = new FormData();
+        // newUser.append('image', image);
+        // newUser.append('id', user._id);
+        // newUser.append('name', name);
+        // newUser.append('email', email);
+        // newUser.append('phone', phone);
+        // newUser.append('country', country);
+        // newUser.append('city', city);
+        // newUser.append('address', address);
+
+        // dispatch(updateUserProfile(newUser));
+        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image }));
 
         if (!toast.isActive(toastId.current)) {
             toastId.current = toast.success('Profile Updated', Toastobjects);
         }
     };
-
     const submitUpdatePassword = (e) => {
         e.preventDefault();
         if (!checkPassword()) return; // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
-        // // Password match
-        // if (password !== confirmPassword) {
-        //   if (!toast.isActive(toastId.current)) {
-        //     toastId.current = toast.error("Password does not match", Toastobjects);
-        //   }
-        // } else {
-        //   dispatch(updateUserProfile({ id: user._id, oldPassword, password }));
-
-        //   if (!toast.isActive(toastId.current)) {
-        //     if (updatesuccess && uploadPassword) {
-        //       toastId.current = toast.success("Password Updated", Toastobjects);
-        //     }
-        //   }
-        // }
         dispatch(updateUserPassword({ id: user._id, oldPassword, password }));
 
         setOldPassword('');
         setPassword('');
         setConfirmPassword('');
     };
+
+    //port avatar
+    const [file, setFile] = useState();
+    const [url, setUrl] = useState();
+    const [imgAvatar, setImgAvatar] = useState();
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [rotation, setRotation] = useState(0);
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(null);
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    }, []);
+
+    const showCroppedImage = useCallback(async () => {
+        try {
+            const croppedImage = await getCroppedImg(imgAvatar, croppedAreaPixels, rotation);
+            setCroppedImage(croppedImage);
+            let response = await fetch(croppedImage);
+            let data = await response.blob();
+            let metadata = {
+                type: 'image/jpeg',
+            };
+            let newFile = new File([data], 'test.jpg', metadata);
+            // ... do something with the file or return it
+            setFile(newFile);
+            setCheckImage(false);
+            setCheckFile(true);
+        } catch (e) {
+            console.error(e);
+        }
+    }, [croppedAreaPixels, rotation]);
+
+    const onClose = useCallback(() => {
+        setCroppedImage(null);
+    }, []);
+    useEffect(() => {
+        if (file) {
+            let newImage = new FormData();
+            newImage.append('image', file);
+            axios
+                .post('/api/uploadAvatar', newImage, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then((res) => {
+                    res?.data && setUrl(res?.data);
+                });
+        }
+    }, [file]);
+    useEffect(() => {
+        if (url !== undefined) {
+            setImage(url.filename);
+        }
+    }, [url]);
     return (
         <>
             <Toast />
@@ -243,7 +287,7 @@ const ProfileTabs = () => {
                 </div>
                 <div
                     ref={refProfile}
-                    className={uploadProfile ? 'col-lg-12 col-md-12 col-sm-12 color' : 'col-lg-12 col-md-12 col-sm-12'}
+                    className={uploadProfile ? 'col-lg-8 col-md-8 col-sm-8 color' : 'col-lg-8 col-md-8 col-sm-8'}
                     style={{ display: uploadProfile ? 'block' : 'none' }}
                 >
                     <form className="row  form-container" onSubmit={submitUpdateProfile}>
@@ -331,20 +375,7 @@ const ProfileTabs = () => {
                                 <p className="noti-validate">{objProfile.country}</p>
                             </div>
                         </div>
-                        {/* <div className="col-md-12">
-                            <div className="form">
-                                <label>Image</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    disabled
-                                    value={image}
-                                    // required
-                                    onChange={(e) => setImage(e.target.value)}
-                                />
-                                <p className="noti-validate"></p>
-                            </div>
-                        </div> */}
+
                         <div className="button-submit">
                             <button type="submit">Update Profile</button>
                         </div>
@@ -354,7 +385,7 @@ const ProfileTabs = () => {
                 {/*Update password*/}
                 <div
                     ref={refSetPassword}
-                    className={uploadPassword ? 'col-lg-12 col-md-12 col-sm-12 color' : 'col-lg-12 col-md-12 col-sm-12'}
+                    className={uploadPassword ? 'col-lg-8 col-md-8 col-sm-8 color' : 'col-lg-8 col-md-8 col-sm-8'}
                     style={{ display: uploadPassword ? 'block' : 'none' }}
                 >
                     {/* dòng này sơn nó in ra thống báo lỗi sơn nhớ sửa lại nhá */}
@@ -413,92 +444,78 @@ const ProfileTabs = () => {
                         </div>
                     </form>
                 </div>
-                {/* modal Avatar */}
-                <div>
-                    <button
-                        style={{ display: 'none' }}
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                    >
-                        Launch static backdrop modal
-                    </button>
 
+                <div className="col-lg-4 col-md-4 col-sm-4">
                     <div
-                        class="modal fade"
-                        id="staticBackdrop"
-                        data-bs-backdrop="static"
-                        data-bs-keyboard="false"
-                        tabindex="-1"
-                        aria-labelledby="staticBackdropLabel"
-                        aria-hidden="true"
+                        className="col-lg-12 col-md-12 col-sm-12 text-center"
+                        style={checkFile === true ? {} : { display: 'none' }}
                     >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">
-                                        Avatar Mẫu
-                                    </h5>
-                                    <button
-                                        type="button"
-                                        class="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                <ul class="modal-body" style={{ display: 'flex', padding: '9px', flexWrap: 'wrap' }}>
-                                    {avatar?.map((data) => (
-                                        <li
-                                            key={data._id}
-                                            onClick={(e) => {
-                                                //console.log(e.target.id);
-                                                setAvatarId(e.target.id);
-                                            }}
-                                            style={{
-                                                listStyle: 'none',
-                                                padding: '9px',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <img
-                                                src={data.url}
-                                                id={data._id}
-                                                style={
-                                                    (avatarId === undefined ? image : avatarId) === data._id
-                                                        ? {
-                                                              height: '100px',
-                                                              width: '100px',
-                                                              borderRadius: '50%',
-                                                              border: '2px solid red',
-                                                          }
-                                                        : {
-                                                              height: '100px',
-                                                              width: '100px',
-                                                              borderRadius: '50%',
-                                                              border: '1px solid #ccc',
-                                                          }
-                                                }
-                                            ></img>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Close
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        onClick={() => {
-                                            setImage(avatarId);
-                                        }}
-                                        data-bs-dismiss="modal"
-                                    >
-                                        YES
-                                    </button>
-                                </div>
-                            </div>
+                        <img
+                            src={url?.filename === undefined ? user.image : url?.filename}
+                            style={{ height: '120px', width: '120px', borderRadius: '50%' }}
+                        ></img>
+                        <div className="text-center">
+                            <input
+                                id="id_file"
+                                type="file"
+                                style={{ display: 'none' }}
+                                onChange={(e) => {
+                                    setImgAvatar(URL.createObjectURL(e.target.files[0]));
+                                    setCheckFile(false);
+                                    setCheckImage(true);
+                                }}
+                            ></input>
+                            <label
+                                for="id_file"
+                                style={{
+                                    marginTop: '5px',
+                                    padding: '5px 10px',
+                                    backgroundColor: '#eb7914',
+                                    borderRadius: '3px',
+                                    cursor: 'pointer',
+                                    color: '#fff',
+                                }}
+                            >
+                                Chọn ảnh
+                            </label>
+                        </div>
+                    </div>
+                    <div
+                        className="col-lg-12 col-md-12 col-sm-12 text-center"
+                        style={
+                            checkImage === true
+                                ? { position: 'absolute', height: '230px', width: '230px', background: '#cccccc42' }
+                                : {
+                                      display: 'none',
+                                      position: 'absolute',
+                                      height: '230px',
+                                      width: '230px',
+                                      background: '#cccccc42',
+                                  }
+                        }
+                    >
+                        <div>
+                            <Cropper
+                                image={imgAvatar}
+                                crop={crop}
+                                rotation={rotation}
+                                zoom={zoom}
+                                aspect={4 / 3}
+                                onCropChange={setCrop}
+                                onRotationChange={setRotation}
+                                onCropComplete={onCropComplete}
+                                onZoomChange={setZoom}
+                            />
+                        </div>
+                        <div>
+                            <Button
+                                onClick={showCroppedImage}
+                                variant="contained"
+                                color="primary"
+                                className="save-image"
+                            >
+                                Lưu ảnh
+                            </Button>
                         </div>
                     </div>
                 </div>
