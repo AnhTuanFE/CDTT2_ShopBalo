@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from './../components/Header';
+import Footer from './../components/Footer';
 import Rating from '../components/homeComponents/Rating';
 import { Link } from 'react-router-dom';
 import Message from './../components/LoadingError/Error';
@@ -15,6 +16,8 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants
 import moment from 'moment';
 import { addToCart } from '../Redux/Actions/cartActions';
 import { listProduct } from '../Redux/Actions/ProductActions';
+import { listUser } from '../Redux/Actions/userActions';
+import OfferProduct from '../components/SlideCorousel/offerProduct';
 import './style/SingleProduct.css';
 
 const SingleProduct = ({ history, match }) => {
@@ -48,6 +51,10 @@ const SingleProduct = ({ history, match }) => {
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
     const productList = useSelector((state) => state.productList);
     const { products, page, pages } = productList;
+    const userList = useSelector((state) => state.userAll);
+    const { users } = userList;
+    const commentsSort = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    const reviewsSort = product.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
     const {
         loading: loadingCreateReview,
         error: errorCreateReview,
@@ -65,7 +72,9 @@ const SingleProduct = ({ history, match }) => {
         error: errorCreateCommentChild,
         success: successCreateCommentChild,
     } = productCommentChildCreate;
-
+    useEffect(() => {
+        dispatch(listUser());
+    }, [dispatch]);
     useEffect(() => {
         dispatch(listProductDetails(productId));
     }, [dispatch, successCreateComment, successCreateCommentChild]);
@@ -75,6 +84,7 @@ const SingleProduct = ({ history, match }) => {
     useEffect(() => {
         if (bulean) {
             // alert('Review Submitted');
+            setBulean(false);
             setRating(0);
             setComment('');
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
@@ -150,6 +160,22 @@ const SingleProduct = ({ history, match }) => {
         dispatch(createProductCommentChild(productId, { questionChild, reviewId }));
         setQuestionChild('');
     };
+    function findProductUser(data) {
+        const findUser = users?.find((user) => user._id === data.user);
+        return (
+            <img
+                src={`/${findUser?.image}` || '/images/logo.png'} // upload ảnh
+                alt=""
+                style={{
+                    height: '40px',
+                    width: '40px',
+                    borderRadius: '50%',
+                    marginRight: '5px',
+                }}
+                className="fix-none"
+            />
+        );
+    }
     return (
         <>
             <Header />
@@ -184,28 +210,28 @@ const SingleProduct = ({ history, match }) => {
                                             </div>
                                             <div className="product-count col-lg-12 ">
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Price</h6>
-                                                    <span>${product.price}</span>
+                                                    <h6>Giá</h6>
+                                                    <span>{product.price}đ</span>
                                                 </div>
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Status</h6>
+                                                    <h6>Trạng thái</h6>
                                                     {product.countInStock > 0 ? (
-                                                        <span>In Stock</span>
+                                                        <span>Còn hàng</span>
                                                     ) : (
-                                                        <span>unavailable</span>
+                                                        <span>Hết hàng</span>
                                                     )}
                                                 </div>
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Reviews</h6>
+                                                    <h6>Đánh giá</h6>
                                                     <Rating
                                                         value={product.rating}
-                                                        text={`${product.numReviews} reviews`}
+                                                        text={`${product.numReviews} đánh giá`}
                                                     />
                                                 </div>
                                                 {product.countInStock > 0 ? (
                                                     <>
                                                         <div className="flex-box d-flex justify-content-between align-items-center">
-                                                            <h6>Quantity</h6>
+                                                            <h6>Số lượng</h6>
                                                             <select
                                                                 value={qty}
                                                                 onChange={(e) => setQty(e.target.value)}
@@ -218,7 +244,7 @@ const SingleProduct = ({ history, match }) => {
                                                             </select>
                                                         </div>
                                                         <button onClick={AddToCartHandle} className="round-black-btn">
-                                                            Add To Cart
+                                                            Thêm vào giỏ
                                                         </button>
                                                     </>
                                                 ) : null}
@@ -401,7 +427,7 @@ const SingleProduct = ({ history, match }) => {
                                 </div>
                                 <div className="col-md-12 product-rating" style={{ paddingTop: '20px' }}>
                                     <div className="rating-review">
-                                        {product.reviews.map((review) => (
+                                        {reviewsSort?.map((review) => (
                                             <div
                                                 key={review._id}
                                                 className="mb-2 mb-md-3 bg-light p-3 shadow-sm rounded-5"
@@ -415,17 +441,7 @@ const SingleProduct = ({ history, match }) => {
                                                     }}
                                                 >
                                                     <div className="rating-review__flex">
-                                                        <img
-                                                            src={`/${review?.imageUser}` || '/images/logo.png'} // upload ảnh
-                                                            alt=""
-                                                            style={{
-                                                                height: '40px',
-                                                                width: '40px',
-                                                                borderRadius: '50%',
-                                                                marginRight: '5px',
-                                                            }}
-                                                            className="fix-none"
-                                                        />
+                                                        {findProductUser(review)}
                                                         <div className="review-rating">
                                                             <strong>{review.name}</strong>
                                                         </div>
@@ -522,11 +538,8 @@ const SingleProduct = ({ history, match }) => {
                                         {errorCreateCommentChild && (
                                             <Message variant="alert-danger">{errorCreateCommentChild}</Message>
                                         )}
-                                        {product.comments?.map((review) => (
-                                            <div
-                                                key={review._id}
-                                                className="mb-2 mb-md-3 bg-light p-3 shadow-sm rounded-5 marginbottom"
-                                            >
+                                        {commentsSort?.map((review) => (
+                                            <div key={review._id} className="mb-2 mb-md-2 p-3 rounded-5 backgroud">
                                                 <div
                                                     style={{
                                                         display: 'flex',
@@ -535,17 +548,7 @@ const SingleProduct = ({ history, match }) => {
                                                     }}
                                                 >
                                                     <div className="rating-review__flex">
-                                                        <img
-                                                            src={`/${review?.imageUser}` || '/images/logo.png'} // upload ảnh
-                                                            alt=""
-                                                            style={{
-                                                                height: '40px',
-                                                                width: '40px',
-                                                                borderRadius: '50%',
-                                                                marginRight: '5px',
-                                                            }}
-                                                            className="fix-none"
-                                                        />
+                                                        {findProductUser(review)}
                                                         <div className="review-rating">
                                                             <strong>{review.name}</strong>
                                                         </div>
@@ -588,7 +591,7 @@ const SingleProduct = ({ history, match }) => {
                                                     {review.commentChilds?.map((child) => (
                                                         <div
                                                             key={child._id}
-                                                            className="mb-5 mb-md-3 bg-light p-1 shadow-sm rounded marginbottom"
+                                                            className="mb-2 mb-md-2 p-3 rounded-5 backgroud marginbottom"
                                                         >
                                                             <div
                                                                 style={{
@@ -598,19 +601,7 @@ const SingleProduct = ({ history, match }) => {
                                                                 }}
                                                             >
                                                                 <div className="rating-review__flex">
-                                                                    <img
-                                                                        src={
-                                                                            `/${child?.imageUser}` || '/images/logo.png'
-                                                                        } // upload ảnh
-                                                                        alt=""
-                                                                        style={{
-                                                                            height: '40px',
-                                                                            width: '40px',
-                                                                            borderRadius: '50%',
-                                                                            marginRight: '5px',
-                                                                        }}
-                                                                        className="fix-none"
-                                                                    />
+                                                                    {findProductUser(child)}
                                                                     <div className="review-rating">
                                                                         <strong>{child.name}</strong>
                                                                     </div>
@@ -680,10 +671,12 @@ const SingleProduct = ({ history, match }) => {
                                     </div>
                                 </div>
                             </div>
+                            <OfferProduct products={products} />
                         </div>
                     </>
                 )}
             </div>
+            <Footer />
         </>
     );
 };

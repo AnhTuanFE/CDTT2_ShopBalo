@@ -34,7 +34,6 @@ export default function AvatarMain() {
                 </h2>
             </div>
 
-            {/* <AddSlider/> */}
             <AddAvatar />
             <table className="table">
                 <thead>

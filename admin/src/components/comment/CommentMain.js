@@ -5,24 +5,19 @@ import { ListProductCommentAll, createProductCommentChild } from '../../Redux/Ac
 import moment from 'moment';
 import { listUser } from '../../Redux/Actions/userActions';
 import './style.css';
-
 export default function CommentMain() {
     const dispatch = useDispatch();
     const commentList = useSelector((state) => state.productCommentGet);
     const { products } = commentList;
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate);
-    const {
-        loading: loadingCreateCommentChild,
-        error: errorCreateCommentChild,
-        success: successCreateCommentChild,
-    } = productCommentChildCreate;
+    const { success: successCommentChild } = productCommentChildCreate;
     const [buleanReview, setBuleanReview] = useState('');
     const [productId, setProductId] = useState('');
     const [reviewId, setReviewId] = useState('');
     const [questionChild, setQuestionChild] = useState('');
     useEffect(() => {
         dispatch(ListProductCommentAll());
-    }, []);
+    }, [successCommentChild]);
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
     useEffect(() => {
@@ -47,6 +42,7 @@ export default function CommentMain() {
     const submitQuestionChild = (e) => {
         e.preventDefault();
         dispatch(createProductCommentChild(productId, { questionChild, reviewId }));
+        setQuestionChild('');
     };
     return (
         <div className="content-main" style={{ backgroundColor: '#ffffff' }}>
@@ -142,10 +138,7 @@ export default function CommentMain() {
                                     </div>
                                     <div className="product-review" style={{ padding: '0px', boxShadow: 'none' }}>
                                         {product.commentChilds?.map((child) => (
-                                            <div
-                                                key={child._id}
-                                                className="mb-5 mb-md-3 bg-light p-1 shadow-sm rounded marginbottom"
-                                            >
+                                            <div key={child._id} className="mb-5 mb-md-3 p-1 rounded marginbottom">
                                                 <div
                                                     style={{
                                                         display: 'flex',

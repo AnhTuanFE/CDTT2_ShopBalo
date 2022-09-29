@@ -14,6 +14,9 @@ import {
     USER_UPDATE_PROFILE_FAIL,
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
+    USER_LIST_FAIL,
+    USER_LIST_REQUEST,
+    USER_LIST_SUCCESS,
 } from '../Constants/UserContants';
 import axios from 'axios';
 import { ORDER_LIST_MY_RESET } from '../Constants/OrderConstants';
@@ -164,6 +167,35 @@ export const updateUserPassword = (user) => async (dispatch, getState) => {
         }
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL,
+            payload: message,
+        });
+    }
+};
+// ALL USER
+export const listUser = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_LIST_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/users/all`, config);
+
+        dispatch({ type: USER_LIST_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: USER_LIST_FAIL,
             payload: message,
         });
     }

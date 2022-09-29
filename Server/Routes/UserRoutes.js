@@ -175,4 +175,17 @@ userRouter.get(
     }),
 );
 
+// GET ALL USER
+userRouter.get(
+    '/all',
+    protect,
+    asyncHandler(async (req, res) => {
+        let allUser = [];
+        const users = await User.find({});
+        for (let i = 0; i < users.length; i++) {
+            allUser.push({ _id: users[i]._id, image: users[i].image });
+        }
+        res.json(allUser);
+    }),
+);
 export default userRouter;
