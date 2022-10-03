@@ -21,7 +21,7 @@ const CartScreen = ({ match, location, history }) => {
         ? cartItems
               .filter((item) => item.isBuy == true)
               .reduce((a, i) => a + i.qty * i.product?.price, 0)
-              .toFixed(2)
+              .toFixed(0)
         : 0;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -75,11 +75,11 @@ const CartScreen = ({ match, location, history }) => {
                         <div className="backTo" style={{ paddingTop: '10px' }}>
                             <Link to="/" className="col-md-6 ">
                                 <i class="fas fa-undo" style={{ paddingRight: '5px' }}></i>
-                                Back To Shop
+                                Về trang chủ
                             </Link>
                         </div>
                         <div className=" alert alert-info text-center mt-3">
-                            Total Cart Products
+                            Tổng sản phẩm trong giỏ
                             <Link className="text-success mx-2" to="/cart">
                                 ({cartItems?.length ?? 0})
                             </Link>
@@ -95,18 +95,6 @@ const CartScreen = ({ match, location, history }) => {
                                                 checked={item.isBuy}
                                                 onChange={(e) => {
                                                     dispatch(addToCart(item.product._id, true, userInfo._id));
-                                                    // let check = -1;
-                                                    // if (
-                                                    //     currentChooseProduct.find((pr, i) => {
-                                                    //         check = i;
-                                                    //         return pr.product._id === item.product._id;
-                                                    //     })
-                                                    // ) {
-                                                    //     currentChooseProduct.splice(check, 1);
-                                                    // } else {
-                                                    //     currentChooseProduct.push(item);
-                                                    // }
-                                                    // console.log(currentChooseProduct, 'Hi');
                                                 }}
                                             ></input>
                                         </div>
@@ -126,7 +114,7 @@ const CartScreen = ({ match, location, history }) => {
                                         </Link>
                                     </div>
                                     <div className="cart-qty col-md-2 col-sm-5 mt-3 mt-md-0 d-flex flex-column justify-content-center quantity-css">
-                                        <h6>QUANTITY</h6>
+                                        <h6>Số lượng</h6>
                                         <select
                                             disabled={item.product?.countInStock <= 0}
                                             value={item.qty}
@@ -142,8 +130,8 @@ const CartScreen = ({ match, location, history }) => {
                                         </select>
                                     </div>
                                     <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-start  d-flex flex-column justify-content-center col-sm-7 quantity-css">
-                                        <h6>PRICE</h6>
-                                        <h4>${item.product?.price}</h4>
+                                        <h6>Giá</h6>
+                                        <h4>{item.product?.price}đ</h4>
                                     </div>
                                     <div
                                         className=" col-md-1 delete-cart"
@@ -162,12 +150,12 @@ const CartScreen = ({ match, location, history }) => {
                         <hr />
                         <div className="cart-buttons d-flex align-items-center row">
                             <div className="total col-md-6">
-                                <span className="sub">total:</span>
-                                <span className="total-price">${total}</span>
+                                <span className="sub">Tổng tiền:</span>
+                                <span className="total-price">{total}đ</span>
                             </div>
                             {total > 0 && (
                                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                                    <button onClick={checkOutHandler}>Checkout</button>
+                                    <button onClick={checkOutHandler}>Tiến hành thanh toán</button>
                                 </div>
                             )}
                         </div>

@@ -9,6 +9,7 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import CartScreen from './screens/CartScreen';
 import ShippingScreen from './screens/ShippingScreen';
+import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path="/products/:id" component={SingleProduct} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
+                <Route path="/news/:id" component={NewsScreen} />
                 <PrivateRouter path="/profile" component={ProfileScreen} />
                 <PrivateRouter path="/cart/:id?" component={CartScreen} />
                 <PrivateRouter path="/shipping" component={ShippingScreen} />

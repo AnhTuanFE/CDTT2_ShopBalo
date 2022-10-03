@@ -59,7 +59,7 @@ export const productDeleteReducer = (state = {}, action) => {
     }
 };
 
-// DELETE PRODUCT
+// CREATE PRODUCT
 export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
         case PRODUCT_CREATE_REQUEST:

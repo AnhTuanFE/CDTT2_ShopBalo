@@ -54,7 +54,7 @@ orderRouter.get(
         let Arr = {};
         let ArrQuatity = [];
         for (let order of orders) {
-            if (order.isPaid === true) {
+            if (order.isPaid == true) {
                 allPay.push(order);
             }
         }
@@ -64,8 +64,8 @@ orderRouter.get(
             }
         }
         for (let i = 0; i < AllOrder.length; i++) {
-            if (Arr[AllOrder[i].name] != undefined) Arr[AllOrder[i].name]++;
-            else Arr[AllOrder[i].name] = 1;
+            if (Arr[AllOrder[i].product] != undefined) Arr[AllOrder[i].product]++;
+            else Arr[AllOrder[i].product] = 1;
         }
         let newarr = [];
         ArrQuatity = Object.entries(Arr).sort(function (a, b) {
@@ -73,7 +73,7 @@ orderRouter.get(
         });
         for (let i = 0; i < ArrQuatity.length; i++) {
             for (let j = 0; j < products.length; j++) {
-                if (ArrQuatity[i][0] === products[j].name) {
+                if (ArrQuatity[i][0] == products[j]._id) {
                     newarr.push(products[j]);
                     break;
                 }

@@ -2,21 +2,12 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { listUser } from '../../Redux/Actions/userActions';
-import { ListAvatar } from '../../Redux/Actions/AvatarAction';
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 
 const UserComponent = () => {
     const dispatch = useDispatch();
 
-    //get avatar
-    // const avatarList = useSelector((state) => state.avatarList);
-    // const { avatar } = avatarList;
-
-    // useEffect(() => {
-    //     dispatch(ListAvatar());
-    // }, [dispatch]);
-    //hết
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
 
@@ -96,9 +87,7 @@ const UserComponent = () => {
                                             <img
                                                 className="img-md img-avatar"
                                                 src={
-                                                    user?.image?.url === undefined
-                                                        ? '/images/user.png'
-                                                        : user?.image?.url
+                                                    user?.image === undefined ? './images/user.png' : `./${user?.image}`
                                                 }
                                                 alt="User pic"
                                             />

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Toast from './../LoadingError/Toast';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import { useQuill } from 'react-quilljs';
+import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { editProduct, updateProduct } from './../../Redux/Actions/ProductActions';
 import { PRODUCT_UPDATE_RESET } from '../../Redux/Constants/ProductConstants';
@@ -24,11 +27,11 @@ const EditProductMain = (props) => {
     const [image, setImage] = useState('');
     const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState('');
-
     const dispatch = useDispatch();
 
     const productEdit = useSelector((state) => state.productEdit);
     const { loading, error, product } = productEdit;
+    console.log(productId, 'hehehe');
     // console.log(product);
     // console.log(category);
 
@@ -72,7 +75,35 @@ const EditProductMain = (props) => {
             );
         }
     };
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+            [{ align: [] }],
+            ['link', 'image', 'video'],
+            [{ color: [] }, { background: [] }],
+            ['clean'],
+        ],
+    };
 
+    const formats = [
+        'header',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'video',
+        'align',
+        'color',
+        'background',
+    ];
     return (
         <>
             <Toast />
@@ -170,17 +201,6 @@ const EditProductMain = (props) => {
                                                 />
                                             </div>
                                             <div className="mb-4">
-                                                <label className="form-label">Description</label>
-                                                <textarea
-                                                    placeholder="Type here"
-                                                    className="form-control"
-                                                    rows="7"
-                                                    required
-                                                    value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
-                                                ></textarea>
-                                            </div>
-                                            <div className="mb-4">
                                                 <label className="form-label">Images</label>
                                                 <input
                                                     className="form-control"
@@ -189,6 +209,16 @@ const EditProductMain = (props) => {
                                                     required
                                                     onChange={(e) => setImage(e.target.value)}
                                                 />
+                                            </div>
+                                            <div className="mb-4">
+                                                <label className="form-label">Description</label>
+                                                <ReactQuill
+                                                    theme="snow"
+                                                    value={description}
+                                                    onChange={setDescription}
+                                                    modules={modules}
+                                                    formats={formats}
+                                                ></ReactQuill>
                                             </div>
                                         </>
                                     )}

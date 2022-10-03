@@ -178,7 +178,6 @@ userRouter.get(
 // GET ALL USER
 userRouter.get(
     '/all',
-    protect,
     asyncHandler(async (req, res) => {
         let allUser = [];
         const users = await User.find({});

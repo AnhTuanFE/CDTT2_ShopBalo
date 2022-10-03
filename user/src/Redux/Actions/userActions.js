@@ -172,21 +172,10 @@ export const updateUserPassword = (user) => async (dispatch, getState) => {
     }
 };
 // ALL USER
-export const listUser = () => async (dispatch, getState) => {
+export const listUser = () => async (dispatch) => {
     try {
         dispatch({ type: USER_LIST_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.get(`/api/users/all`, config);
+        const { data } = await axios.get(`/api/users/all`);
 
         dispatch({ type: USER_LIST_SUCCESS, payload: data });
     } catch (error) {

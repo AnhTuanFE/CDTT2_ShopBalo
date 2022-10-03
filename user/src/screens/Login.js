@@ -5,7 +5,7 @@ import isEmpty from 'validator/lib/isEmpty';
 import Message from '../components/LoadingError/Error';
 import Loading from '../components/LoadingError/Loading';
 import Header from './../components/Header';
-import { login } from './../Redux/Actions/userActions';
+import { login, getUserDetails } from './../Redux/Actions/userActions';
 
 const Login = ({ location, history }) => {
     // window.scrollTo(0, 0);
@@ -18,7 +18,6 @@ const Login = ({ location, history }) => {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { error, loading, userInfo } = userLogin;
-    
 
     useEffect(() => {
         if (userInfo) {

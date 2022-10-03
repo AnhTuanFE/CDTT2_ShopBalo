@@ -252,8 +252,9 @@ const SingleProduct = ({ history, match }) => {
                                         </div>
                                     </div>
                                     <div className="product-description">
-                                        <h2>Description</h2>
-                                        <p>{product.description}</p>
+                                        <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
+                                        {/* <p>{product.description}</p> */}
+                                        <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
                                     </div>
                                 </div>
                             </div>

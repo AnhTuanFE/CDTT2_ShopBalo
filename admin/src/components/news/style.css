@@ -1,0 +1,9 @@
+.form-control {
+    margin: 10px 0;
+}
+.card-body {
+    background-color: #fff;
+}
+.dropdown-menu {
+    padding: 0 !important;
+}

@@ -19,7 +19,9 @@ import { listProducts } from './Redux/Actions/ProductActions';
 import { listOrders } from './Redux/Actions/OrderActions';
 import { listUser } from './Redux/Actions/userActions';
 import SliderScreen from './screens/SliderScreen';
-import AvatarScreen from './screens/AvatarScreen';
+import AddNewsScreen from './screens/AddNewsScreen';
+import EditNewsScreen from './screens/EditNewsScreen';
+import NewsScreen from './screens/NewsScreen';
 import CommentScreen from './screens/CommentScreen';
 
 function App() {
@@ -57,7 +59,9 @@ function App() {
                     <PrivateRouter path="/users" component={UsersScreen} />
                     <PrivateRouter path="/comment" component={CommentScreen} />
                     <PrivateRouter path="/slider" component={SliderScreen} />
-                    <PrivateRouter path="/avatar" component={AvatarScreen} />
+                    <PrivateRouter path="/news" component={NewsScreen} />
+                    <PrivateRouter path="/addnews" component={AddNewsScreen} />
+                    <PrivateRouter path="/editnews/:id/edit" component={EditNewsScreen} />
                     <PrivateRouter path="/product/:id/edit" component={ProductEditScreen} />
                     <Route path="/login" component={Login} />
                     <PrivateRouter path="*" component={NotFound} />

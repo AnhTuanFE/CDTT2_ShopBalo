@@ -417,9 +417,16 @@ textarea:focus {
     background-color: #fff;
     border-radius: 4px;
 }
+.product-description__h2 {
+    border-bottom: 2px solid rgba(250, 154, 10, 0.8);
+    font-size: 24px !important;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
 .product-description h2 {
-    width: 150px;
-    border-bottom: 2px solid #cccc;
+    font-size: 20px;
 }
 .product-description p {
     padding: 20px 0;
@@ -830,12 +837,12 @@ textarea:focus {
 .total .sub {
     color: #8c8c8c;
     font-size: 20px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     margin-right: 20px;
 }
 .total .total-price {
     font-size: 20px;
-    color: #000000;
+    color: red;
     font-weight: bold;
 }
 .cart-buttons {
@@ -1517,4 +1524,14 @@ textarea:focus {
 .userImage {
     height: 50px;
     width: 50px;
+}
+.ql-align-center {
+    text-align: center;
+}
+.news-screen__p {
+    color: #4d4d4d;
+    font-size: 14px;
+}
+.ql-align-center img {
+    width: 100%;
 }
