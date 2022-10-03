@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuill } from 'react-quilljs';
+import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { PRODUCT_CREATE_RESET } from '../../Redux/Constants/ProductConstants';
@@ -24,7 +26,7 @@ const AddProductMain = () => {
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [validate, setValidate] = useState({});
-
+    const { quill, quillRef } = useQuill();
     const dispatch = useDispatch();
 
     const productCreate = useSelector((state) => state.productCreate);
@@ -46,7 +48,13 @@ const AddProductMain = () => {
     useEffect(() => {
         dispatch(ListCategory());
     }, []);
-
+    useEffect(() => {
+        if (quill) {
+            quill.on('text-change', () => {
+                setDescription(quillRef.current.firstChild.innerHTML);
+            });
+        }
+    }, [quill]);
     const isEmptyCheckEdit = () => {
         const msg = {};
         if (isEmpty(category)) {
@@ -228,26 +236,6 @@ const AddProductMain = () => {
                                         <p className="product_validate">{validate.countInStock}</p>
                                     </div>
                                     <div className="mb-4">
-                                        <label className="form-label">Description</label>
-                                        <textarea
-                                            placeholder="Type here"
-                                            className={`form-control ${validate.borderRed6}`}
-                                            rows="7"
-                                            //required
-                                            value={description}
-                                            onClick={() => {
-                                                setValidate((values) => {
-                                                    const x = { ...values };
-                                                    x.borderRed6 = '';
-                                                    x.description = '';
-                                                    return x;
-                                                });
-                                            }}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                        ></textarea>
-                                        <p className="product_validate">{validate.description}</p>
-                                    </div>
-                                    <div className="mb-4">
                                         <label className="form-label">Images</label>
                                         <input
                                             className={`form-control ${validate.borderRed4}`}
@@ -267,6 +255,23 @@ const AddProductMain = () => {
                                         />
                                         <p className="product_validate">{validate.image}</p>
                                         {/* <input className="form-control mt-3" type="file" /> */}
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="form-label">Description</label>
+                                        <div
+                                            onClick={() => {
+                                                setValidate((values) => {
+                                                    const x = { ...values };
+                                                    x.borderRed6 = '';
+                                                    x.description = '';
+                                                    return x;
+                                                });
+                                            }}
+                                            style={{ width: '100%', height: '300px' }}
+                                        >
+                                            <div ref={quillRef} />
+                                        </div>
+                                        <p className="product_validate">{validate.description}</p>
                                     </div>
                                 </div>
                             </div>

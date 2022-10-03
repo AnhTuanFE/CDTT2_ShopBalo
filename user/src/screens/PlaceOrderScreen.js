@@ -33,20 +33,20 @@ const PlaceOrderScreen = ({ history }) => {
 
     // Calculate Price
     const addDecimals = (num) => {
-        return (Math.round(num * 100) / 100).toFixed(2);
+        return (Math.round(num * 100) / 100).toFixed(0);
     };
     console.log(cart);
     cart.itemsPrice = addDecimals(
         cart.cartItems
             .filter((item) => item.isBuy == true)
             .reduce((a, i) => a + i.qty * i.product.price, 0)
-            .toFixed(2),
+            .toFixed(0),
     );
-    cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? (cart.itemsPrice > 100 ? 0 : 20) : 0);
-    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+    cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? (cart.itemsPrice > 100 ? 40000 : 20) : 0);
+    cart.taxPrice = addDecimals(Number((0.05 * cart.itemsPrice).toFixed(0)));
     cart.totalPrice =
         cart?.cartItems.length > 0
-            ? (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
+            ? (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(0)
             : 0;
 
     const orderCreate = useSelector((state) => state.orderCreate);
@@ -73,7 +73,7 @@ const PlaceOrderScreen = ({ history }) => {
                     country: userInfo.country,
                 },
                 // paymentMethod: cart.paymentMethod,
-                paymentMethod: 'Payment in cash',
+                paymentMethod: 'Thanh toán bằng tiền mặt',
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 taxPrice: cart.taxPrice,
@@ -83,7 +83,6 @@ const PlaceOrderScreen = ({ history }) => {
         );
         dispatch(clearFromCart(userInfo._id));
     };
-    console.log(cart);
     return (
         <>
             <Header />
@@ -103,8 +102,8 @@ const PlaceOrderScreen = ({ history }) => {
                                 </div>
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
-                                <p>{`Name: ${userInfo.name}`}</p>
-                                <p>{`Phone: ${userInfo.phone}`}</p>
+                                <p>{`Tên: ${userInfo.name}`}</p>
+                                <p>{`Số điện thoại: ${userInfo.phone}`}</p>
                             </div>
                         </div>
                     </div>
@@ -120,7 +119,7 @@ const PlaceOrderScreen = ({ history }) => {
                                 </div>
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9">
-                                <p>Address: {`${userInfo?.city}, ${userInfo?.address}, ${userInfo?.country}`}</p>
+                                <p>Địa chỉ: {`${userInfo?.city}, ${userInfo?.address}, ${userInfo?.country}`}</p>
                             </div>
                         </div>
                     </div>
@@ -134,7 +133,7 @@ const PlaceOrderScreen = ({ history }) => {
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9">
                                 <p>
-                                    <p>Pay method: {'Payment in cash'}</p>
+                                    <p>Phương thức: {'Thanh toán bằng tiền mặt'}</p>
                                 </p>
                             </div>
                         </div>
@@ -160,12 +159,12 @@ const PlaceOrderScreen = ({ history }) => {
                                                 </Link>
                                             </div>
                                             <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
-                                                <h4>QUANTITY</h4>
+                                                <h4>Số lượng</h4>
                                                 <h6>{item?.qty}</h6>
                                             </div>
                                             <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
-                                                <h4>SUBTOTAL</h4>
-                                                <h6>${item?.qty * item?.product?.price}</h6>
+                                                <h4>Giá</h4>
+                                                <h6>{item?.qty * item?.product?.price}đ</h6>
                                             </div>
                                         </div>
                                     ))}
@@ -180,24 +179,24 @@ const PlaceOrderScreen = ({ history }) => {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <strong>Products</strong>
+                                        <strong>Sản phẩm</strong>
                                     </td>
-                                    <td>${cart.itemsPrice}</td>
+                                    <td>{cart.itemsPrice}đ</td>
                                     <td>
-                                        <strong>Tax</strong>
+                                        <strong>Thuế</strong>
                                     </td>
-                                    <td>${cart.taxPrice}</td>
+                                    <td>{cart.taxPrice}đ</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>Shipping</strong>
+                                        <strong>Phí vận chuyển</strong>
                                     </td>
-                                    <td>${cart.shippingPrice}</td>
+                                    <td>{cart.shippingPrice}đ</td>
 
                                     <td>
-                                        <strong>Total</strong>
+                                        <strong>Tổng tiền</strong>
                                     </td>
-                                    <td>${cart.totalPrice}</td>
+                                    <td>{cart.totalPrice}đ</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -213,7 +212,7 @@ const PlaceOrderScreen = ({ history }) => {
                         </div>
                     )}
                     <div className="col-lg-12 fix-right">
-                        <div style={{ fontWeight: '600', paddingRight: '10px' }}>Total: ${cart.totalPrice}</div>
+                        <div style={{ fontWeight: '600', paddingRight: '10px' }}>Tổng tiền: {cart.totalPrice}đ</div>
                         {cart.cartItems.length === 0 ? null : (
                             <button
                                 type="submit"
@@ -223,7 +222,7 @@ const PlaceOrderScreen = ({ history }) => {
                                 data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop"
                             >
-                                PLACE ORDER
+                                Đặt hàng
                             </button>
                         )}
                     </div>

@@ -66,9 +66,15 @@ const Sidebar = () => {
                             </NavLink>
                         </li>
                         <li className="menu-item">
-                            <NavLink activeClassName="active" className="menu-link " to="/avatar">
-                                <i class="icon fas fa-user-plus"></i>
-                                <span className="text">Avatar</span>
+                            <NavLink activeClassName="active" className="menu-link " to="/news">
+                                <i class="icon fas fa-newspaper"></i>
+                                <span className="text">News</span>
+                            </NavLink>
+                        </li>
+                        <li className="menu-item">
+                            <NavLink activeClassName="active" className="menu-link " to="/addnews">
+                                <i class="icon fas fa-newspaper"></i>
+                                <span className="text">AddNews</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">

@@ -13,7 +13,7 @@ const PaymentScreen = ({ history }) => {
         history.push('/shipping');
     }
 
-    const [paymentMethod, setPaymentMethod] = useState('Payment in cash');
+    const [paymentMethod, setPaymentMethod] = useState('Thanh toán bằng tiền mặt');
 
     const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const PaymentScreen = ({ history }) => {
             <Header />
             <div className="container d-flex justify-content-center align-items-center login-center">
                 <form className="Login2 col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
-                    <h6>SELECT PAYMENT METHOD</h6>
+                    <h4>Phương thức thanh toán</h4>
                     <div className="payment-container">
                         <div className="radio-container">
                             <input
@@ -40,11 +40,11 @@ const PaymentScreen = ({ history }) => {
                                     console.log(e.target.value);
                                 }}
                             />
-                            <label className="form-check-label">Payment in cash</label>
+                            <label className="form-check-label">Thanh toán bằng tiền mặt</label>
                         </div>
                     </div>
 
-                    <button type="submit">Continue</button>
+                    <button type="submit">Tiếp tục</button>
                 </form>
             </div>
         </>

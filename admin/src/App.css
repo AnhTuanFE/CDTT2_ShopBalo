@@ -970,3 +970,6 @@ ul.row-sm {
 .accordion-button tr {
     border-bottom: none !important;
 }
+.ql-align-center {
+    text-align: center;
+}

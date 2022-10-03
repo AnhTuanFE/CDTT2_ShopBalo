@@ -12,7 +12,7 @@ import categoryRoute from './Routes/categoryRouter.js';
 import multer from 'multer';
 import path from 'path';
 import Upload from './Routes/Upload.js';
-import avatarRouter from './Routes/avatarRouter.js';
+import newsRouter from './Routes/newsRouter.js';
 
 dotenv.config();
 connectDatabase();
@@ -22,7 +22,7 @@ app.use(express.json());
 // API
 app.use('/api/cart', cartRoutes);
 app.use('/api/slider', SliderRouter);
-app.use('/api/avatar', avatarRouter);
+app.use('/api/news', newsRouter);
 app.use('/api/import', ImportData);
 app.use('/api/products', productRoute);
 app.use('/api/users', userRouter);

@@ -8,6 +8,7 @@ import Silder from '../components/Silder';
 import Sliders from '../components/Sliders';
 import Corousel from '../components/SlideCorousel/Corousel';
 import CorouselOder from '../components/SlideCorousel/CourouselOder';
+import NewsMain from '../components/news/NewsMain';
 
 const HomeScreen = ({ match }) => {
     // window.scrollTo(0, 0);
@@ -25,7 +26,8 @@ const HomeScreen = ({ match }) => {
 
             <ShopSection category={category} keyword={keyword} pageNumber={pageNumber} />
 
-            <CalltoActionSection />
+            {/* <CalltoActionSection /> */}
+            <NewsMain />
             <ContactInfo />
             <Footer />
         </div>

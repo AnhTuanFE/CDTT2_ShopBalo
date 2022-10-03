@@ -1,19 +1,18 @@
 import React from 'react';
 import Sidebar from './../components/sidebar';
 import Header from './../components/Header';
+import EditNews from './../components/news/EditNews';
 
-import AvatarMain from '../components/avatar/AvatarMain';
-
-const AvatarScreen = () => {
+const EditNewsScreen = ({ match }) => {
+    const idNews = match.params.id;
     return (
         <>
             <Sidebar />
             <main className="main-wrap">
                 <Header />
-                <AvatarMain />
+                <EditNews idNews={idNews} />
             </main>
         </>
     );
 };
-
-export default AvatarScreen;
+export default EditNewsScreen;

@@ -7,8 +7,8 @@ import asyncHandler from 'express-async-handler';
 import Slider from './Models/SliderModel.js';
 import { slider } from './data/slider.js';
 // import Avatar from './Models/AvatarModel.js';
-import Avatar from './Models/AvatarModel.js';
-import { avatar } from './data/avatar.js';
+import News from './Models/NewsModel.js';
+import { news } from './data/news.js';
 
 const ImportData = express.Router();
 
@@ -39,11 +39,11 @@ ImportData.post(
 );
 
 ImportData.post(
-    '/avatar',
+    '/news',
     asyncHandler(async (req, res) => {
-        await Avatar.remove({});
-        const importAvatar = await Avatar.insertMany(avatar);
-        res.send({ importAvatar });
+        await News.remove({});
+        const importNews = await News.insertMany(news);
+        res.send({ importNews });
     }),
 );
 

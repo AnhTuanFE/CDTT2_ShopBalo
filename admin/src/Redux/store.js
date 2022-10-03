@@ -19,7 +19,13 @@ import {
     orderPaidReducer,
 } from './Reducers/OrderReducres';
 import { sliderCreateReducer, sliderDeleteReducer, sliderListReducer } from './Reducers/SliderListReducers';
-import { avatarCreateReducer, avatarDeleteReducer, avatarListReducer } from './Reducers/AvatarReduce';
+import {
+    newsCreateReducer,
+    newsDeleteReducer,
+    newsListReducer,
+    editNewsReducer,
+    newsUpdateReducer,
+} from './Reducers/NewsReduce';
 import {
     categoryAddReducer,
     categoryDeleteReducer,
@@ -45,9 +51,11 @@ const reducer = combineReducers({
     sliderList: sliderListReducer,
     deleteSlider: sliderDeleteReducer,
     sliderCreate: sliderCreateReducer,
-    avatarList: avatarListReducer,
-    deleteAvatar: avatarDeleteReducer,
-    avatarCreate: avatarCreateReducer,
+    newsList: newsListReducer,
+    deleteNews: newsDeleteReducer,
+    newsCreate: newsCreateReducer,
+    getEditNews: editNewsReducer,
+    newsUpdate: newsUpdateReducer,
     CategoryList: categoryListReducer,
     CategoryDelete: categoryDeleteReducer,
     CategoryAdd: categoryAddReducer,

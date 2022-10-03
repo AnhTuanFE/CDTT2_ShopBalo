@@ -71,11 +71,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                     {categories &&
                         categories.map((category, index) => (
                             <tr>
-                                <td className="">
-                                    {/* <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" />
-                  </div> */}
-                                </td>
+                                <td className=""></td>
                                 <td>{index + 1}</td>
                                 <td>
                                     <b>{category.name}</b>
@@ -109,77 +105,9 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    {/* <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" />
-                  </div> */}
-                                </td>
+                                <td></td>
                             </tr>
                         ))}
-                    {/* <tr>
-            <td>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" />
-              </div>
-            </td>
-            <td>2</td>
-            <td>
-              <b>Women fashion</b>
-            </td>
-            <td>Fashions for Women</td>
-
-            <td className="text-end">
-              <div className="dropdown">
-                <Link
-                  to="#"
-                  data-bs-toggle="dropdown"
-                  className="btn btn-light"
-                >
-                  <i className="fas fa-ellipsis-h"></i>
-                </Link>
-                <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="#">
-                    Edit info
-                  </Link>
-                  <Link className="dropdown-item text-danger" to="#">
-                    Delete
-                  </Link>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" />
-              </div>
-            </td>
-            <td>3</td>
-            <td>
-              <b>Kids clothes</b>
-            </td>
-            <td>Clothes for kids</td>
-
-            <td className="text-end">
-              <div className="dropdown">
-                <Link
-                  to="#"
-                  data-bs-toggle="dropdown"
-                  className="btn btn-light"
-                >
-                  <i className="fas fa-ellipsis-h"></i>
-                </Link>
-                <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="#">
-                    Edit info
-                  </Link>
-                  <Link className="dropdown-item text-danger" to="#">
-                    Delete
-                  </Link>
-                </div>
-              </div>
-            </td>
-          </tr> */}
                 </tbody>
             </table>
         </div>
