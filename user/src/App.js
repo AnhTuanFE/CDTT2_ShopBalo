@@ -15,6 +15,8 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import NotFound from './screens/NotFound';
 import PrivateRouter from './PrivateRouter';
+import ForgotPassword from './components/profileComponents/ForgotPassword';
+import Reset from './components/profileComponents/Reset';
 
 const App = () => {
     return (
@@ -29,6 +31,8 @@ const App = () => {
                 <Route path="/products/:id" component={SingleProduct} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
+                <Route path="/forgotpassword" component={ForgotPassword} />
+                <Route path="/reset" component={Reset} />
                 <PrivateRouter path="/profile" component={ProfileScreen} />
                 <PrivateRouter path="/cart/:id?" component={CartScreen} />
                 <PrivateRouter path="/shipping" component={ShippingScreen} />

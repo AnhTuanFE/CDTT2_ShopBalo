@@ -441,6 +441,7 @@ const ProfileTabs = () => {
 
                         <div className="button-submit">
                             <button type="submit">Update Password</button>
+                            <button type="submit">Forgot Password</button>
                         </div>
                     </form>
                 </div>
@@ -453,6 +454,7 @@ const ProfileTabs = () => {
                         <img
                             src={url?.filename === undefined ? user.image : url?.filename}
                             style={{ height: '120px', width: '120px', borderRadius: '50%' }}
+                            alt=""
                         ></img>
                         <div className="text-center">
                             <input
