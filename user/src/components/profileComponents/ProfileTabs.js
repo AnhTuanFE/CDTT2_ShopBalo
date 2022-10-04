@@ -201,7 +201,7 @@ const ProfileTabs = () => {
     const submitUpdatePassword = (e) => {
         e.preventDefault();
         if (!checkPassword()) return; // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
-        dispatch(updateUserPassword({ id: user._id, oldPassword, password }));
+        dispatch(updateUserPassword({ id: user._id, oldPassword, password, image }));
 
         setOldPassword('');
         setPassword('');
@@ -455,12 +455,7 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
-<<<<<<< HEAD
                             <button type="submit">Cập nhật mật khẩu</button>
-=======
-                            <button type="submit">Update Password</button>
-                            <button type="submit">Forgot Password</button>
->>>>>>> 944d6a8605e25d29ddb92fd9e7c19c98c668ab99
                         </div>
                     </form>
                 </div>

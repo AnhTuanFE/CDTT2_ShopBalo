@@ -7,9 +7,9 @@ import User from './../Models/UserModel.js';
 import path from 'path';
 import fs from 'fs';
 // forgot email
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer"
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 // import ForgotPassword from '../../user/src/components/profileComponents/ForgotPassword.js';
 // var nodemailer = require("nodemailer");
 
@@ -26,10 +26,7 @@ const storage = multer.diskStorage({
     },
 });
 
-
-const JWT_SECRET1 =
-  "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
-
+const JWT_SECRET1 = 'hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe';
 
 // LOGIN
 userRouter.post(
@@ -203,61 +200,61 @@ userRouter.get(
 
 //forgot password ==========================================================================================
 
-userRouter.post("/forgot-password", async (req, res) => {
+userRouter.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
     try {
-      const oldUser = await User.findOne({ email });
-      if (!oldUser) {
-        return res.json({ status: "User Not Exists!!" });
-      }
-      const secret = JWT_SECRET1 + oldUser.password;
-      const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-        expiresIn: "5m",
-      });
-      const link = `http://localhost:5000/reset-password/${oldUser._id}/${token}`;
-      // var transporter = nodemailer.createTransport({
-      //   service: "gmail",
-      //   auth: {
-      //     user: "tuandgtl7@gmail.com",
-      //     pass: "byyvdrcfifstgrph",
-      //   },
-      // });
-  
-      // var mailOptions = {
-      //   from: "tuandgtl7@gmail.com",
-      //   to: "tuandgtl8@gmail.com",
-      //   subject: "Password Reset",
-      //   text: link,
-      // };
-  
-      // transporter.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log("Email sent: " + info.response);
-      //   }
-      // });
-      console.log(link);
+        const oldUser = await User.findOne({ email });
+        if (!oldUser) {
+            return res.json({ status: 'User Not Exists!!' });
+        }
+        const secret = JWT_SECRET1 + oldUser.password;
+        const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
+            expiresIn: '5m',
+        });
+        const link = `http://localhost:5000/reset-password/${oldUser._id}/${token}`;
+        // var transporter = nodemailer.createTransport({
+        //   service: "gmail",
+        //   auth: {
+        //     user: "tuandgtl7@gmail.com",
+        //     pass: "byyvdrcfifstgrph",
+        //   },
+        // });
+
+        // var mailOptions = {
+        //   from: "tuandgtl7@gmail.com",
+        //   to: "tuandgtl8@gmail.com",
+        //   subject: "Password Reset",
+        //   text: link,
+        // };
+
+        // transporter.sendMail(mailOptions, function (error, info) {
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log("Email sent: " + info.response);
+        //   }
+        // });
+        console.log(link);
     } catch (error) {}
-  });
-  
-  // userRouter.get("/reset-password/:id/:token", async (req, res) => {
-  //   const { id, token } = req.params;
-  //   console.log(req.params);
-  //   const oldUser = await User.findOne({ _id: id });
-  //   if (!oldUser) {
-  //     return res.json({ status: "User Not Exists!!" });
-  //   }
-  //   const secret = JWT_SECRET1 + oldUser.password;
-  //   try {
-  //     const verify = jwt.verify(token, secret);
-  //     res.render("index", { email: verify.email, status: "Not Verified" });
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.send("Not Verified");
-  //   }
-  // });
-  userRouter.get("/reset-password", async (req, res) => {
+});
+
+// userRouter.get("/reset-password/:id/:token", async (req, res) => {
+//   const { id, token } = req.params;
+//   console.log(req.params);
+//   const oldUser = await User.findOne({ _id: id });
+//   if (!oldUser) {
+//     return res.json({ status: "User Not Exists!!" });
+//   }
+//   const secret = JWT_SECRET1 + oldUser.password;
+//   try {
+//     const verify = jwt.verify(token, secret);
+//     res.render("index", { email: verify.email, status: "Not Verified" });
+//   } catch (error) {
+//     console.log(error);
+//     res.send("Not Verified");
+//   }
+// });
+userRouter.get('/reset-password', async (req, res) => {
     const { id, token } = req.params;
     console.log(req.params);
     // const oldUser = await User.findOne({ _id: id });
@@ -272,37 +269,36 @@ userRouter.post("/forgot-password", async (req, res) => {
     //   console.log(error);
     //   res.send("Not Verified");
     // }
-  });
-  
-  userRouter.post("/reset-password/:id/:token", async (req, res) => {
+});
+
+userRouter.post('/reset-password/:id/:token', async (req, res) => {
     const { id, token } = req.params;
     const { password } = req.body;
-  
+
     const oldUser = await User.findOne({ _id: id });
     if (!oldUser) {
-      return res.json({ status: "User Not Exists!!" });
+        return res.json({ status: 'User Not Exists!!' });
     }
     const secret = JWT_SECRET1 + oldUser.password;
     try {
-      const verify = jwt.verify(token, secret);
-      const encryptedPassword = await bcrypt.hash(password, 10);
-      await User.updateOne(
-        {
-          _id: id,
-        },
-        {
-          $set: {
-            password: encryptedPassword,
-          },
-        }
-      );
-      
-      res.render("index", { email: verify.email, status: "verified" });
+        const verify = jwt.verify(token, secret);
+        const encryptedPassword = await bcrypt.hash(password, 10);
+        await User.updateOne(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    password: encryptedPassword,
+                },
+            },
+        );
+
+        res.render('index', { email: verify.email, status: 'verified' });
     } catch (error) {
-      console.log(error);
-      res.json({ status: "Something Went Wrong" });
+        console.log(error);
+        res.json({ status: 'Something Went Wrong' });
     }
-  });
-  
+});
 
 export default userRouter;
