@@ -455,7 +455,12 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
+<<<<<<< HEAD
                             <button type="submit">Cập nhật mật khẩu</button>
+=======
+                            <button type="submit">Update Password</button>
+                            <button type="submit">Forgot Password</button>
+>>>>>>> 944d6a8605e25d29ddb92fd9e7c19c98c668ab99
                         </div>
                     </form>
                 </div>
@@ -468,6 +473,7 @@ const ProfileTabs = () => {
                         <img
                             src={url?.filename === undefined ? user.image : url?.filename}
                             style={{ height: '120px', width: '120px', borderRadius: '50%' }}
+                            alt=""
                         ></img>
                         <div className="text-center">
                             <input

@@ -16,6 +16,8 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import NotFound from './screens/NotFound';
 import PrivateRouter from './PrivateRouter';
+import ForgotPassword from './components/profileComponents/ForgotPassword';
+import Reset from './components/profileComponents/Reset';
 
 const App = () => {
     return (
