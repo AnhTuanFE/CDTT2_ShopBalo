@@ -64,7 +64,7 @@ const MainProducts = (props) => {
                     <div className="row gx-3 py-3">
                         <div className="col-lg-4 col-md-6 me-auto ">
                             <form onSubmit={(e) => handleSearch(e)}>
-                                <div className="input-group">
+                                <div className="input-group" style={{ alignItems: 'center' }}>
                                     <input
                                         type="search"
                                         placeholder="Search..."
@@ -73,7 +73,7 @@ const MainProducts = (props) => {
                                             setKewywordSearch(e.target.value);
                                         }}
                                     />
-                                    <button className="btn btn-light bg" type="submit">
+                                    <button className="btn btn-light bg" type="submit" style={{ height: '42px' }}>
                                         <i className="far fa-search"></i>
                                     </button>
                                 </div>
@@ -105,9 +105,25 @@ const MainProducts = (props) => {
                     ) : (
                         <div className="row">
                             {/* Products */}
-                            {products.map((product) => (
-                                <Product product={product} key={product._id} />
-                            ))}
+                            <div className="col-md-12 col-sm-12 col-lg-12">
+                                <table className="table slider-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Stt</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            <th className="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {products.map((product, index) => (
+                                            <Product product={product} key={product._id} index={index} />
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     )}
 

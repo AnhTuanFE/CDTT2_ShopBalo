@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { deleteProduct } from '../../Redux/Actions/ProductActions';
 
 const Product = (props) => {
-    const { product } = props;
+    const { product, index } = props;
     // console.log(product);
     const dispatch = useDispatch();
 
@@ -16,44 +16,44 @@ const Product = (props) => {
 
     return (
         <>
-            <div className="col-md-4 col-sm-4 col-lg-2-5 mb-5 fix-bottom">
-                <div className="card card-product-grid">
-                    <Link to={`/product/${product._id}/edit`} className="img-wrap">
-                        <img src={product.image} alt="Product" />
-                    </Link>
-                    <div className="info-wrap">
-                        <Link to={`/product/${product._id}/edit`} className="title text-truncate" style={{ color: 'black', padding: '5px 0' }}>
-                            {product.name}
-                        </Link>
-                        <div
-                            className="countInStock-price"
-                            style={{ display: 'flex', justifyContent: 'space-between' }}
-                        >
-                            <div className="price mb-2">Price: ${product.price}</div>
-                            <div className="stock price mb-2">Count Stock: {product.countInStock}</div>
-                        </div>
-                        <div className="row">
-                            <Link
-                                to={`/product/${product._id}/edit`}
-                                className="btn btn-sm btn-outline-success col-md-6"
-                                style={{ fontSize: '18px', fontWeight: '600', padding: '8px' }}
-                            >
-                                {/* <i className="fas fa-pen"></i> */}
-                                Edit
+            {product && (
+                <tr>
+                    <td>{index + 1}</td>
+                    <td>
+                        <img src={product.image} alt="Product" style={{ height: '40px', width: '40px' }} />
+                    </td>
+                    <td>
+                        <span> {product.name}</span>
+                    </td>
+                    <td>
+                        <span> {product.price}đ</span>
+                    </td>
+                    <td>
+                        <span> {product.countInStock}</span>
+                    </td>
+                    <td className="text-end">
+                        <div className="dropdown">
+                            <Link to="#" data-bs-toggle="dropdown" className="btn btn-light">
+                                <i className="fas fa-ellipsis-h"></i>
                             </Link>
-                            <Link
-                                to="#"
-                                onClick={() => deletehandler(product._id)}
-                                className="btn btn-sm btn-outline-danger col-md-6"
-                                style={{ fontSize: '18px', fontWeight: '600', padding: '8px' }}
-                            >
-                                {/* <i className="fas fa-trash-alt"></i> */}
-                                Delete
-                            </Link>
+                            <div className="dropdown-menu">
+                                <Link to={`/product/${product._id}/edit`} className="dropdown-item">
+                                    Sửa
+                                </Link>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                        deletehandler(product._id);
+                                    }}
+                                >
+                                    Xóa
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </td>
+                    <td></td>
+                </tr>
+            )}
         </>
     );
 };
