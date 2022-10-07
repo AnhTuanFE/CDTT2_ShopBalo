@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/style.css" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+      var status = '<%- JSON.stringify(status) %>';
+
+      if (JSON.parse(status) == "verified") {
+        if (confirm("Bạn có muốn đến trang đăng nhập?")) {
+          window.location.href = "http://localhost:3000/login";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="col-md-4 col-md-offset-4" id="login">
+      <section id="inner-wrapper" class="login">
+        <article>
+            <h3>Nhập lại mật khẩu cho email <%= email%></h3>
+              <form action="" method="post">
+                  <div class="form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-key"> </i></span>
+                          <input 
+                            type="password" class="form-control"
+                            name="password"
+                            id="password"
+                            placeholder="Nhập mật khẩu mới"
+                          />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-key"> </i></span>
+                          <input
+                            type="password" class="form-control"
+                            name="confirm-password"
+                            id="confirm-password"
+                            placeholder="Nhập lại mật khẩu"
+                          />
+                      </div>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-block">Xác nhận</button>
+              </form>
+          </article>
+      </section>
+  </div>
+  </body>
+</html>

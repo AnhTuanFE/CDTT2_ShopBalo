@@ -11,6 +11,7 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
     const { loading, error, user } = userDetails;
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
     const { success: updatesuccess, loading: updateLoading, error: errorUpdate } = userUpdateProfile;
+    console.log(updateUserProfile,"heheehe")
 
     const dispatch = useDispatch();
 

@@ -113,6 +113,10 @@ const Login = ({ location, history }) => {
                         </p>
                     </div>
                     <button type="submit">Login</button>
+                    {/* <a href='http://localhost:3000/reset'>Forgot Password</a> */}
+                    <p>
+                        <Link to={'/reset'}>Forgot Password</Link>
+                    </p>
                     <p>
                         <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Create Account</Link>
                     </p>

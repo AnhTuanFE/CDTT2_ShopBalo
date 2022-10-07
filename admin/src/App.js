@@ -24,6 +24,7 @@ import EditNewsScreen from './screens/EditNewsScreen';
 import NewsScreen from './screens/NewsScreen';
 import CommentScreen from './screens/CommentScreen';
 
+
 function App() {
     const dispatch = useDispatch();
 
