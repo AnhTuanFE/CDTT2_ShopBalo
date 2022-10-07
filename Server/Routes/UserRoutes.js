@@ -7,7 +7,6 @@ import User from './../Models/UserModel.js';
 import path from 'path';
 import fs from 'fs';
 
-
 const __dirname = path.resolve();
 const userRouter = express.Router();
 const storage = multer.diskStorage({

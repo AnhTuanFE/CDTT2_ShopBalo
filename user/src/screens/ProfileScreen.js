@@ -6,7 +6,7 @@ import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions'
 import Orders from './../components/profileComponents/Orders';
 import moment from 'moment';
 import { listMyOrders } from '../Redux/Actions/OrderActions';
-import { ListAvatar } from '../Redux/Actions/avatarAction';
+
 const ProfileScreen = () => {
     // window.scrollTo(0, 0);
 
@@ -21,12 +21,7 @@ const ProfileScreen = () => {
     const [buleanOrder, setBuleanOrder] = useState(false);
 
     //get image
-    const listAvatar = useSelector((state) => state.avatarLoad);
-    const { avatar } = listAvatar;
-    // console.log(userInfo, 'user infor');
-    useEffect(() => {
-        dispatch(ListAvatar());
-    }, []);
+
     const userDetail = useSelector((state) => state.userDetails);
     const { user } = userDetail;
     //logic
@@ -89,7 +84,7 @@ const ProfileScreen = () => {
                                         <strong>{userInfo.name}</strong>
                                     </h5>
                                     <span className="author-card-position">
-                                        <>Joined {moment(userInfo.createdAt).format('LL')}</>
+                                        <>Ngày tham gia: {moment(userInfo.createdAt).format('DD/MM/YYYY')}</>
                                     </span>
                                 </div>
                             </div>
@@ -111,7 +106,7 @@ const ProfileScreen = () => {
                                         role="tab"
                                         aria-controls="v-pills-home"
                                         aria-selected="true"
-                                        style={{ display: 'flex', alignItems: 'center' }}
+                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
                                         onClick={() => {
                                             setBuleanProfile(true);
                                             setBuleanOrder(false);
@@ -120,7 +115,7 @@ const ProfileScreen = () => {
                                         <div style={{ fontSize: '18px', paddingRight: '10px' }}>
                                             <i class="fas fa-cogs"></i>
                                         </div>
-                                        Profile Settings
+                                        Hồ Sơ Cá Nhân
                                     </button>
                                     <button
                                         // class="nav-link d-flex"
@@ -132,7 +127,7 @@ const ProfileScreen = () => {
                                         role="tab"
                                         aria-controls="v-pills-profile"
                                         aria-selected="false"
-                                        style={{ display: 'flex', alignItems: 'center' }}
+                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
                                         onClick={() => {
                                             setBuleanProfile(false);
                                             setBuleanOrder(true);
@@ -141,7 +136,7 @@ const ProfileScreen = () => {
                                         <div style={{ fontSize: '18px', paddingRight: '10px' }}>
                                             <i class="fas fa-shopping-cart"></i>
                                         </div>
-                                        Orders List
+                                        Danh Sách Mua Hàng
                                         <span className="badge2">{orders ? orders.length : 0}</span>
                                     </button>
                                 </div>

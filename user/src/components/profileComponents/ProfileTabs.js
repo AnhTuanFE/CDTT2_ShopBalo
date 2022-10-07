@@ -5,6 +5,7 @@ import Toast from './../LoadingError/Toast';
 import Loading from './../LoadingError/Loading';
 import { toast } from 'react-toastify';
 import { updateUserPassword, updateUserProfile } from '../../Redux/Actions/userActions';
+import { USER_UPDATE_PROFILE_RESET } from '../../Redux/Constants/UserContants';
 import isEmpty from 'validator/lib/isEmpty';
 import { listCart } from '../../Redux/Actions/cartActions';
 import { ListAvatar } from '../../Redux/Actions/avatarAction';
@@ -57,7 +58,8 @@ const ProfileTabs = () => {
         successPass: updatesuccessPass,
         success: updatesuccess,
         loading: updateLoading,
-        error: errorUpdate,
+        error: errorProfile,
+        userInfo,
     } = userUpdateProfile;
 
     function checkProfile() {
@@ -144,10 +146,27 @@ const ProfileTabs = () => {
         dispatch(listCart());
         if (!toast.isActive(toastId.current)) {
             if (updatesuccessPass === true) {
-                toastId.current = toast.success('Password Updated', Toastobjects);
+                toastId.current = toast.success('Mật khẩu cập nhật thành công', Toastobjects);
+                dispatch({ type: USER_UPDATE_PROFILE_RESET });
             }
         }
     }, [updatesuccessPass]);
+    useEffect(() => {
+        // toast.success('Profile Updated lôm  lôm', Toastobjects);
+        // if (!toast.isActive(toastId.current)) {
+        //     toastId.current = toast.success('Profile Updated', Toastobjects);
+        // }
+        if (updatesuccess) {
+            toast.success('Cập nhật thông tin thành công', Toastobjects);
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        }
+    }, [updatesuccess]);
+    useEffect(() => {
+        if (errorProfile !== undefined) {
+            toast.error('Cập nhật không thành công', Toastobjects);
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        }
+    }, [errorProfile]);
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -158,7 +177,7 @@ const ProfileTabs = () => {
             setCountry(user.country);
             setImage(user.image);
         }
-        if (errorUpdate) {
+        if (errorProfile) {
             toastId.current = toast.error(error, Toastobjects);
         }
     }, [dispatch, user]);
@@ -178,15 +197,11 @@ const ProfileTabs = () => {
 
         // dispatch(updateUserProfile(newUser));
         dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image }));
-
-        if (!toast.isActive(toastId.current)) {
-            toastId.current = toast.success('Profile Updated', Toastobjects);
-        }
     };
     const submitUpdatePassword = (e) => {
         e.preventDefault();
         if (!checkPassword()) return; // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
-        dispatch(updateUserPassword({ id: user._id, oldPassword, password }));
+        dispatch(updateUserPassword({ id: user._id, oldPassword, password, image }));
 
         setOldPassword('');
         setPassword('');
@@ -261,7 +276,7 @@ const ProfileTabs = () => {
                     <from className="radio-from">
                         <div className="radio-from__flex">
                             <label for="profile" className={Number(checkbox) === 0 ? 'color' : ''}>
-                                Upload Profile
+                                Thông Tin
                             </label>
                             <input
                                 id="profile"
@@ -273,7 +288,7 @@ const ProfileTabs = () => {
                         </div>
                         <div className="radio-from__flex">
                             <label for="pass" className={Number(checkbox) === 1 ? 'color' : ''}>
-                                Set Password
+                                Đổi Mật Khẩu
                             </label>
                             <input
                                 id="pass"
@@ -293,7 +308,7 @@ const ProfileTabs = () => {
                     <form className="row  form-container" onSubmit={submitUpdateProfile}>
                         <div className="col-md-12">
                             <div className="form">
-                                <label for="account-fn">UserName</label>
+                                <label for="account-fn">Họ tên</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -307,7 +322,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label for="account-email">E-mail Address</label>
+                                <label for="account-email">E-mail</label>
                                 <input
                                     className="form-control"
                                     type="email"
@@ -322,7 +337,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label>Phone</label>
+                                <label>Số điện thoại</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -336,7 +351,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label>Address</label>
+                                <label>Địa chỉ</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -350,7 +365,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label>City</label>
+                                <label>Huyện/Quận</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -364,7 +379,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label>country</label>
+                                <label>Tỉnh/Thành phố</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -377,7 +392,7 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
-                            <button type="submit">Update Profile</button>
+                            <button type="submit">Cập nhật hồ sơ</button>
                         </div>
                     </form>
                 </div>
@@ -389,11 +404,11 @@ const ProfileTabs = () => {
                     style={{ display: uploadPassword ? 'block' : 'none' }}
                 >
                     {/* dòng này sơn nó in ra thống báo lỗi sơn nhớ sửa lại nhá */}
-                    {errorUpdate && <Message variant="alert-danger">{errorUpdate}</Message>}
+                    {errorProfile && <Message variant="alert-danger">{errorProfile}</Message>}
                     <form className="row  form-container" onSubmit={submitUpdatePassword}>
                         <div className="col-md-12">
                             <div className="form">
-                                <label for="account-pass">Old Password</label>
+                                <label for="account-pass">Mật khẩu cũ</label>
                                 <input
                                     className="form-control"
                                     type="password"
@@ -409,7 +424,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label for="account-pass">New Password</label>
+                                <label for="account-pass">Mật khẩu mới</label>
                                 <input
                                     className="form-control"
                                     type="password"
@@ -425,7 +440,7 @@ const ProfileTabs = () => {
 
                         <div className="col-md-12">
                             <div className="form">
-                                <label for="account-confirm-pass">Confirm Password</label>
+                                <label for="account-confirm-pass">Xác nhận mật khẩu</label>
                                 <input
                                     className="form-control"
                                     type="password"
@@ -440,8 +455,7 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
-                            <button type="submit">Update Password</button>
-                            <button type="submit">Forgot Password</button>
+                            <button type="submit">Cập nhật mật khẩu</button>
                         </div>
                     </form>
                 </div>

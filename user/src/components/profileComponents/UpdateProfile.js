@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import { updateUserProfile } from "../../Redux/Actions/userActions";
-import { useDispatch, useSelector } from "react-redux";
-import isEmpty from "validator/lib/isEmpty";
-import { toast } from "react-toastify";
-import Toast from "../LoadingError/Toast";
-import Loading from "../LoadingError/Loading";
-import Message from "../LoadingError/Error";
+import React, { useEffect, useState, useRef } from 'react';
+import { updateUserProfile } from '../../Redux/Actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
+import isEmpty from 'validator/lib/isEmpty';
+import { toast } from 'react-toastify';
+import Toast from '../LoadingError/Toast';
+import Loading from '../LoadingError/Loading';
+import Message from '../LoadingError/Error';
 export default function UpdateProfile({ uploadProfile, setSucessft }) {
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
@@ -15,9 +15,9 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
 
     const dispatch = useDispatch();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
 
     const Toastobjects = {
         pauseOnFocusLoss: false,
@@ -31,15 +31,15 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
         if (user) {
             setName(user.name);
             setEmail(user.email);
-            setPhone(user.phone)
+            setPhone(user.phone);
         }
         dispatch(updateUserProfile({ id: user._id, name, email, phone }));
-    }
+    };
     useEffect(() => {
         if (user) {
             setName(user.name);
             setEmail(user.email);
-            setPhone(user.phone)
+            setPhone(user.phone);
         }
     }, [dispatch, user, updatesuccess]);
 
@@ -47,13 +47,12 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
         if (user) {
             setName(user.name);
             setEmail(user.email);
-            setPhone(user.phone)
+            setPhone(user.phone);
         }
         if (updatesuccess && uploadProfile && !error) {
-            toast.success("Update Profile Success", Toastobjects)
+            toast.success('Update Profile Success', Toastobjects);
         }
     }, [updatesuccess]);
-
 
     return (
         <>
@@ -74,8 +73,6 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
                         <p className="noti-validate"></p>
                     </div>
                 </div>
-
-
 
                 <div className="col-md-12">
                     <div className="form">
@@ -111,5 +108,5 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
                 </div>
             </form>
         </>
-    )
+    );
 }

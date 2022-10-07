@@ -267,7 +267,7 @@ const AddProductMain = () => {
                                                     return x;
                                                 });
                                             }}
-                                            style={{ width: '100%', height: '300px' }}
+                                            style={{ width: '100%' }}
                                         >
                                             <div ref={quillRef} />
                                         </div>
