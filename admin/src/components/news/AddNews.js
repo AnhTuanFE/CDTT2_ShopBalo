@@ -23,7 +23,7 @@ export default function AddNews() {
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
     const [content, setContent] = useState('');
-
+    
     const modules = {
         toolbar: [
             [{ header: [1, 2, false] }],
