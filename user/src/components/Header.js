@@ -210,12 +210,13 @@ const Header = () => {
                                         >
                                             <img
                                                 src={`/${userInfo?.image}` || '/images/logo.png'} // upload ảnh
-                                                alt="Lỗi"
+                                                alt=""
                                                 style={{
                                                     height: '45px',
                                                     width: '45px',
-                                                    borderRadius: '50%',
-                                                    border: '1px solid #ccc',
+                                                    borderRadius: '100%',
+                                                    objectFit: 'cover',
+                                                    flexShrink: '0',
                                                 }}
                                                 className="fix-none"
                                             />

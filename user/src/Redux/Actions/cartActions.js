@@ -64,7 +64,7 @@ export const listCart = () => async (dispatch, getState) => {
     }
 };
 //ADD TO CART NEW
-export const addToCart = (productId, qty) => async (dispatch, getState) => {
+export const addToCart = (productId, color, qty) => async (dispatch, getState) => {
     try {
         dispatch({ type: CART_CREATE_REQUEST });
 
@@ -78,7 +78,7 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.post(`/api/cart/`, { productId, qty, _id }, config);
+        const { data } = await axios.post(`/api/cart/`, { productId, color, qty, _id }, config);
         dispatch({ type: CART_CREATE_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

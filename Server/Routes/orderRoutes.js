@@ -31,10 +31,16 @@ orderRouter.post(
                 phone,
             });
             for (let i = 0; i < orderItems.length; i++) {
-                await Product.findOneAndUpdate(
-                    { _id: orderItems[i].product },
-                    { $inc: { countInStock: -orderItems[i].qty } },
-                );
+                const findProduct = await Product.findById(orderItems[i].product);
+                const optionColor = findProduct?.optionColor;
+                const findColor = optionColor.find((option) => option.color == orderItems[i].color);
+                const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
+                if (findColor) {
+                    findColor.color = findColor.color;
+                    findColor.countInStock = findColor.countInStock - orderItems[i].qty;
+                }
+                let arrOption = [...filterOptionColor, findColor];
+                await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
             }
             const createOrder = await order.save();
             res.status(201).json(createOrder);

@@ -59,7 +59,6 @@ const ProfileTabs = () => {
         success: updatesuccess,
         loading: updateLoading,
         error: errorProfile,
-        userInfo,
     } = userUpdateProfile;
 
     function checkProfile() {
@@ -467,7 +466,13 @@ const ProfileTabs = () => {
                     >
                         <img
                             src={url?.filename === undefined ? user.image : url?.filename}
-                            style={{ height: '120px', width: '120px', borderRadius: '50%' }}
+                            style={{
+                                height: '120px',
+                                width: '120px',
+                                borderRadius: '100%',
+                                objectFit: 'cover',
+                                flexShrink: '0',
+                            }}
                             alt=""
                         ></img>
                         <div className="text-center">

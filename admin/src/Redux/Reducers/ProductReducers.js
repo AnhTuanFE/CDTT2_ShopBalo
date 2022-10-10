@@ -23,6 +23,18 @@ import {
     PRODUCT_CREATE_COMMENTCHILD_SUCCESS,
     PRODUCT_CREATE_COMMENTCHILD_RESET,
     PRODUCT_CREATE_COMMENTCHILD_REQUEST,
+    PRODUCT_OPTIONCOLOR_REQUEST,
+    PRODUCT_OPTIONCOLOR_SUCCESS,
+    PRODUCT_OPTIONCOLOR_FAIL,
+    PRODUCT_OPTIONCOLOR_RESET,
+    PRODUCT_UPDATE_OPTION_REQUEST,
+    PRODUCT_UPDATE_OPTION_SUCCESS,
+    PRODUCT_UPDATE_OPTION_FAIL,
+    PRODUCT_UPDATE_OPTION_RESET,
+    PRODUCT_DELETE_OPTION_REQUEST,
+    PRODUCT_DELETE_OPTION_SUCCESS,
+    PRODUCT_DELETE_OPTION_FAIL,
+    PRODUCT_DELETE_OPTION_RESET,
 } from '../Constants/ProductConstants';
 
 // ALL PRODUCTS
@@ -59,6 +71,22 @@ export const productDeleteReducer = (state = {}, action) => {
     }
 };
 
+// DELETE PRODUCT
+export const productDeleteOptionReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_DELETE_OPTION_REQUEST:
+            return { loading: true };
+        case PRODUCT_DELETE_OPTION_SUCCESS:
+            return { loading: false, success: true };
+        case PRODUCT_DELETE_OPTION_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_DELETE_OPTION_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
 // CREATE PRODUCT
 export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
@@ -69,6 +97,22 @@ export const productCreateReducer = (state = {}, action) => {
         case PRODUCT_CREATE_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_CREATE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// CREATE PRODUCT
+export const optionColorCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_OPTIONCOLOR_REQUEST:
+            return { loading: true };
+        case PRODUCT_OPTIONCOLOR_SUCCESS:
+            return { loading: false, success: true, optionColor: action.payload };
+        case PRODUCT_OPTIONCOLOR_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_OPTIONCOLOR_RESET:
             return {};
         default:
             return state;
@@ -99,6 +143,22 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
         case PRODUCT_UPDATE_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_UPDATE_RESET:
+            return { product: {} };
+        default:
+            return state;
+    }
+};
+
+// UPDATE OPTION PRODUCT
+export const productOptionUpdateReducer = (state = { findOption: {} }, action) => {
+    switch (action.type) {
+        case PRODUCT_UPDATE_OPTION_REQUEST:
+            return { loading: true };
+        case PRODUCT_UPDATE_OPTION_SUCCESS:
+            return { loading: false, success: true, findOption: action.payload };
+        case PRODUCT_UPDATE_OPTION_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_UPDATE_OPTION_RESET:
             return { product: {} };
         default:
             return state;

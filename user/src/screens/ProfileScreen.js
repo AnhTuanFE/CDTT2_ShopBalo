@@ -67,12 +67,13 @@ const ProfileScreen = () => {
                                 >
                                     <img
                                         src={user?.image || './images/user.png'}
-                                        alt="Lỗi"
+                                        alt=""
                                         style={{
                                             height: '100px',
                                             width: '100px',
-                                            borderRadius: '50%',
-                                            border: '1px solid #ccc',
+                                            borderRadius: '100%',
+                                            objectFit: 'cover',
+                                            flexShrink: '0',
                                             marginBottom: '5px',
                                         }}
                                         className="fix-none"

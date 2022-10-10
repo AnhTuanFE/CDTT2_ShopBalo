@@ -37,13 +37,15 @@ const SingleProduct = ({ history, match }) => {
     const [buleanReview, setBuleanReview] = useState('');
     const [imageProduct, setImageProduct] = useState('');
     const [nameProduct, setNameProduct] = useState('');
-    const [amountProduct, setAmountProduct] = useState('');
-
+    const [optionIndex, setOptionIndex] = useState(0);
+    const [optionsArrColor, setOptionArrColor] = useState('');
+    const [color, setColor] = useState('');
     const productId = match.params.id;
     const dispatch = useDispatch();
 
     const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
+    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const productReviewCreate = useSelector((state) => state.productReviewCreate);
@@ -72,15 +74,35 @@ const SingleProduct = ({ history, match }) => {
         error: errorCreateCommentChild,
         success: successCreateCommentChild,
     } = productCommentChildCreate;
+
+    useEffect(() => {
+        if (optionColor) {
+            setColor(optionColor[0]?.color);
+        }
+    }, [optionColor]);
+
+    useEffect(() => {
+        const arrProductOption = product?.optionColor;
+        setOptionArrColor(() => {
+            if (arrProductOption !== undefined && optionIndex !== undefined) {
+                let x = arrProductOption[optionIndex];
+                return x;
+            }
+        });
+    }, [optionIndex, product]);
+
     useEffect(() => {
         dispatch(listUser());
     }, [dispatch]);
+
     useEffect(() => {
         dispatch(listProductDetails(productId));
     }, [dispatch, successCreateComment, successCreateCommentChild]);
+
     useEffect(() => {
         dispatch(listProductDetails(productId));
     }, [dispatch, productId]);
+
     useEffect(() => {
         if (bulean) {
             // alert('Review Submitted');
@@ -102,7 +124,7 @@ const SingleProduct = ({ history, match }) => {
         if (product !== undefined) {
             dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
         }
-    }, [category]);
+    }, [category, maxPrice]);
 
     const arrStar = [5, 4, 3, 2, 1];
     const reviewCart = product.reviews;
@@ -132,8 +154,8 @@ const SingleProduct = ({ history, match }) => {
     const AddToCartHandle = (e) => {
         e.preventDefault();
         if (userInfo) {
-            dispatch(addToCart(productId, qty, userInfo._id));
-            history.push(`/cart/${productId}?qty=${qty}`);
+            dispatch(addToCart(productId, color, qty, userInfo._id));
+            history.push(`/cart/${productId}?qty=${qty}?color=${color}`);
         } else history.push('/login');
     };
     const submitHandler = (e) => {
@@ -149,8 +171,7 @@ const SingleProduct = ({ history, match }) => {
     //comment
     const submitComment = (e) => {
         e.preventDefault();
-        //console.log(nameProduct, imageProduct, amountProduct, question);
-        dispatch(createProductComment(productId, { nameProduct, imageProduct, amountProduct, question }));
+        dispatch(createProductComment(productId, { nameProduct, imageProduct, question }));
         setQuestion('');
     };
 
@@ -171,6 +192,7 @@ const SingleProduct = ({ history, match }) => {
                     width: '40px',
                     borderRadius: '50%',
                     marginRight: '5px',
+                    objectFit: 'cover',
                 }}
                 className="fix-none"
             />
@@ -215,7 +237,7 @@ const SingleProduct = ({ history, match }) => {
                                                 </div>
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
                                                     <h6>Trạng thái</h6>
-                                                    {product.countInStock > 0 ? (
+                                                    {optionsArrColor?.countInStock > 0 ? (
                                                         <span>Còn hàng</span>
                                                     ) : (
                                                         <span>Hết hàng</span>
@@ -228,7 +250,29 @@ const SingleProduct = ({ history, match }) => {
                                                         text={`${product.numReviews} đánh giá`}
                                                     />
                                                 </div>
-                                                {product.countInStock > 0 ? (
+                                                <div className="flex-box d-flex justify-content-between align-items-center">
+                                                    <h6>Màu sắc</h6>
+                                                    <div>
+                                                        {optionColor?.map((option, index) => (
+                                                            <button
+                                                                type="button"
+                                                                key={option._id}
+                                                                onClick={() => {
+                                                                    setOptionIndex(index);
+                                                                    setColor(option.color);
+                                                                }}
+                                                                class={
+                                                                    optionIndex === index
+                                                                        ? 'btn btn-outline-primary mx-1 active'
+                                                                        : 'btn btn-outline-primary mx-1'
+                                                                }
+                                                            >
+                                                                {option.color}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                {optionsArrColor?.countInStock > 0 ? (
                                                     <>
                                                         <div className="flex-box d-flex justify-content-between align-items-center">
                                                             <h6>Số lượng</h6>
@@ -236,11 +280,13 @@ const SingleProduct = ({ history, match }) => {
                                                                 value={qty}
                                                                 onChange={(e) => setQty(e.target.value)}
                                                             >
-                                                                {[...Array(product.countInStock).keys()].map((x) => (
-                                                                    <option key={x + 1} value={x + 1}>
-                                                                        {x + 1}
-                                                                    </option>
-                                                                ))}
+                                                                {[...Array(optionsArrColor.countInStock).keys()].map(
+                                                                    (x) => (
+                                                                        <option key={x + 1} value={x + 1}>
+                                                                            {x + 1}
+                                                                        </option>
+                                                                    ),
+                                                                )}
                                                             </select>
                                                         </div>
                                                         <button onClick={AddToCartHandle} className="round-black-btn">
@@ -511,7 +557,6 @@ const SingleProduct = ({ history, match }) => {
                                             setQuestion(e.target.value);
                                             setImageProduct(product.image);
                                             setNameProduct(product.name);
-                                            setAmountProduct(product.countInStock);
                                         }}
                                     ></textarea>
                                     {userInfo ? (

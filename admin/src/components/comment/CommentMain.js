@@ -34,6 +34,7 @@ export default function CommentMain() {
                     width: '40px',
                     borderRadius: '50%',
                     marginRight: '5px',
+                    objectFit: 'cover',
                 }}
                 className="fix-none"
             />

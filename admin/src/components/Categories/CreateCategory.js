@@ -94,44 +94,6 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.name}</p>
                     </div>
 
-                    {/* <div className="mb-4">
-                        <label htmlFor="product_name" className="form-label">
-                            Image
-                        </label>
-                        <input
-                            required
-                            type="text"
-                            placeholder="Type here"
-                            className={`form-control py-3 ${validate.borderRed2}`}
-                            id="product_name"
-                            value={image}
-                            onClick={() => {
-                                setValidate((values) => {
-                                    const x = { ...values };
-                                    x.borderRed2 = '';
-                                    x.image = '';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setImage(e.target.value);
-                            }}
-                        />
-                        <p className="product_validate">{validate.image}</p>
-                    </div> */}
-                    {/* <div className="mb-4">
-          <label className="form-label">Images</label>
-          <input className="form-control" type="file" />
-        </div> */}
-                    {/* <form method="POST" action="api/upload-profile-pic" enctype="multipart/form-data">
-          <div>
-            <label>Select your profile picture:</label>
-            <input type="file" name="profile_pic" />
-          </div>
-          <div>
-            <input type="submit" name="btn_upload_profile_pic" value="Upload" />
-          </div>
-        </form> */}
                     <div className="mb-4">
                         <label className="form-label">Description</label>
                         <textarea

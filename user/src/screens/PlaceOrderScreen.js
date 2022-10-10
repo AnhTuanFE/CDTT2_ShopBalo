@@ -21,6 +21,7 @@ const PlaceOrderScreen = ({ history }) => {
         .reduce((arr, pro) => {
             arr.push({
                 name: pro.product.name,
+                color: pro.color,
                 qty: pro.qty,
                 image: pro.product.image,
                 price: pro.product.price,
@@ -30,12 +31,12 @@ const PlaceOrderScreen = ({ history }) => {
         }, []);
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-
+    // console.log(currenCartItems, 'hihi');
     // Calculate Price
     const addDecimals = (num) => {
         return (Math.round(num * 100) / 100).toFixed(0);
     };
-    console.log(cart);
+
     cart.itemsPrice = addDecimals(
         cart.cartItems
             .filter((item) => item.isBuy == true)
@@ -150,20 +151,24 @@ const PlaceOrderScreen = ({ history }) => {
                                     .filter((item) => item.isBuy == true)
                                     .map((item, index) => (
                                         <div className="order-product row" key={index}>
-                                            <div className="col-md-3 col-6">
+                                            <div className="col-md-2 col-6">
                                                 <img src={item.product.image} alt={item.name} />
                                             </div>
-                                            <div className="col-md-5 col-6 d-flex align-items-center">
+                                            <div className="col-md-4 col-6 d-flex align-items-center">
                                                 <Link to={`/products/${item.product}`}>
                                                     <h6>{item.product.name}</h6>
                                                 </Link>
                                             </div>
                                             <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
-                                                <h4>Số lượng</h4>
+                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Phân loại hàng</h4>
+                                                <h6>{item?.color}</h6>
+                                            </div>
+                                            <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
+                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
                                                 <h6>{item?.qty}</h6>
                                             </div>
                                             <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
-                                                <h4>Giá</h4>
+                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
                                                 <h6>{item?.qty * item?.product?.price}đ</h6>
                                             </div>
                                         </div>

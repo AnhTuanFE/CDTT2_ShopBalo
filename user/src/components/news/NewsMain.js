@@ -11,7 +11,7 @@ import './style.css';
 export default function NewsMain() {
     const listAllNews = useSelector((state) => state.listNews);
     const { products, news } = listAllNews;
-    console.log(listAllNews, 'hehehe');
+
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListNews());

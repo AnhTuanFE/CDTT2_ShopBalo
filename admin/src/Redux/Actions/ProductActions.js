@@ -20,6 +20,15 @@ import {
     PRODUCT_CREATE_COMMENTCHILD_FAIL,
     PRODUCT_CREATE_COMMENTCHILD_REQUEST,
     PRODUCT_CREATE_COMMENTCHILD_SUCCESS,
+    PRODUCT_OPTIONCOLOR_REQUEST,
+    PRODUCT_OPTIONCOLOR_SUCCESS,
+    PRODUCT_OPTIONCOLOR_FAIL,
+    PRODUCT_UPDATE_OPTION_REQUEST,
+    PRODUCT_UPDATE_OPTION_SUCCESS,
+    PRODUCT_UPDATE_OPTION_FAIL,
+    PRODUCT_DELETE_OPTION_REQUEST,
+    PRODUCT_DELETE_OPTION_SUCCESS,
+    PRODUCT_DELETE_OPTION_FAIL,
 } from '../Constants/ProductConstants';
 import axios from 'axios';
 import { logout } from './userActions';
@@ -88,6 +97,36 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     }
 };
 
+// DELETE PRODUCT OPTION
+export const deleteOptionProduct = (productId, optionId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_DELETE_OPTION_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(`/api/products/${productId}/delete`, { optionId }, config);
+
+        dispatch({ type: PRODUCT_DELETE_OPTION_SUCCESS });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_DELETE_OPTION_FAIL,
+            payload: message,
+        });
+    }
+};
+
 // CREATE PRODUCT
 export const createProduct =
     (name, price, description, category, image, countInStock) => async (dispatch, getState) => {
@@ -122,6 +161,36 @@ export const createProduct =
             });
         }
     };
+
+//CREATE OPTION COLOR AND AMOUT
+export const createOptionColor = (productId, option) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_OPTIONCOLOR_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.post(`/api/products/${productId}`, option, config);
+
+        dispatch({ type: PRODUCT_OPTIONCOLOR_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_OPTIONCOLOR_FAIL,
+            payload: message,
+        });
+    }
+};
 
 // EDIT PRODUCT
 export const editProduct = (id) => async (dispatch) => {
@@ -168,6 +237,37 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         }
         dispatch({
             type: PRODUCT_UPDATE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+//UPDATE OPTION PRODUCT
+export const updateOptionProduct = (productId, option) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_UPDATE_OPTION_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/products/${productId}/option`, option, config);
+
+        dispatch({ type: PRODUCT_UPDATE_OPTION_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_UPDATE_OPTION_FAIL,
             payload: message,
         });
     }

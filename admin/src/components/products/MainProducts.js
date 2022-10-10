@@ -54,7 +54,7 @@ const MainProducts = (props) => {
                 <h2 className="content-title">Products</h2>
                 <div>
                     <Link to="/addproduct" className="btn btn-primary color-orange">
-                        Create new
+                        Tạo mới
                     </Link>
                 </div>
             </div>

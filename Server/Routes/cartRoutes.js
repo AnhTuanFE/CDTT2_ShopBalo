@@ -23,20 +23,25 @@ cartRoutes.post(
     '/',
     protect,
     asyncHandler(async (req, res) => {
-        const { productId, qty, _id } = req.body;
-        const product = await Product.findById(productId);
+        const { productId, color, qty, _id } = req.body;
+        // const product = await Pcolorroduct.findById(productId);
         const cartExist = await Cart.findOne({ user: _id });
         if (cartExist) {
+            const productExit = cartExist?.cartItems?.filter((value) => value.product == productId);
+            const findColor = productExit?.find((value) => value.color == color);
             //update
-            const productExit = cartExist?.cartItems?.find((value) => value.product == productId);
-            if (productExit) {
+            if (findColor) {
                 const newArray = cartExist?.cartItems;
                 for (let i = 0; i <= newArray.length - 1; i++) {
                     if (newArray[i].product == productId && typeof qty != 'boolean') {
-                        newArray[i].qty = qty;
+                        if (newArray[i].color == color && typeof qty != 'boolean') {
+                            newArray[i].qty = qty;
+                        }
                     }
                     if (newArray[i].product == productId && typeof qty == 'boolean') {
-                        newArray[i].isBuy = !newArray[i]?.isBuy;
+                        if (newArray[i].color == color && typeof qty == 'boolean') {
+                            newArray[i].isBuy = !newArray[i]?.isBuy;
+                        }
                     }
                 }
                 cartExist.cartItems = newArray;
@@ -50,6 +55,7 @@ cartRoutes.post(
                 // name: product.name,
                 // image: product.image,
                 // price: product.price,
+                color: color,
                 qty: qty,
                 // countInStock: product.countInStock,
             };
@@ -67,6 +73,7 @@ cartRoutes.post(
                         // name: product.name,
                         // image: product.image,
                         // price: product.price,
+                        color,
                         qty,
                         // countInStock: product.countInStock,
                     },
@@ -92,12 +99,12 @@ cartRoutes.post(
         if (cartExist) {
             //update
             const newArray = cartExist.cartItems;
-            const productExit = newArray.find((value) => value.product == pr);
+            const productExit = newArray.find((value) => value._id == pr);
             if (!productExit) {
                 res.status(404);
                 throw new Error('Product not found');
             }
-            cartExist.cartItems = newArray.filter((value) => value.product != pr);
+            cartExist.cartItems = newArray.filter((value) => value._id != pr);
             await cartExist.save();
             res.status(201).json('Success');
         } else {

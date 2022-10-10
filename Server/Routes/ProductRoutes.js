@@ -48,34 +48,6 @@ productRoute.get(
             .skip(pageSize * (page - 1))
             .sort(sort);
 
-        // const orders = await Order.find({});
-        // products.map((product) => {
-        //     let count = 0;
-        //     orders.map((order) => {
-        //         order.orderItems.map((item) => {
-        //             if (product.name == item.nam) {
-        //                 count += item.qty;
-        //             }
-        //         });
-        //     });
-        //     product.numberOfOrders = count;
-        // });
-        // if (sortProducts == 2) {
-        // for (let product of products) {
-        //     let count = 0;
-        //     for (let order of orders) {
-        //         for (let item of order.orderItems) {
-        //             if (product._id === item.product) {
-        //                 count += item.qty;
-        //             }
-        //         }
-        //     }
-        //     product.numberOfOrders = count;
-        // }
-        // products.sort(function (a, b) {
-        //     return b.numberOfOrders - a.numberOfOrders;
-        // });
-        // }
         res.json({ products, page, pages: Math.ceil(count / pageSize) });
     }),
 );
@@ -165,7 +137,6 @@ productRoute.post(
             }
             if (listOrder.filter((i) => i.product == req.params.id).length == 0) {
                 res.status(400);
-                // res.status(400).json(order);
                 throw new Error(`Không thể đánh giá`);
             }
         }
@@ -201,7 +172,7 @@ productRoute.post(
     '/:id/comment',
     protect,
     asyncHandler(async (req, res) => {
-        const { nameProduct, imageProduct, amountProduct, question } = req.body;
+        const { nameProduct, imageProduct, question } = req.body;
         const product = await Product.findById(req.params.id);
 
         if (product) {
@@ -209,7 +180,6 @@ productRoute.post(
                 name: req.user.name,
                 nameProduct,
                 imageProduct,
-                amountProduct: Number(amountProduct),
                 idProduct: req.params.id,
                 question,
                 user: req.user._id,
@@ -273,17 +243,36 @@ productRoute.delete(
     }),
 );
 
+// DELETE PRODUCT OPTION COLOR AND AMOUNT
+productRoute.post(
+    '/:id/delete',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { optionId } = req.body;
+        const product = await Product.findById(req.params.id);
+        if (product) {
+            product.optionColor = product?.optionColor.filter((option) => option._id != optionId);
+            await product.save();
+            res.json({ message: 'Đã xóa thành công' });
+        } else {
+            res.status(404);
+            throw new Error('Không có thông tin');
+        }
+    }),
+);
+
 // CREATE PRODUCT
 productRoute.post(
     '/',
     protect,
     admin,
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image, countInStock } = req.body;
+        const { name, price, description, category, image } = req.body;
         const productExist = await Product.findOne({ name });
-        if (price <= 0 || countInStock < 0 || countInStock >= 10000) {
+        if (price <= 0) {
             res.status(400);
-            throw new Error('Price or Count in stock is not valid, please correct it and try again');
+            throw new Error('Price is not valid, please correct it and try again');
         }
         if (productExist) {
             res.status(400);
@@ -295,7 +284,6 @@ productRoute.post(
                 description,
                 category,
                 image,
-                countInStock,
                 user: req.user._id,
             });
             if (product) {
@@ -309,15 +297,49 @@ productRoute.post(
     }),
 );
 
+//CREATE COLOR
+productRoute.post(
+    '/:id',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { color, countInStock } = req.body;
+        const product = await Product.findById(req.params.id);
+        const optionColors = product.optionColor;
+        const colorExist = optionColors.some((optionColor) => optionColor.color == color);
+
+        if (countInStock <= 0) {
+            res.status(400);
+            throw new Error('countInStock is not valid, please correct it and try again');
+        }
+        if (colorExist) {
+            res.status(400);
+            throw new Error('Product color already exist');
+        }
+        if (product) {
+            const colors = {
+                color,
+                countInStock,
+            };
+            optionColors.push(colors);
+            await product.save();
+            res.status(201).json(optionColors);
+        } else {
+            res.status(400);
+            throw new Error('Invalid product data');
+        }
+    }),
+);
+
 // UPDATE PRODUCT
 productRoute.put(
     '/:id',
     protect,
     admin,
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image, countInStock } = req.body;
+        const { name, price, description, category, image } = req.body;
         const product = await Product.findById(req.params.id);
-        if (price <= 0 || countInStock < 0 || countInStock >= 10000) {
+        if (price <= 0) {
             res.status(400);
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
@@ -327,10 +349,39 @@ productRoute.put(
             product.description = description || product.description;
             product.category = category || product.category;
             product.image = image || product.image;
-            product.countInStock = countInStock || product.countInStock;
+            // product.countInStock = countInStock || product.countInStock;
 
             const updatedProduct = await product.save();
             res.json(updatedProduct);
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    }),
+);
+
+// UPDATE OPTION COLOR AND AMOUNT PRODUCT
+productRoute.put(
+    '/:id/option',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { optionId, color, countInStock } = req.body;
+        const product = await Product.findById(req.params.id);
+        const optionColor = product.optionColor;
+        const findOption = optionColor.find((option) => option._id == optionId);
+        // res.status(400);
+        // throw new Error(findOption);
+        if (countInStock <= 0) {
+            res.status(400);
+            throw new Error('Vui lòng nhập lại số lượng');
+        }
+        if (findOption) {
+            findOption.color = color || findOption.color;
+            findOption.countInStock = countInStock || findOption.countInStock;
+
+            await product.save();
+            res.json(findOption);
         } else {
             res.status(404);
             throw new Error('Product not found');
