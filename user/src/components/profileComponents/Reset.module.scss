@@ -1,17 +1,17 @@
 body {
     background-position: center;
-    background-color: #eee;
+    // background-color: #eee;
     background-repeat: no-repeat;
     background-size: cover;
     color: #505050;
-    font-family: "Rubik",Helvetica,Arial,sans-serif;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
     font-size: 18px;
     font-weight: normal;
     line-height: 1.5;
     text-transform: none;
 }
 
-.forgot{
+.forgot {
     background-color: #fff;
     padding: 12px;
     border: 1px solid #dfdfdf;
@@ -21,11 +21,11 @@ body {
     padding-bottom: 72px !important;
 }
 
-.card-footer{
+.card-footer {
     background-color: #fff;
 }
 
-.btn{ 
+.btn {
     font-size: 13px;
 }
 .form-control:focus {
