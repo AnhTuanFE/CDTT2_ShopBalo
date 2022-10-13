@@ -18,6 +18,12 @@ import {
     PRODUCT_LIST_ALL_FAIL,
     PRODUCT_LIST_ALL_REQUEST,
     PRODUCT_LIST_ALL_SUCCESS,
+    PRODUCT_ALL_REVIEW_REQUEST,
+    PRODUCT_ALL_REVIEW_SUCCESS,
+    PRODUCT_ALL_REVIEW_FAIL,
+    PRODUCT_ALL_COMMENTS_REQUEST,
+    PRODUCT_ALL_COMMENTS_SUCCESS,
+    PRODUCT_ALL_COMMENTS_FAIL,
 } from '../Constants/ProductConstants';
 import { logout } from './userActions';
 
@@ -30,6 +36,34 @@ export const ListProductAll = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: PRODUCT_LIST_ALL_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+// PRODUCT LIST ALL REVIEW
+export const getAllReviews = (productId) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_ALL_REVIEW_REQUEST });
+        const { data } = await axios.get(`/api/products/${productId}/onlyProduct/allReview`);
+        dispatch({ type: PRODUCT_ALL_REVIEW_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_ALL_REVIEW_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+// PRODUCT LIST ALL COMMENTS
+export const getAllComments = (productId) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_ALL_COMMENTS_REQUEST });
+        const { data } = await axios.get(`/api/products/${productId}/onlyProduct/allComments`);
+        dispatch({ type: PRODUCT_ALL_COMMENTS_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_ALL_COMMENTS_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         });
     }
@@ -69,7 +103,7 @@ export const listProductDetails = (id) => async (dispatch) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const createProductReview = (productId, review) => async (dispatch, getState) => {
+export const createProductReview = (productId, rating, color, comment) => async (dispatch, getState) => {
     try {
         dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
 
@@ -84,8 +118,8 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
             },
         };
 
-        await axios.post(`/api/products/${productId}/review`, review, config);
-        dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS, payload: 'Cảm ơn bạn đã đánh giá' });
+        await axios.post(`/api/products/${productId}/review`, { rating, color, comment }, config);
+        dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {

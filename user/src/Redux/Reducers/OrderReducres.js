@@ -25,6 +25,13 @@ import {
     ORDER_CANCEL_SUCCESS,
     ORDER_CANCEL_FAIL,
     ORDER_CANCEL_RESET,
+    ORDER_CREATE_REVIEW_REQUEST,
+    ORDER_CREATE_REVIEW_SUCCESS,
+    ORDER_CREATE_REVIEW_FAIL,
+    ORDER_CREATE_REVIEW_RESET,
+    ORDER_GET_REVIEW_REQUEST,
+    ORDER_GET_REVIEW_SUCCESS,
+    ORDER_GET_REVIEW_FAIL,
 } from '../Constants/OrderConstants';
 
 // CREATE ORDER
@@ -43,6 +50,22 @@ export const orderCreateReducer = (state = {}, action) => {
     }
 };
 
+// CREATE ORDER REVIEW
+export const orderCreateReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ORDER_CREATE_REVIEW_REQUEST:
+            return { loading: true };
+        case ORDER_CREATE_REVIEW_SUCCESS:
+            return { loading: false, success: true, orderReview: action.payload };
+        case ORDER_CREATE_REVIEW_FAIL:
+            return { loading: false, error: action.payload };
+        case ORDER_CREATE_REVIEW_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
 // ORDER DETAILS
 export const orderDetailsReducer = (state = { loading: true, orderItems: [], shippingAddress: {} }, action) => {
     switch (action.type) {
@@ -51,6 +74,20 @@ export const orderDetailsReducer = (state = { loading: true, orderItems: [], shi
         case ORDER_DETAILS_SUCCESS:
             return { loading: false, order: action.payload };
         case ORDER_DETAILS_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+// ORDER GET ITEM
+export const orderGetItem = (state = {}, action) => {
+    switch (action.type) {
+        case ORDER_GET_REVIEW_REQUEST:
+            return { ...state, loading: true };
+        case ORDER_GET_REVIEW_SUCCESS:
+            return { loading: false, itemOrder: action.payload };
+        case ORDER_GET_REVIEW_FAIL:
             return { loading: false, error: action.payload };
         default:
             return state;

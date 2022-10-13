@@ -48,6 +48,31 @@ orderRouter.post(
     }),
 );
 
+//CREATE PRODUCT
+orderRouter.post(
+    '/:id/poductReview',
+    protect,
+    asyncHandler(async (req, res) => {
+        const { orderItemId, rating, comment } = req.body;
+        const order = await Order.findById(req.params.id);
+        const findItemProduct = order?.orderItems.find((item) => item._id == orderItemId);
+        if (rating == '' || comment == '') {
+            res.status(400);
+            throw new Error('Nhập đầy đủ thông tin');
+        }
+        if (findItemProduct) {
+            const newReview = {
+                userName: req.user.name,
+                rating,
+                comment,
+            };
+            findItemProduct.productReview.push(newReview);
+            await order.save();
+            res.status(201).json(findItemProduct);
+        }
+    }),
+);
+
 // GET ALL ORDERS
 orderRouter.get(
     '/productbestseller',
@@ -99,6 +124,20 @@ orderRouter.get(
         res.json(orders);
     }),
 );
+
+// USER GET ORDERS ITEMS
+orderRouter.get(
+    '/:id/orderItem',
+    protect,
+    asyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id);
+        if (order) {
+            const orderItems = order?.orderItems;
+            res.json(orderItems);
+        }
+    }),
+);
+
 // USER LOGIN ORDERS
 orderRouter.get(
     '/',

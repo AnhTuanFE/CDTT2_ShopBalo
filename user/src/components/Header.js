@@ -209,7 +209,9 @@ const Header = () => {
                                             aria-expanded="false"
                                         >
                                             <img
-                                                src={`/${userInfo?.image}` || '/images/logo.png'} // upload ảnh
+                                                src={`/${
+                                                    userInfo?.image === undefined ? 'images/user.png' : userInfo?.image
+                                                }`} // upload ảnh
                                                 alt=""
                                                 style={{
                                                     height: '45px',

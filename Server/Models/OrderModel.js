@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 
+const productReviewSchema = mongoose.Schema(
+    {
+        userName: { type: String, required: true },
+        rating: { type: Number, required: true },
+        comment: { type: String, required: true },
+    },
+    {
+        timestamps: true,
+    },
+);
+
 const orderSchema = mongoose.Schema(
     {
         user: {
@@ -14,6 +25,7 @@ const orderSchema = mongoose.Schema(
                 qty: { type: Number, required: true },
                 image: { type: String, required: true },
                 price: { type: Number, required: true },
+                productReview: [productReviewSchema],
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
                     required: true,
