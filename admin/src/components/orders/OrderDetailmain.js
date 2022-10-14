@@ -50,7 +50,7 @@ const OrderDetailmain = (props) => {
         <section className="content-main">
             <div className="content-header">
                 <Link to="/orders" className="btn btn-dark text-white">
-                    Back To Orders
+                    Trở lại trang Đơn hàng
                 </Link>
             </div>
 
@@ -68,7 +68,7 @@ const OrderDetailmain = (props) => {
                                     <b className="text-black">{moment(order.createdAt).format('llll')}</b>
                                 </span>
                                 <br />
-                                <small className="text-black mx-3 ">Order ID: {order._id}</small>
+                                <small className="text-black mx-3 ">ID Đơn hàng: {order._id}</small>
                             </div>
                             {order?.cancel != 1 && order?.isPaid != true ? (
                                 <div className="col-lg-3 col-md-6 ms-auto d-flex justify-content-end align-items-center">
@@ -78,7 +78,7 @@ const OrderDetailmain = (props) => {
                                         style={{ marginBottom: '15px' }}
                                         disabled={order?.isPaid}
                                     >
-                                        CANCEL THIS ORDER
+                                        HỦY ĐƠN HÀNG
                                     </button>
                                 </div>
                             ) : (
@@ -101,7 +101,7 @@ const OrderDetailmain = (props) => {
                                 <div className="shadow-sm bg-light">
                                     {order.isDelivered ? (
                                         <button className="btn btn-success col-12" style={{ marginBottom: '15px' }}>
-                                            START DELIVERY ( {moment(order.isDeliveredAt).format('MMM Do YY')})
+                                            Bắt đầu giao hàng vào ( {moment(order.isDeliveredAt).format('MMM Do YY')})
                                         </button>
                                     ) : (
                                         <>
@@ -112,14 +112,14 @@ const OrderDetailmain = (props) => {
                                                 style={{ marginBottom: '15px' }}
                                                 disabled={order?.cancel}
                                             >
-                                                CONFIRM AND DELIVERY
+                                                Xác nhận và giao hàng
                                             </button>
                                         </>
                                     )}
 
                                     {order.isPaid ? (
                                         <button className="btn btn-success col-12">
-                                            PAID AT ( {moment(order.isDeliveredAt).format('MMM Do YY')})
+                                            Đã thanh toán vào ( {moment(order.isDeliveredAt).format('MMM Do YY')})
                                         </button>
                                     ) : (
                                         <>
@@ -129,7 +129,7 @@ const OrderDetailmain = (props) => {
                                                 className="btn btn-danger col-12"
                                                 disabled={!order.isDelivered || order?.cancel}
                                             >
-                                                MARK AS PAID
+                                                Xác nhận thanh toán
                                             </button>
                                         </>
                                     )}

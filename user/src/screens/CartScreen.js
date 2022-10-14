@@ -113,8 +113,9 @@ const CartScreen = ({ match, location, history }) => {
                             <img
                                 style={{ width: '100px', height: '100px', margin: '0 auto' }}
                                 src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
+                                alt=''
                             ></img>
-                            Your shopping cart is empty
+                            GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
                         </div>
                         <Link
                             className="btn btn-success mx-5 px-5 py-3"
@@ -123,7 +124,7 @@ const CartScreen = ({ match, location, history }) => {
                                 fontSize: '12px',
                             }}
                         >
-                            SHOPPING NOW
+                            BẮT ĐẦU MUA SẮM
                         </Link>
                     </div>
                 ) : (

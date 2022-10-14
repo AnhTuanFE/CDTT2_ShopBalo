@@ -30,24 +30,24 @@ const Orders = (props) => {
         <>
             <div className="col-lg-2 col-6 col-md-3">
                 <select className="form-select" value={status} onChange={handleStatus}>
-                    <option value={'0'}>All category</option>
-                    <option value={'1'}>Awaiting confirm</option>
-                    <option value={'2'}>Delivering</option>
-                    <option value={'3'}>Paid</option>
-                    <option value={'4'}>Cancel</option>
+                    <option value={'0'}>Tất cả thể loại hàng</option>
+                    <option value={'1'}>Đang chờ xác nhận</option>
+                    <option value={'2'}>Đang giao</option>
+                    <option value={'3'}>Đã thanh toán</option>
+                    <option value={'4'}>Đã hủy đơn hàng</option>
                 </select>
             </div>
             <table className="table">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
+                        <th scope="col">Tên</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Paid</th>
-                        <th scope="col">Date</th>
-                        <th>Status</th>
+                        <th scope="col">Tổng tiền</th>
+                        <th scope="col">Thanh toán</th>
+                        <th scope="col">Ngày</th>
+                        <th>Trạng thái</th>
                         <th scope="col" className="text-end">
-                            Action
+                            Quản lý
                         </th>
                     </tr>
                 </thead>
@@ -62,24 +62,24 @@ const Orders = (props) => {
                             <td>
                                 {order.isPaid ? (
                                     <span className="badge rounded-pill alert-success">
-                                        Paid At {moment(order.paidAt).format('MMM Do YY')}
+                                        Đã thanh toán vào {moment(order.paidAt).format('MMM Do YY')}
                                     </span>
                                 ) : (
-                                    <span className="badge rounded-pill alert-danger">Awaiting payment</span>
+                                    <span className="badge rounded-pill alert-danger">Đang chờ thanh toán</span>
                                 )}
                             </td>
                             <td>{moment(order.createdAt).format('MMM Do YY')}</td>
                             <td>
                                 {order?.cancel != 1 ? (
                                     order.isDelivered == true && order.isPaid == true ? (
-                                        <span className="badge rounded-pill alert-success">Delivered</span>
+                                        <span className="badge rounded-pill alert-success">Đã giao hàng thành công</span>
                                     ) : order?.isDelivered ? (
-                                        <span className="badge alert-warning">Delivering</span>
+                                        <span className="badge alert-warning">Đang giao</span>
                                     ) : (
-                                        <span className="badge alert-danger">Awaiting confirm</span>
+                                        <span className="badge alert-danger">Đang chờ xác nhận</span>
                                     )
                                 ) : (
-                                    <span className="badge bg-dark">This order has been cancelled</span>
+                                    <span className="badge bg-dark">Đơn hàng đã bị hủy</span>
                                 )}
                             </td>
                             <td className="d-flex justify-content-end align-item-center">

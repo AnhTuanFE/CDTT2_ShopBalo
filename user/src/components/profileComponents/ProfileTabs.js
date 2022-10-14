@@ -117,23 +117,23 @@ const ProfileTabs = () => {
     function checkPassword() {
         const passObj = {};
         if (isEmpty(oldPassword)) {
-            passObj.oldPassword = 'Please input your Password';
+            passObj.oldPassword = 'Vui lòng nhập mật khẩu cũ của bạn';
         }
         if (isEmpty(password)) {
-            passObj.password = 'Please input your Password';
+            passObj.password = 'Vui lòng nhập mật khẩu';
         } else {
             if (password.length < 6) {
-                passObj.password = 'Password must be at least 6 characters';
+                passObj.password = 'Mật khẩu phải có ít nhất 6 ký tự';
             }
         }
         if (isEmpty(confirmPassword)) {
-            passObj.confirmPassword = 'Please input your ConfirmPassword';
+            passObj.confirmPassword = 'Vui lòng xác nhận mật khẩu mới';
         } else {
             if (confirmPassword.length < 6) {
-                passObj.confirmPassword = 'Password must be at least 6 characters';
+                passObj.confirmPassword = 'Mật khẩu phải có ít nhất 6 ký tự';
             } else {
                 if (password !== confirmPassword) {
-                    passObj.confirmPassword = 'The password entered is incorrect';
+                    passObj.confirmPassword = 'Mật khẩu đã nhập không chính xác';
                 }
             }
         }

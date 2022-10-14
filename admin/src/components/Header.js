@@ -91,7 +91,7 @@ const Header = () => {
                                 Settings
                             </Link> */}
                             <Link onClick={logoutHandler} className="dropdown-item text-danger" to="#">
-                                Exit
+                                Đăng xuất
                             </Link>
                         </div>
                     </li>

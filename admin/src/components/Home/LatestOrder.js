@@ -8,7 +8,7 @@ const LatestOrder = (props) => {
     const { loading, error, orders } = props;
     return (
         <div className="card-body">
-            <h4 className="card-title">New orders</h4>
+            <h4 className="card-title">Đơn hàng mới </h4>
             {loading ? (
                 <Loading />
             ) : error ? (

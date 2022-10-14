@@ -37,7 +37,7 @@ export default function News() {
         <div className="content-main" style={{ backgroundColor: '#fff' }}>
             <div className="">
                 <div className="content-header" style={{ marginBottom: '20px' }}>
-                    <h2 className="content-title">News</h2>
+                    <h2 className="content-title">Tin tức</h2>
                 </div>
                 {/* {loadingUpdate && <Loading />} */}
                 {/* <Toast /> */}
@@ -47,7 +47,7 @@ export default function News() {
                             <th>Stt</th>
                             <th>Người đăng bài</th>
                             <th>Tiêu đề</th>
-                            <th className="text-end">Action</th>
+                            <th className="text-end">Chỉnh sửa</th>
                         </tr>
                     </thead>
                     {/* Table Data */}

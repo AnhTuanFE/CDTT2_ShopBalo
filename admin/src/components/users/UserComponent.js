@@ -36,7 +36,7 @@ const UserComponent = () => {
     return (
         <section className="content-main">
             <div className="content-header">
-                <h2 className="content-title">Customers</h2>
+                <h2 className="content-title">Tài khoản người dùng</h2>
                 {/* <div>
           <Link to="#" className="btn btn-primary">
             <i className="material-icons md-plus"></i> Create new
@@ -98,7 +98,7 @@ const UserComponent = () => {
                                                 {user.isAdmin === true ? (
                                                     <p className="m-0">Admin</p>
                                                 ) : (
-                                                    <p className="m-0">Customer</p>
+                                                    <p className="m-0">Khách hàng</p>
                                                 )}
 
                                                 <p>

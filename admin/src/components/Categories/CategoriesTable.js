@@ -61,9 +61,9 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
               </div> */}
                         </th>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th className="text-end">Action</th>
+                        <th>Tên</th>
+                        <th>Miêu tả</th>
+                        <th className="text-end">Chỉnh sửa</th>
                     </tr>
                 </thead>
                 {/* Table Data */}
@@ -92,7 +92,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                                                     handleCurrentCategory(index);
                                                 }}
                                             >
-                                                Edit info
+                                                Sửa thông tin
                                             </button>
                                             <button
                                                 className="dropdown-item"
@@ -100,7 +100,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                                                     handleDeleteCategory(index);
                                                 }}
                                             >
-                                                Delete
+                                                Xóa
                                             </button>
                                         </div>
                                     </div>

@@ -12,8 +12,8 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Name: {order.user.name} <br />
-                            <p>Phone: {order.phone}</p>
+                            Tên: {order.user.name} <br />
+                            <p>Số ĐT: {order.phone}</p>
                         </p>
                     </div>
                 </article>
@@ -25,7 +25,7 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Address: {order.shippingAddress.country}, {order.shippingAddress.city}
+                            Địa chỉ: {order.shippingAddress.country}, {order.shippingAddress.city}
                             <br />
                             {order.shippingAddress.address}
                             <br />
@@ -40,7 +40,7 @@ const OrderDetailInfo = (props) => {
                         <i className="text-success fab fa-paypal"></i>
                     </span>
                     <div className="text">
-                        <p className="mb-1">Pay method: {order.paymentMethod}</p>
+                        <p className="mb-1">Phương thức thanh toán: {order.paymentMethod}</p>
                     </div>
                 </article>
             </div>
