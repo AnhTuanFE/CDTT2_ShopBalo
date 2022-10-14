@@ -15,7 +15,7 @@ export default class Reset extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const {email} = this.state;
-        console.log(email);
+        // console.log(email);
         fetch("http://localhost:3000/api/forgotPass/forgotPassword", {
             method: "POST",
             crossDomain: true,
@@ -32,7 +32,7 @@ export default class Reset extends Component {
         })
         .then((res)=>res.json())
         .then((data)=> {
-            console.log(data, "userRegister");
+            // console.log(data, "userRegister");
             alert(data.status);
         })
     }
@@ -50,7 +50,7 @@ export default class Reset extends Component {
                                 <li><span className={cx("text-primary text-medium")}>3. </span>Mở email và sử dụng liên kết để đặt lại mật khẩu của bạn</li>
                             </ol>
                         </div>
-                        <form className={cx("card mt-4")} onSubmit={this.handleSubmit}>
+                        <form className={cx("card mt-4")} >
                             <div className={cx("card-body")}>
                                 <div className={cx("form-group")}>
                                     <label for="email-for-pass">Nhập địa chỉ email của bạn</label>
@@ -65,7 +65,7 @@ export default class Reset extends Component {
                                 </div>
                             </div>
                             <div className={cx("card-footer")}>
-                                <button className={cx("btn btn-success")} type="submit">Gửi</button>
+                                <button className={cx("btn btn-success")} type="submit" onClick={this.handleSubmit}>Gửi</button>
                                 <a href="http://localhost:3000/" className={cx("btn btn-danger")}>Trở lại trang chủ</a>
                             </div>
                         </form>
