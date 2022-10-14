@@ -20,6 +20,12 @@ import {
     ORDER_CANCEL_REQUEST,
     ORDER_CANCEL_SUCCESS,
     ORDER_CANCEL_FAIL,
+    ORDER_CREATE_REVIEW_REQUEST,
+    ORDER_CREATE_REVIEW_SUCCESS,
+    ORDER_CREATE_REVIEW_FAIL,
+    ORDER_GET_REVIEW_REQUEST,
+    ORDER_GET_REVIEW_SUCCESS,
+    ORDER_GET_REVIEW_FAIL,
 } from '../Constants/OrderConstants';
 import axios from 'axios';
 import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
@@ -53,6 +59,40 @@ export const createOrder = (order) => async (dispatch, getState) => {
         }
         dispatch({
             type: ORDER_CREATE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// CREATE ORDER REVIEW
+export const createOrderReview = (orderId, orderItemId, rating, comment) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: ORDER_CREATE_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.post(
+            `/api/orders/${orderId}/poductReview`,
+            { orderItemId, rating, comment },
+            config,
+        );
+        dispatch({ type: ORDER_CREATE_REVIEW_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: ORDER_CREATE_REVIEW_FAIL,
             payload: message,
         });
     }
@@ -170,6 +210,35 @@ export const orderGetAddress = () => async (dispatch, getState) => {
         }
         dispatch({
             type: ORDER_ADDRESS_MY_FAIL,
+            payload: message,
+        });
+    }
+};
+
+//GET ORDER ORDER ITEMS
+export const orderGetItemOrder = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: ORDER_GET_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/orders/${id}/orderItem`, config);
+        dispatch({ type: ORDER_GET_REVIEW_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: ORDER_GET_REVIEW_FAIL,
             payload: message,
         });
     }

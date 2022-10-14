@@ -3,16 +3,35 @@ import { Link } from 'react-router-dom';
 import Header from './../components/Header';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from 'react-redux';
-import { cancelOrder, getOrderDetails, payOrder } from '../Redux/Actions/OrderActions';
+import {
+    cancelOrder,
+    getOrderDetails,
+    payOrder,
+    createOrderReview,
+    orderGetItemOrder,
+} from '../Redux/Actions/OrderActions';
+import { createProductReview } from '../Redux/Actions/ProductActions';
+import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants';
+import { ORDER_CREATE_REVIEW_RESET } from '../Redux/Constants/OrderConstants';
 import Loading from './../components/LoadingError/Loading';
 import Message from './../components/LoadingError/Error';
 import moment from 'moment';
+import { Rating } from 'primereact/rating';
+import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
+import 'primereact/resources/primereact.min.css'; //core css
+import 'primeicons/primeicons.css';
 import axios from 'axios';
 import { ORDER_PAY_RESET } from '../Redux/Constants/OrderConstants';
 
 const OrderScreen = ({ match }) => {
     // window.scrollTo(0, 0);
     const [sdkReady, setSdkReady] = useState(false);
+    const [productId, setProductId] = useState('');
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+    const [product, setProduct] = useState('');
+    const [bulean, setBulean] = useState(false);
+    const [orderItemId, setOrderItemId] = useState('');
     const orderId = match.params.id;
     const dispatch = useDispatch();
 
@@ -21,26 +40,49 @@ const OrderScreen = ({ match }) => {
     const orderPay = useSelector((state) => state.orderPay);
     const { loading: loadingPay, success: successPay } = orderPay;
 
+    const orderGetItemRetult = useSelector((state) => state.orderGetItemRetult);
+    const { itemOrder } = orderGetItemRetult;
     const orderCancel = useSelector((state) => state.orderCancel);
     const { loading: loadingCancel, success: successCancel } = orderCancel;
+    const reviews = useSelector((state) => state.productReviewCreate);
+    const { success: successReview, error: errorReview } = reviews;
+
+    useEffect(() => {
+        dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+        setProductId('');
+        setRating('');
+        setComment('');
+        setBulean('');
+    }, [bulean]);
     const cancelOrderHandler = () => {
         if (window.confirm('Are you sure??')) {
             dispatch(cancelOrder(order));
         }
     };
     //gọi thêm userLogin để lấy số điện thoại
+    const orderCreateReviewsRetult = useSelector((state) => state.orderCreateReviewsRetult);
+    const { success: successReviewOrder, orderReview } = orderCreateReviewsRetult;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
+
+    useEffect(() => {
+        dispatch(orderGetItemOrder(orderId));
+    }, [orderId, successReviewOrder]);
+    useEffect(() => {
+        if (successReviewOrder) {
+            dispatch({ type: ORDER_CREATE_REVIEW_RESET });
+        }
+    }, [successReviewOrder]);
+
     if (!loading) {
         const addDecimals = (num) => {
-            return (Math.round(num * 100) / 100).toFixed(2);
+            return (Math.round(num * 100) / 100).toFixed(0);
         };
 
         order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
     }
     useEffect(() => {
         dispatch(getOrderDetails(orderId));
-        console.log({ order });
     }, [successCancel]);
     useEffect(() => {
         // const addPayPalScript = async () => {
@@ -68,9 +110,9 @@ const OrderScreen = ({ match }) => {
     }, [dispatch, orderId, order]);
     //[dispatch, orderId, successPay, order]);
 
-    const successPaymentHandler = (paymentResult) => {
-        dispatch(payOrder(orderId, paymentResult));
-    };
+    // const successPaymentHandler = (paymentResult) => {
+    //     dispatch(payOrder(orderId, paymentResult));
+    // };
 
     return (
         <>
@@ -92,7 +134,7 @@ const OrderScreen = ({ match }) => {
                                         </div>
                                     </div>
                                     <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
-                                        <p>{`Tên: ${order.user.name}`}</p>
+                                        <p>{`Họ tên: ${order.user.name}`}</p>
                                         <p>{`Số điện thoại: ${userInfo.phone}`}</p>
                                     </div>
                                 </div>
@@ -117,14 +159,17 @@ const OrderScreen = ({ match }) => {
                                         {order.isDelivered ? (
                                             <div className="bg-info p-2 col-12">
                                                 <p className="text-white text-center text-sm-start">
-                                                    Bắt đầu giao hàng vào {moment(order.deliveredAt).calendar()}
+                                                    Bắt đầu giao hàng từ {moment(order.createdAt).hours()}
+                                                    {':'}
+                                                    {moment(order.createdAt).minutes() < 10
+                                                        ? `0${moment(order.createdAt).minutes()}`
+                                                        : moment(order.createdAt).minutes()}{' '}
+                                                    {moment(order.createdAt).format('DD/MM/YYYY')}{' '}
                                                 </p>
                                             </div>
                                         ) : (
                                             <div className="bg-danger p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">
-                                                    Chờ giao hàng
-                                                </p>
+                                                <p className="text-white text-center text-sm-start">Chờ giao hàng</p>
                                             </div>
                                         )}
                                     </div>
@@ -141,17 +186,24 @@ const OrderScreen = ({ match }) => {
                                     </div>
                                     <div className="col-lg-9 col-sm-9 mb-lg-9">
                                         <p>
-                                            <p>Phương thức thanh toán: {order.paymentMethod}</p>
+                                            <p>Phương thức: {order.paymentMethod}</p>
                                         </p>
                                         {order.isPaid ? (
                                             <div className="bg-info p-2 col-12">
                                                 <p className="text-white text-center text-sm-start">
-                                                    Đã thanh toán vào {moment(order.paidAt).calendar()}
+                                                    Đã trả vào {moment(order.paidAt).hours()}
+                                                    {':'}
+                                                    {moment(order.paidAt).minutes() < 10
+                                                        ? `0${moment(order.paidAt).minutes()}`
+                                                        : moment(order.paidAt).minutes()}{' '}
+                                                    {moment(order.paidAt).format('DD/MM/YYYY')}{' '}
                                                 </p>
                                             </div>
                                         ) : (
                                             <div className="bg-danger p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">Awaiting payment</p>
+                                                <p className="text-white text-center text-sm-start">
+                                                    Đang chờ thanh toán
+                                                </p>
                                             </div>
                                         )}
                                     </div>
@@ -160,61 +212,102 @@ const OrderScreen = ({ match }) => {
                         </div>
 
                         <div className="row order-products justify-content-between" style={{ marginBottom: '30px' }}>
-                            <div className="col-lg-8 fix-padding cart-scroll">
+                            <div className="col-lg-9 fix-padding cart-scroll">
                                 {order.orderItems.length === 0 ? (
                                     <Message variant="alert-info mt-5">ĐƠN HÀNG CỦA BẠN ĐANG TRỐNG</Message>
                                 ) : (
                                     <>
                                         {order.orderItems.map((item, index) => (
-                                            <div className="order-product row" key={index}>
-                                                <div className="col-md-3 col-6">
+                                            <div
+                                                className="order-product row"
+                                                style={{ border: '1px solid #dad8d8', borderRadius: '4px' }}
+                                                key={index}
+                                            >
+                                                <div
+                                                    className={
+                                                        order?.isPaid && itemOrder[index].productReview.length === 0
+                                                            ? 'col-md-1 col-4'
+                                                            : 'col-md-2 col-4'
+                                                    }
+                                                >
                                                     <img src={item.image} alt={item.name} />
                                                 </div>
-                                                <div className="col-md-5 col-6 d-flex align-items-center">
+                                                <div
+                                                    className={
+                                                        order?.isPaid && itemOrder[index].productReview.length === 0
+                                                            ? 'col-md-3 col-4 d-flex align-items-center'
+                                                            : 'col-md-4 col-4 d-flex align-items-center'
+                                                    }
+                                                >
                                                     <Link to={`/products/${item.product}`}>
-                                                        <h6>{item.name}</h6>
+                                                        <h6 style={{ fontSize: '16px' }}>{item.name}</h6>
                                                     </Link>
                                                 </div>
-                                                <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
-                                                    <h4>SỐ LƯỢNG</h4>
+                                                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
+                                                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>
+                                                        Phân loại hàng
+                                                    </h4>
+                                                    <h6>{item?.color}</h6>
+                                                </div>
+                                                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
+                                                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
                                                     <h6>{item.qty}</h6>
                                                 </div>
-                                                <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
-                                                    <h4>TIỀN HÀNG</h4>
-                                                    <h6>${item.qty * item.price}</h6>
+                                                <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-center  d-flex flex-column justify-content-center ">
+                                                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Tổng tiền</h4>
+                                                    <h6>{item.qty * item.price}đ</h6>
                                                 </div>
+                                                {order?.isPaid && itemOrder[index].productReview.length === 0 && (
+                                                    <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-center  d-flex flex-column justify-content-center ">
+                                                        <h4 style={{ fontWeight: '600', fontSize: '16px' }}>
+                                                            Đánh giá
+                                                        </h4>
+                                                        <i
+                                                            class="fal fa-comment-edit fs-4"
+                                                            style={{ cursor: 'pointer' }}
+                                                            type="submit"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop"
+                                                            onClick={() => {
+                                                                setProduct(item);
+                                                                setProductId(item.product);
+                                                                setOrderItemId(item._id);
+                                                            }}
+                                                        ></i>
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </>
                                 )}
                             </div>
                             {/* total */}
-                            <div className="col-lg-3 d-flex align-items-end flex-column mt-5 subtotal-order">
+                            <div className="col-lg-3 d-flex align-items-end flex-column subtotal-order">
                                 <table className="table table-bordered">
                                     <tbody>
                                         <tr>
                                             <td>
                                                 <strong>Tiền hàng</strong>
                                             </td>
-                                            <td>${order.itemsPrice}</td>
+                                            <td>{order.itemsPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong>Phí vận chuyển</strong>
                                             </td>
-                                            <td>${order.shippingPrice}</td>
+                                            <td>{order.shippingPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong>Thuế</strong>
                                             </td>
-                                            <td>${order.taxPrice}</td>
+                                            <td>{order.taxPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong>Tổng tiền</strong>
                                             </td>
-                                            <td>${order.totalPrice}</td>
+                                            <td>{order.totalPrice}đ</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -262,7 +355,9 @@ const OrderScreen = ({ match }) => {
                                     <div className="col-12">
                                         {loadingPay && <Loading />}
                                         <div className="bg-success p-2 col-12">
-                                            <p className="text-white text-center text-sm-start">Thanh toán thành công</p>
+                                            <p className="text-white text-center text-sm-start">
+                                                Thanh toán thành công
+                                            </p>
                                         </div>
                                     </div>
                                 )}
@@ -278,6 +373,130 @@ const OrderScreen = ({ match }) => {
                                         </button>
                                     </div>
                                 )}
+                            </div>
+                        </div>
+                        <div className="col-md-12 product-rating">
+                            <div
+                                class="modal fade"
+                                id="staticBackdrop"
+                                data-bs-backdrop="static"
+                                data-bs-keyboard="false"
+                                tabindex="-1"
+                                aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true"
+                            >
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style={{ padding: '0.5rem 1rem' }}>
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                                onClick={() => {
+                                                    setBulean(true);
+                                                }}
+                                            ></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <h6 className="write-review text-center" style={{ fontSize: '20px' }}>
+                                                    Đánh giá sản phẩm
+                                                </h6>
+                                                <div className="my-4">
+                                                    {errorReview && (
+                                                        <Message variant="alert-danger text-center fs-6">
+                                                            {errorReview}
+                                                        </Message>
+                                                    )}
+                                                    {successReview && (
+                                                        <Message variant="alert-primary text-center fs-6">
+                                                            Cảm ơn bạn đã đánh giá
+                                                        </Message>
+                                                    )}
+                                                </div>
+
+                                                <form>
+                                                    <div style={{ textAlign: 'center' }}>
+                                                        <img
+                                                            src={product?.image}
+                                                            style={{ height: '120px', width: '120px' }}
+                                                            alt=""
+                                                        ></img>
+                                                        <p style={{ fontSize: '16px' }}>{product?.name}</p>
+                                                        <div
+                                                            style={{
+                                                                fontSize: '16px',
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                            }}
+                                                        >
+                                                            <p style={{ paddingRight: '5px' }}>
+                                                                Giá: {product?.price}
+                                                                <span style={{ fontSize: '14px' }}>đ</span>
+                                                            </p>
+
+                                                            <p style={{ paddingLeft: '5px' }}>Màu: {product?.color}</p>
+                                                        </div>
+                                                        <div className="rating-reviews">
+                                                            <Rating
+                                                                value={rating}
+                                                                style={{ color: 'yellow' }}
+                                                                onChange={(e) => setRating(e.value)}
+                                                                stars={5}
+                                                                cancel={false}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="my-4">
+                                                        <p
+                                                            style={{
+                                                                textAlign: 'center',
+                                                                fontSize: '17px',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            Nội dung
+                                                        </p>
+                                                        <textarea
+                                                            row="3"
+                                                            value={comment}
+                                                            onChange={(e) => setComment(e.target.value)}
+                                                            className="col-12 p-3 mt-2 border-0 rounded"
+                                                            style={{ backgroundColor: '#e9eaed80', fontSize: '14px' }}
+                                                        ></textarea>
+                                                    </div>
+                                                    <div className="my-3">
+                                                        <button
+                                                            className="col-12 bg-orange border-0 p-3 rounded text-white"
+                                                            type="button"
+                                                            onClick={() => {
+                                                                dispatch(
+                                                                    createProductReview(
+                                                                        productId,
+                                                                        rating,
+                                                                        product.color,
+                                                                        comment,
+                                                                    ),
+                                                                );
+                                                                dispatch(
+                                                                    createOrderReview(
+                                                                        orderId,
+                                                                        orderItemId,
+                                                                        rating,
+                                                                        comment,
+                                                                    ),
+                                                                );
+                                                            }}
+                                                        >
+                                                            <p>Gửi đánh giá</p>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </>

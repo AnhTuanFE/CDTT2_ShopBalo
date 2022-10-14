@@ -910,7 +910,7 @@ textarea:focus {
 }
 .order-detail p {
     margin-top: 2px;
-    font-size: 16px;
+    font-size: 14px;
 }
 .order-detail {
     padding: 10px 0;
@@ -1535,4 +1535,24 @@ textarea:focus {
 }
 .ql-align-center img {
     width: 100%;
+}
+.product-description p {
+    padding: 5px 0;
+}
+.bg-danger {
+    border-radius: 4px;
+}
+.rating-reviews {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+.rating-reviews textarea {
+    font-size: 14px !important;
+}
+.rating-reviews .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+    color: rgb(255, 145, 0);
+}
+.rating-reviews .p-rating:not(.p-disabled):not(.p-readonly) .p-rating-item:hover .p-rating-icon {
+    color: rgb(255, 145, 0);
 }

@@ -8,6 +8,8 @@ import {
     productDetailsReducer,
     productListReducer,
     productListAllReducer,
+    getAllCommentsReducer,
+    getAllReviewsReducer,
 } from './Reducers/ProductReducers';
 import { cartReducer, CreateCartReducer, DeleteCartReducer } from './Reducers/CartReducers';
 import {
@@ -25,6 +27,8 @@ import {
     orderListMyReducer,
     orderPayReducer,
     productbestseller,
+    orderCreateReviewReducer,
+    orderGetItem,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { Avatarload } from './Reducers/AvatarReducer';
@@ -39,6 +43,8 @@ const reducer = combineReducers({
     productReviewCreate: productCreateReviewReducer,
     productCommentCreate: productCreateCommentReducer,
     productCommentChildCreate: productCreateCommentChildReducer,
+    getAllReviewsProduct: getAllReviewsReducer,
+    getAllCommentsProduct: getAllCommentsReducer,
     cart: cartReducer,
     cartCreate: CreateCartReducer,
     cartDelete: DeleteCartReducer,
@@ -53,6 +59,8 @@ const reducer = combineReducers({
     orderPay: orderPayReducer,
     orderListMy: orderListMyReducer,
     orderCancel: orderCancelReducer,
+    orderCreateReviewsRetult: orderCreateReviewReducer,
+    orderGetItemRetult: orderGetItem,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
     avatarLoad: Avatarload,

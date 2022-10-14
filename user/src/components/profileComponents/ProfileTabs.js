@@ -465,7 +465,10 @@ const ProfileTabs = () => {
                         style={checkFile === true ? {} : { display: 'none' }}
                     >
                         <img
-                            src={url?.filename === undefined ? user.image : url?.filename}
+                            src={
+                                (url?.filename === undefined ? user?.image : url?.filename) ||
+                                (user?.image === undefined ? '/images/user.png' : user?.image)
+                            }
                             style={{
                                 height: '120px',
                                 width: '120px',

@@ -20,6 +20,12 @@ import {
     PRODUCT_LIST_ALL_FAIL,
     PRODUCT_LIST_ALL_REQUEST,
     PRODUCT_LIST_ALL_SUCCESS,
+    PRODUCT_ALL_REVIEW_REQUEST,
+    PRODUCT_ALL_REVIEW_SUCCESS,
+    PRODUCT_ALL_REVIEW_FAIL,
+    PRODUCT_ALL_COMMENTS_REQUEST,
+    PRODUCT_ALL_COMMENTS_SUCCESS,
+    PRODUCT_ALL_COMMENTS_FAIL,
 } from '../Constants/ProductConstants';
 
 //PRODUCT LIST ALL
@@ -58,6 +64,40 @@ export const productListReducer = (state = { products: [] }, action) => {
     }
 };
 
+//PRODUCT GET ALL REVIEWS
+export const getAllReviewsReducer = (state = { reviews: [] }, action) => {
+    switch (action.type) {
+        case PRODUCT_ALL_REVIEW_REQUEST:
+            return { loading: true, reviews: [] };
+        case PRODUCT_ALL_REVIEW_SUCCESS:
+            return {
+                loading: false,
+                reviews: action.payload,
+            };
+        case PRODUCT_ALL_REVIEW_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+//PRODUCT GET ALL COMMENTS
+export const getAllCommentsReducer = (state = { comments: [] }, action) => {
+    switch (action.type) {
+        case PRODUCT_ALL_COMMENTS_REQUEST:
+            return { loading: true, comments: [] };
+        case PRODUCT_ALL_COMMENTS_SUCCESS:
+            return {
+                loading: false,
+                comments: action.payload,
+            };
+        case PRODUCT_ALL_COMMENTS_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
 // SINGLE PRODUCT
 export const productDetailsReducer = (state = { product: { reviews: [] } }, action) => {
     switch (action.type) {
@@ -78,7 +118,7 @@ export const productCreateReviewReducer = (state = {}, action) => {
         case PRODUCT_CREATE_REVIEW_REQUEST:
             return { loading: true };
         case PRODUCT_CREATE_REVIEW_SUCCESS:
-            return { loading: false, success: action.payload };
+            return { loading: false, success: true };
         //return { loading: false, success: true };
         case PRODUCT_CREATE_REVIEW_FAIL:
             return { loading: false, error: action.payload };

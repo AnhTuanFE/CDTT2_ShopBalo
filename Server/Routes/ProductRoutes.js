@@ -76,6 +76,37 @@ productRoute.get(
         res.json(commentSort);
     }),
 );
+// GET ALL COMMENTS ONLY ONE PRODUCT
+productRoute.get(
+    '/:id/onlyProduct/allComments',
+    asyncHandler(async (req, res) => {
+        const product = await Product.findById(req.params.id);
+        const allComments = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) =>
+            a > b ? 1 : a < b ? -1 : 0,
+        );
+        if (allComments == undefined) {
+            res.status(400);
+            throw new Error('Sản phẩm không tồn tại');
+        } else {
+            res.json(allComments);
+        }
+    }),
+);
+
+// GET ALL REVIEW ONLY ONE PRODUCT
+productRoute.get(
+    '/:id/onlyProduct/allReview',
+    asyncHandler(async (req, res) => {
+        const product = await Product.findById(req.params.id);
+        const allReview = product?.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
+        if (allReview == undefined) {
+            res.status(400);
+            throw new Error('Sản phẩm không tồn tại');
+        } else {
+            res.json(allReview);
+        }
+    }),
+);
 
 // ADMIN GET ALL PRODUCT WITHOUT SEARCH AND PEGINATION
 productRoute.get(
@@ -124,11 +155,14 @@ productRoute.post(
     '/:id/review',
     protect,
     asyncHandler(async (req, res) => {
-        const { rating, comment } = req.body;
+        const { rating, color, comment } = req.body;
         const product = await Product.findById(req.params.id);
         const order = await Order.find({ user: req.user._id });
-
         let listOrder = [];
+        if (rating == '' || color == '' || comment == '') {
+            res.status(400);
+            throw new Error(`Nhập đầy đủ thông tin`);
+        }
         if (order) {
             for (let i = 0; i < order.length; i++) {
                 if (order[i].isPaid == true) {
@@ -150,6 +184,7 @@ productRoute.post(
             const review = {
                 name: req.user.name,
                 rating: Number(rating),
+                color,
                 comment,
                 user: req.user._id,
             };
@@ -368,13 +403,17 @@ productRoute.put(
     asyncHandler(async (req, res) => {
         const { optionId, color, countInStock } = req.body;
         const product = await Product.findById(req.params.id);
-        const optionColor = product.optionColor;
-        const findOption = optionColor.find((option) => option._id == optionId);
-        // res.status(400);
-        // throw new Error(findOption);
+        const findOption = product.optionColor?.find((option) => option._id == optionId);
+        const findColor = product.optionColor?.find((option) => option.color == color);
         if (countInStock <= 0) {
             res.status(400);
             throw new Error('Vui lòng nhập lại số lượng');
+        }
+        if (findOption.color != findColor?.color) {
+            if (color == findColor?.color) {
+                res.status(400);
+                throw new Error('Màu sắc đã trùng');
+            }
         }
         if (findOption) {
             findOption.color = color || findOption.color;

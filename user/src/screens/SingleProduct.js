@@ -10,9 +10,15 @@ import {
     listProductDetails,
     createProductComment,
     createProductCommentChild,
+    getAllReviews,
+    getAllComments,
 } from '../Redux/Actions/ProductActions';
 import Loading from '../components/LoadingError/Loading';
-import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants';
+import {
+    PRODUCT_CREATE_REVIEW_RESET,
+    PRODUCT_CREATE_COMMENTCHILD_RESET,
+    PRODUCT_CREATE_COMMENT_RESET,
+} from '../Redux/Constants/ProductConstants';
 import moment from 'moment';
 import { addToCart } from '../Redux/Actions/cartActions';
 import { listProduct } from '../Redux/Actions/ProductActions';
@@ -40,12 +46,17 @@ const SingleProduct = ({ history, match }) => {
     const [optionIndex, setOptionIndex] = useState(0);
     const [optionsArrColor, setOptionArrColor] = useState('');
     const [color, setColor] = useState('');
+    const [reviewColor, setReviewColor] = useState('');
     const productId = match.params.id;
     const dispatch = useDispatch();
 
     const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
     const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    const listAllReviews = useSelector((state) => state.getAllReviewsProduct);
+    const { reviews } = listAllReviews;
+    const listAllComments = useSelector((state) => state.getAllCommentsProduct);
+    const { comments } = listAllComments;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const productReviewCreate = useSelector((state) => state.productReviewCreate);
@@ -55,8 +66,8 @@ const SingleProduct = ({ history, match }) => {
     const { products, page, pages } = productList;
     const userList = useSelector((state) => state.userAll);
     const { users } = userList;
-    const commentsSort = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
-    const reviewsSort = product.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    // const commentsSort = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    // const reviewsSort = product.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
     const {
         loading: loadingCreateReview,
         error: errorCreateReview,
@@ -82,14 +93,21 @@ const SingleProduct = ({ history, match }) => {
     }, [optionColor]);
 
     useEffect(() => {
-        const arrProductOption = product?.optionColor;
         setOptionArrColor(() => {
-            if (arrProductOption !== undefined && optionIndex !== undefined) {
-                let x = arrProductOption[optionIndex];
+            if (optionColor !== undefined && optionIndex !== undefined) {
+                let x = optionColor[optionIndex];
                 return x;
             }
         });
-    }, [optionIndex, product]);
+    }, [optionIndex, optionColor]);
+
+    useEffect(() => {
+        dispatch(getAllReviews(productId));
+    }, [productId, successCreateReview]);
+
+    useEffect(() => {
+        dispatch(getAllComments(productId));
+    }, [productId, successCreateComment, successCreateCommentChild]);
 
     useEffect(() => {
         dispatch(listUser());
@@ -97,21 +115,29 @@ const SingleProduct = ({ history, match }) => {
 
     useEffect(() => {
         dispatch(listProductDetails(productId));
-    }, [dispatch, successCreateComment, successCreateCommentChild]);
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(listProductDetails(productId));
     }, [dispatch, productId]);
 
     useEffect(() => {
+        if (successCreateComment) {
+            dispatch({ type: PRODUCT_CREATE_COMMENT_RESET });
+        }
+        if (successCreateCommentChild) {
+            dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_RESET });
+        }
+    }, [successCreateComment, successCreateCommentChild]);
+
+    useEffect(() => {
         if (bulean) {
-            // alert('Review Submitted');
             setBulean(false);
             setRating(0);
             setComment('');
+            setReviewColor('');
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
         }
-        dispatch(listProductDetails(productId));
     }, [bulean]);
     useEffect(() => {
         if (product._id !== undefined) {
@@ -127,9 +153,9 @@ const SingleProduct = ({ history, match }) => {
     }, [category, maxPrice]);
 
     const arrStar = [5, 4, 3, 2, 1];
-    const reviewCart = product.reviews;
+    const reviewCart = reviews;
     const returnStar = arrStar.map((star) => {
-        let review = reviewCart.filter((rev) => {
+        let review = reviewCart?.filter((rev) => {
             return star === rev.rating;
         });
         star = {
@@ -160,12 +186,7 @@ const SingleProduct = ({ history, match }) => {
     };
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(
-            createProductReview(productId, {
-                rating,
-                comment,
-            }),
-        );
+        dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
 
     //comment
@@ -360,12 +381,12 @@ const SingleProduct = ({ history, match }) => {
                                     <div className="buttonReview" style={{ textAlign: 'center', marginTop: '10px' }}>
                                         <p>Bạn đánh giá sao sản phẩm này</p>
                                         <button
-                                            type="submit"
-                                            class="btn btn-primary pay-button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop"
+                                        // type="submit"
+                                        // class="btn btn-primary pay-button"
+                                        // data-bs-toggle="modal"
+                                        // data-bs-target="#staticBackdrop"
                                         >
-                                            Đánh giá ngay
+                                            <Link to="/profile"> Đánh giá ngay</Link>
                                         </button>
                                     </div>
                                 </div>
@@ -401,7 +422,6 @@ const SingleProduct = ({ history, match }) => {
                                                             Đánh giá sản phẩm
                                                         </h6>
                                                         <div className="my-4">
-                                                            {loadingCreateReview && <Loading />}
                                                             {errorCreateReview && (
                                                                 <Message variant="alert-danger">
                                                                     {errorCreateReview}
@@ -409,7 +429,7 @@ const SingleProduct = ({ history, match }) => {
                                                             )}
                                                             {successCreateReview && (
                                                                 <Message class="alert alert-primary">
-                                                                    {successCreateReview}
+                                                                    Cảm ơn bạn đã đánh giá
                                                                 </Message>
                                                             )}
                                                         </div>
@@ -429,6 +449,27 @@ const SingleProduct = ({ history, match }) => {
                                                                         <option value="3">3 - Bình thường</option>
                                                                         <option value="4">4 - Tốt</option>
                                                                         <option value="5">5 - Rất tốt</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div className="my-4">
+                                                                    <strong>Màu sắc</strong>
+                                                                    <select
+                                                                        value={reviewColor}
+                                                                        onChange={(e) => setReviewColor(e.target.value)}
+                                                                        className="col-12 p-3 mt-2 border-0 rounded"
+                                                                        style={{ backgroundColor: '#e9eaed80' }}
+                                                                    >
+                                                                        <option value="">Lựa chọn...</option>
+                                                                        {optionColor?.map((option) => {
+                                                                            return (
+                                                                                <option
+                                                                                    key={option._id}
+                                                                                    value={option.color}
+                                                                                >
+                                                                                    {option.color}
+                                                                                </option>
+                                                                            );
+                                                                        })}
                                                                     </select>
                                                                 </div>
                                                                 <div className="my-4">
@@ -474,7 +515,7 @@ const SingleProduct = ({ history, match }) => {
                                 </div>
                                 <div className="col-md-12 product-rating" style={{ paddingTop: '20px' }}>
                                     <div className="rating-review">
-                                        {reviewsSort?.map((review) => (
+                                        {reviews?.map((review) => (
                                             <div
                                                 key={review._id}
                                                 className="mb-2 mb-md-3 bg-light p-3 shadow-sm rounded-5"
@@ -518,7 +559,19 @@ const SingleProduct = ({ history, match }) => {
                                                         </span>
                                                         <Rating value={review.rating} />
                                                     </div>
-                                                    <div>
+                                                    <div style={{ fontSize: '16px' }}>
+                                                        <span
+                                                            style={{
+                                                                paddingRight: '5px',
+                                                                fontSize: '15px',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            Màu sắc:
+                                                        </span>{' '}
+                                                        {review.color}
+                                                    </div>
+                                                    <div style={{ fontSize: '16px' }}>
                                                         <span
                                                             style={{
                                                                 paddingRight: '5px',
@@ -581,10 +634,11 @@ const SingleProduct = ({ history, match }) => {
                                 </form>
                                 <div className="col-md-12 product-rating">
                                     <div className="rating-review">
+                                        {loadingCreateComment && <Loading />}
                                         {errorCreateCommentChild && (
                                             <Message variant="alert-danger">{errorCreateCommentChild}</Message>
                                         )}
-                                        {commentsSort?.map((review) => (
+                                        {comments?.map((review) => (
                                             <div key={review._id} className="mb-2 mb-md-2 p-3 rounded-5 backgroud">
                                                 <div
                                                     style={{

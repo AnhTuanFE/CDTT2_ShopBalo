@@ -42,14 +42,13 @@ const EditproductMain = (props) => {
     const [optionId, setOptionId] = useState('');
     const [AddColor, setAddColor] = useState('');
     const [AddCountInStock, setAddCountInStock] = useState('');
+    const [checkEdit, setCheckEdit] = useState(false);
     const dispatch = useDispatch();
 
     const productEdit = useSelector((state) => state.productEdit);
     const { loading, error, product } = productEdit;
-    // const retultOptions = product?.optionColor;
-    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
 
-    // console.log(optionColor, 'heheh');
+    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
 
     const productUpdate = useSelector((state) => state.productUpdate);
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
@@ -66,6 +65,7 @@ const EditproductMain = (props) => {
 
     useEffect(() => {
         if (successOptionUpdate) {
+            setCheckEdit(false);
             dispatch({ type: PRODUCT_UPDATE_OPTION_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
         }
@@ -86,7 +86,7 @@ const EditproductMain = (props) => {
             setColor(options?.color);
             setCountInStock(options?.countInStock);
         }
-    }, [optionId, successDelete]);
+    }, [optionId]);
 
     useEffect(() => {
         dispatch(ListCategory());
@@ -280,53 +280,55 @@ const EditproductMain = (props) => {
                                         style={{ marginTop: '10px', border: '1px solid #ccc' }}
                                     >
                                         <div className="row">
-                                            <div className="col-md-3 col-lg-3">
-                                                {errorOptionUpdate && (
-                                                    <Message variant="alert-danger">{errorOptionUpdate}</Message>
-                                                )}
-                                                {/* {loadingOption && <Loading />} */}
-                                                <form>
-                                                    <div className="mb-0">
-                                                        <label htmlFor="product_price" className="form-label">
-                                                            Màu sắc
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Type here"
-                                                            className={`form-control`}
-                                                            id="product_price"
-                                                            //required
-                                                            value={color}
-                                                            onChange={(e) => setColor(e.target.value)}
-                                                        />
-                                                    </div>
+                                            {checkEdit && (
+                                                <div className="col-md-3 col-lg-3">
+                                                    {errorOptionUpdate && (
+                                                        <Message variant="alert-danger">{errorOptionUpdate}</Message>
+                                                    )}
+                                                    {/* {loadingOption && <Loading />} */}
+                                                    <form>
+                                                        <div className="mb-0">
+                                                            <label htmlFor="product_price" className="form-label">
+                                                                Màu sắc
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Type here"
+                                                                className={`form-control`}
+                                                                id="product_price"
+                                                                //required
+                                                                value={color}
+                                                                onChange={(e) => setColor(e.target.value)}
+                                                            />
+                                                        </div>
 
-                                                    <div className="mb-0">
-                                                        <label htmlFor="product_price" className="form-label">
-                                                            Số lượng
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            placeholder="Type here"
-                                                            className={`form-control`}
-                                                            id="product_price"
-                                                            //required
-                                                            value={countInStock}
-                                                            onChange={(e) => setCountInStock(e.target.value)}
-                                                        />
-                                                    </div>
+                                                        <div className="mb-0">
+                                                            <label htmlFor="product_price" className="form-label">
+                                                                Số lượng
+                                                            </label>
+                                                            <input
+                                                                type="number"
+                                                                placeholder="Type here"
+                                                                className={`form-control`}
+                                                                id="product_price"
+                                                                //required
+                                                                value={countInStock}
+                                                                onChange={(e) => setCountInStock(e.target.value)}
+                                                            />
+                                                        </div>
 
-                                                    <div className="d-grid" style={{ marginTop: '10px' }}>
-                                                        <button
-                                                            onClick={submitOptionHandler}
-                                                            className="btn btn-primary py-2 color-orange"
-                                                        >
-                                                            Cập nhật
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div className="col-md-6 col-lg-6">
+                                                        <div className="d-grid" style={{ marginTop: '10px' }}>
+                                                            <button
+                                                                onClick={submitOptionHandler}
+                                                                className="btn btn-primary py-2 color-orange"
+                                                            >
+                                                                Cập nhật
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            )}
+                                            <div className={checkEdit ? 'col-md-6 col-lg-6' : 'col-md-9 col-lg-9'}>
                                                 <table className="table slider-data">
                                                     <thead>
                                                         <tr>
@@ -361,6 +363,7 @@ const EditproductMain = (props) => {
                                                                                 onClick={(e) => {
                                                                                     e.preventDefault();
                                                                                     setOptionId(option._id);
+                                                                                    setCheckEdit(true);
                                                                                 }}
                                                                             >
                                                                                 <i class="icon fas fa-edit"></i>
@@ -391,10 +394,6 @@ const EditproductMain = (props) => {
                                                 </table>
                                             </div>
                                             <div className="col-md-3 col-lg-3">
-                                                {errorOptionUpdate && (
-                                                    <Message variant="alert-danger">{errorOptionUpdate}</Message>
-                                                )}
-                                                {/* {loadingOption && <Loading />} */}
                                                 <form>
                                                     <div className="mb-0">
                                                         <label htmlFor="product_price" className="form-label">
