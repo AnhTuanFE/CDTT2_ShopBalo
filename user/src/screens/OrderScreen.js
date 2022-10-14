@@ -214,7 +214,7 @@ const OrderScreen = ({ match }) => {
                         <div className="row order-products justify-content-between" style={{ marginBottom: '30px' }}>
                             <div className="col-lg-9 fix-padding cart-scroll">
                                 {order.orderItems.length === 0 ? (
-                                    <Message variant="alert-info mt-5">ĐƠN HÀNG CỦA BẠN ĐANG TRỐNG</Message>
+                                    <Message variant="alert-info mt-5">Đơn đặt hàng của bạn trống</Message>
                                 ) : (
                                     <>
                                         {order.orderItems.map((item, index) => (
@@ -287,7 +287,7 @@ const OrderScreen = ({ match }) => {
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <strong>Tiền hàng</strong>
+                                                <strong>Sản phẩm</strong>
                                             </td>
                                             <td>{order.itemsPrice}đ</td>
                                         </tr>
@@ -346,9 +346,7 @@ const OrderScreen = ({ match }) => {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="text-white bg-dark p-2 col-12">
-                                            Đơn hàng đã bị hủy
-                                        </div>
+                                        <div className="text-white bg-dark p-2 col-12">Đơn hàng này đã bị hủy bỏ</div>
                                     )
                                 }
                                 {order.isPaid && (
@@ -369,7 +367,7 @@ const OrderScreen = ({ match }) => {
                                             style={{ marginBottom: '15px' }}
                                             disabled={order?.isPaid || order?.cancel == 1}
                                         >
-                                            HỦY ĐƠN HÀNG
+                                            HỦY ĐƠN HÀNG NÀY
                                         </button>
                                     </div>
                                 )}
