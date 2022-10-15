@@ -32,6 +32,10 @@ import {
     ORDER_GET_REVIEW_REQUEST,
     ORDER_GET_REVIEW_SUCCESS,
     ORDER_GET_REVIEW_FAIL,
+    ORDER_COMPLETE_USER_REQUEST,
+    ORDER_COMPLETE_USER_SUCCESS,
+    ORDER_COMPLETE_USER_FAIL,
+    ORDER_COMPLETE_USER_RESET,
 } from '../Constants/OrderConstants';
 
 // CREATE ORDER
@@ -166,6 +170,21 @@ export const orderCancelReducer = (state = {}, action) => {
         case ORDER_CANCEL_FAIL:
             return { loading: false, error: action.payload };
         case ORDER_CANCEL_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const orderCompleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ORDER_COMPLETE_USER_REQUEST:
+            return { loading: true };
+        case ORDER_COMPLETE_USER_SUCCESS:
+            return { loading: false, success: true };
+        case ORDER_COMPLETE_USER_FAIL:
+            return { loading: false, error: action.payload };
+        case ORDER_COMPLETE_USER_RESET:
             return {};
         default:
             return state;

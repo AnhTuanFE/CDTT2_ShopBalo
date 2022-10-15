@@ -9,10 +9,11 @@ import {
     payOrder,
     createOrderReview,
     orderGetItemOrder,
+    completeOrder,
 } from '../Redux/Actions/OrderActions';
 import { createProductReview } from '../Redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants';
-import { ORDER_CREATE_REVIEW_RESET } from '../Redux/Constants/OrderConstants';
+import { ORDER_CREATE_REVIEW_RESET, ORDER_COMPLETE_USER_RESET } from '../Redux/Constants/OrderConstants';
 import Loading from './../components/LoadingError/Loading';
 import Message from './../components/LoadingError/Error';
 import moment from 'moment';
@@ -46,6 +47,8 @@ const OrderScreen = ({ match }) => {
     const { loading: loadingCancel, success: successCancel } = orderCancel;
     const reviews = useSelector((state) => state.productReviewCreate);
     const { success: successReview, error: errorReview } = reviews;
+    const orderGetComplete = useSelector((state) => state.orderGetComplete);
+    const { success: successComplete } = orderGetComplete;
 
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
@@ -72,7 +75,11 @@ const OrderScreen = ({ match }) => {
         if (successReviewOrder) {
             dispatch({ type: ORDER_CREATE_REVIEW_RESET });
         }
-    }, [successReviewOrder]);
+        if (successComplete) {
+            dispatch({ type: ORDER_COMPLETE_USER_RESET });
+            dispatch(getOrderDetails(orderId));
+        }
+    }, [successReviewOrder, successComplete]);
 
     if (!loading) {
         const addDecimals = (num) => {
@@ -108,7 +115,6 @@ const OrderScreen = ({ match }) => {
         // }
         // }
     }, [dispatch, orderId, order]);
-    //[dispatch, orderId, successPay, order]);
 
     // const successPaymentHandler = (paymentResult) => {
     //     dispatch(payOrder(orderId, paymentResult));
@@ -125,17 +131,25 @@ const OrderScreen = ({ match }) => {
                 ) : (
                     <>
                         <div className="content-header"></div>
-                        <div className="row  order-detail">
+                        <div
+                            className="row  order-detail"
+                            style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                        >
                             <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
                                 <div className="row " style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
+                                    <div className="col-lg-2 col-sm-3 mb-lg-3 center fix-bottom">
                                         <div className="alert-success order-box fix-none">
                                             <i class="fas fa-user"></i>
                                         </div>
                                     </div>
-                                    <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
-                                        <p>{`Họ tên: ${order.user.name}`}</p>
-                                        <p>{`Số điện thoại: ${userInfo.phone}`}</p>
+                                    <div className="col-lg-10 col-sm-9 mb-lg-9 fix-display">
+                                        <p>
+                                            <span style={{ fontWeight: '600' }}>Họ tên:</span> {order.user.name}
+                                        </p>
+                                        <p>
+                                            {' '}
+                                            <span style={{ fontWeight: '600' }}>Số điện thoại:</span> {userInfo.phone}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -146,32 +160,16 @@ const OrderScreen = ({ match }) => {
                                     className="row"
                                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}
                                 >
-                                    <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
+                                    <div className="col-lg-2 col-sm-3 mb-lg-3 center fix-bottom">
                                         <div className="alert-success order-box fix-none">
                                             <i className="fas fa-map-marker-alt"></i>
                                         </div>
                                     </div>
-                                    <div className="col-lg-9 col-sm-9 mb-lg-9">
+                                    <div className="col-lg-10 col-sm-9 mb-lg-9">
                                         <p>
-                                            Địa chỉ:{' '}
+                                            <span style={{ fontWeight: '600' }}>Địa chỉ:</span>{' '}
                                             {`${order.shippingAddress.city}, ${order.shippingAddress.address}, ${order.shippingAddress.country}`}
                                         </p>
-                                        {order.isDelivered ? (
-                                            <div className="bg-info p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">
-                                                    Bắt đầu giao hàng từ {moment(order.createdAt).hours()}
-                                                    {':'}
-                                                    {moment(order.createdAt).minutes() < 10
-                                                        ? `0${moment(order.createdAt).minutes()}`
-                                                        : moment(order.createdAt).minutes()}{' '}
-                                                    {moment(order.createdAt).format('DD/MM/YYYY')}{' '}
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <div className="bg-danger p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">Chờ giao hàng</p>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -179,38 +177,249 @@ const OrderScreen = ({ match }) => {
 
                             <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
                                 <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
+                                    <div className="col-lg-2 col-sm-3 mb-lg-3 center fix-bottom">
                                         <div className="alert-success order-box fix-none">
                                             <i class="fab fa-paypal"></i>
                                         </div>
                                     </div>
-                                    <div className="col-lg-9 col-sm-9 mb-lg-9">
+                                    <div className="col-lg-10 col-sm-9 mb-lg-9">
                                         <p>
-                                            <p>Phương thức: {order.paymentMethod}</p>
+                                            <p>
+                                                <span style={{ fontWeight: '600' }}>Phương thức:</span>{' '}
+                                                {order.paymentMethod}
+                                            </p>
                                         </p>
-                                        {order.isPaid ? (
-                                            <div className="bg-info p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">
-                                                    Đã trả vào {moment(order.paidAt).hours()}
-                                                    {':'}
-                                                    {moment(order.paidAt).minutes() < 10
-                                                        ? `0${moment(order.paidAt).minutes()}`
-                                                        : moment(order.paidAt).minutes()}{' '}
-                                                    {moment(order.paidAt).format('DD/MM/YYYY')}{' '}
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <div className="bg-danger p-2 col-12">
-                                                <p className="text-white text-center text-sm-start">
-                                                    Đang chờ thanh toán
-                                                </p>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        <div
+                            className="row order-detail"
+                            style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                        >
+                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <div className="d-flex justify-content-center">
+                                            <span className="arrow-cart">
+                                                <i
+                                                    class="fas fa-arrow-alt-right"
+                                                    style={order.cancel === 0 ? { color: '#06dce6ed' } : {}}
+                                                ></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                        <div>
+                                            <div className="d-flex justify-content-center">
+                                                <div
+                                                    className="cutoms-css"
+                                                    style={
+                                                        order?.waitConfirmation ? { backgroundColor: '#06dce6ed' } : {}
+                                                    }
+                                                >
+                                                    <i class="fad fa-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                            <div className="text-center">
+                                                {order?.waitConfirmation ? (
+                                                    <>
+                                                        <p
+                                                            className="text-center text-font"
+                                                            style={{ color: 'blue', fontWeight: '600' }}
+                                                        >
+                                                            Đã xác nhận
+                                                        </p>
+                                                        <span
+                                                            style={{
+                                                                fontSize: '13px',
+                                                                color: 'red',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            {moment(order?.waitConfirmationAt).hours()}
+                                                            {':'}
+                                                            {moment(order?.waitConfirmationAt).minutes() < 10
+                                                                ? `0${moment(order?.waitConfirmationAt).minutes()}`
+                                                                : moment(order?.waitConfirmationAt).minutes()}{' '}
+                                                            {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <p className="text-center text-font">Chờ xác nhận</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <div className="d-flex justify-content-center">
+                                            <span className="arrow-cart">
+                                                <i
+                                                    class="fas fa-arrow-alt-right"
+                                                    style={order?.waitConfirmation ? { color: '#06dce6ed' } : {}}
+                                                ></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                        <div>
+                                            <div className="d-flex justify-content-center">
+                                                <div
+                                                    className="cutoms-css"
+                                                    style={order?.isDelivered ? { backgroundColor: '#06dce6ed' } : {}}
+                                                >
+                                                    <i class="fas fa-car-side"></i>
+                                                </div>
+                                            </div>
+                                            <div className="text-center">
+                                                {order?.isDelivered ? (
+                                                    <>
+                                                        <p
+                                                            className="text-center text-font"
+                                                            style={{ color: 'blue', fontWeight: '600' }}
+                                                        >
+                                                            Đang giao
+                                                        </p>
+                                                        <span
+                                                            style={{
+                                                                fontSize: '13px',
+                                                                color: 'red',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            {moment(order?.deliveredAt).hours()}
+                                                            {':'}
+                                                            {moment(order?.deliveredAt).minutes() < 10
+                                                                ? `0${moment(order?.deliveredAt).minutes()}`
+                                                                : moment(order?.deliveredAt).minutes()}{' '}
+                                                            {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <p className="text-center text-font">Đang giao</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <div className="d-flex justify-content-center">
+                                            <span className="arrow-cart">
+                                                <i
+                                                    class="fas fa-arrow-alt-right"
+                                                    style={order?.isDelivered ? { color: '#06dce6ed' } : {}}
+                                                ></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                        <div>
+                                            <div className="d-flex justify-content-center">
+                                                <div
+                                                    className="cutoms-css"
+                                                    style={order?.isPaid ? { backgroundColor: '#06dce6ed' } : {}}
+                                                >
+                                                    <i class="fas fa-money-bill-alt"></i>
+                                                </div>
+                                            </div>
+                                            <div className="text-center">
+                                                {order?.isPaid ? (
+                                                    <>
+                                                        <p
+                                                            className="text-center text-font"
+                                                            style={{ color: 'blue', fontWeight: '600' }}
+                                                        >
+                                                            Nhận hàng và thanh toán
+                                                        </p>
+                                                        <span
+                                                            style={{
+                                                                fontSize: '13px',
+                                                                color: 'red',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            {moment(order?.paidAt).hours()}
+                                                            {':'}
+                                                            {moment(order?.paidAt).minutes() < 10
+                                                                ? `0${moment(order?.paidAt).minutes()}`
+                                                                : moment(order?.paidAt).minutes()}{' '}
+                                                            {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <p className="text-center text-font">Nhận hàng và thanh toán</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <div className="d-flex justify-content-center">
+                                            <span className="arrow-cart">
+                                                <i
+                                                    class="fas fa-arrow-alt-right"
+                                                    style={order?.isPaid ? { color: '#06dce6ed' } : {}}
+                                                ></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                        <div>
+                                            <div className="d-flex justify-content-center">
+                                                <div
+                                                    className="cutoms-css"
+                                                    style={
+                                                        order?.completeUser && order?.completeAdmin
+                                                            ? { backgroundColor: '#06dce6ed' }
+                                                            : {}
+                                                    }
+                                                >
+                                                    <i class="far fa-handshake"></i>
+                                                </div>
+                                            </div>
+                                            <div className="text-center">
+                                                {order?.completeUser && order?.completeAdmin ? (
+                                                    <>
+                                                        <p
+                                                            className="text-center text-font"
+                                                            style={{ color: 'blue', fontWeight: '600' }}
+                                                        >
+                                                            Hoàn tất
+                                                        </p>
+                                                        <span
+                                                            style={{
+                                                                fontSize: '13px',
+                                                                color: 'red',
+                                                                fontWeight: '600',
+                                                            }}
+                                                        >
+                                                            {moment(order?.completeAdminAt).hours()}
+                                                            {':'}
+                                                            {moment(order?.completeAdminAt).minutes() < 10
+                                                                ? `0${moment(order?.completeAdminAt).minutes()}`
+                                                                : moment(order?.completeAdminAt).minutes()}{' '}
+                                                            {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <p className="text-center text-font">Hoàn tất</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="row order-products justify-content-between" style={{ marginBottom: '30px' }}>
                             <div className="col-lg-9 fix-padding cart-scroll">
                                 {order.orderItems.length === 0 ? (
@@ -287,27 +496,27 @@ const OrderScreen = ({ match }) => {
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <strong>Sản phẩm</strong>
+                                                <strong className="fs-6">Sản phẩm:</strong>
                                             </td>
-                                            <td>{order.itemsPrice}đ</td>
+                                            <td className="fs-6">{order.itemsPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong>Phí vận chuyển</strong>
+                                                <strong className="fs-6">Phí vận chuyển:</strong>
                                             </td>
-                                            <td>{order.shippingPrice}đ</td>
+                                            <td className="fs-6">{order.shippingPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong>Thuế</strong>
+                                                <strong className="fs-6">Thuế:</strong>
                                             </td>
-                                            <td>{order.taxPrice}đ</td>
+                                            <td className="fs-6">{order.taxPrice}đ</td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong>Tổng tiền</strong>
+                                                <strong className="fs-6">Tổng tiền:</strong>
                                             </td>
-                                            <td>{order.totalPrice}đ</td>
+                                            <td className="fs-6">{order.totalPrice}đ</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -328,34 +537,67 @@ const OrderScreen = ({ match }) => {
                                     //     )} */}
                                     //   </div>
                                     // )
-                                    order?.cancel != 1 ? (
-                                        !order.isPaid &&
-                                        (!order.isDelivered ? (
-                                            <div className="col-12 bg-warning ">
-                                                {loadingPay && <Loading />}
-                                                <span className="">Đang chờ xác nhận</span>
-                                            </div>
-                                        ) : (
-                                            <div className="col-12">
-                                                {loadingPay && <Loading />}
-                                                <div className="bg-danger p-2 col-12">
-                                                    <p className="text-white text-center text-sm-start">
-                                                        Đang chờ thanh toán
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="text-white bg-dark p-2 col-12">Đơn hàng này đã bị hủy bỏ</div>
+                                    // order?.cancel != 1 ? (
+                                    //     !order.isPaid &&
+                                    //     (!order.isDelivered ? (
+                                    //         <div className="col-12 bg-warning ">
+                                    //             {loadingPay && <Loading />}
+                                    //             <span className="">Đang chờ xác nhận</span>
+                                    //         </div>
+                                    //     ) : (
+                                    //         <div className="col-12">
+                                    //             {loadingPay && <Loading />}
+                                    //             <div className="bg-danger p-2 col-12">
+                                    //                 <p className="text-white text-center text-sm-start">
+                                    //                     Đang chờ thanh toán
+                                    //                 </p>
+                                    //             </div>
+                                    //         </div>
+                                    //     ))
+                                    // ) : (
+                                    //     <div className="text-white bg-dark p-2 col-12">Đơn hàng này đã bị hủy bỏ</div>
+                                    //             )
+                                    order?.cancel === 1 && (
+                                        <div className="text-white bg-dark p-2 col-12 fs-6 text-center">
+                                            Đơn hàng này đã bị hủy bỏ
+                                        </div>
                                     )
                                 }
-                                {order.isPaid && (
-                                    <div className="col-12">
-                                        {loadingPay && <Loading />}
-                                        <div className="bg-success p-2 col-12">
-                                            <p className="text-white text-center text-sm-start">
-                                                Thanh toán thành công
-                                            </p>
+                                {order?.isPaid && order?.completeUser !== true && (
+                                    <div className="col-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="row">
+                                            <button
+                                                className="col-12 col-sm-12 col-md-12 col-lg-12 bg-success button-hover-cart"
+                                                style={{
+                                                    textTransform: ' capitalize',
+                                                    marginBottom: '5px',
+                                                    borderRadius: '4px',
+                                                    fontSize: '17px',
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={() => {
+                                                    dispatch(completeOrder(orderId));
+                                                }}
+                                            >
+                                                Hoàn tất đơn hàng
+                                            </button>
+                                            <a
+                                                className="col-12 col-sm-12 col-md-12 col-lg-12 button-hover-cart"
+                                                href="https://www.youtube.com/watch?v=6IX9kq4Ovzc"
+                                                style={{ padding: '0px 0px' }}
+                                            >
+                                                <button
+                                                    style={{
+                                                        textTransform: ' capitalize',
+                                                        marginTop: '5px',
+                                                        borderRadius: '4px',
+                                                        fontSize: '17px',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                >
+                                                    Trả hàng
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 )}

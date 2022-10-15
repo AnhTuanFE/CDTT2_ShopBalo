@@ -195,6 +195,67 @@ orderRouter.put(
     }),
 );
 
+// ORDER IS WAITCONFIRMATION
+orderRouter.put(
+    '/:id/waitConfirmation',
+    // protect,
+    // admin,
+    asyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id);
+
+        if (order) {
+            order.waitConfirmation = true;
+            order.waitConfirmationAt = Date.now();
+
+            const updatedOrder = await order.save();
+            res.json(updatedOrder);
+        } else {
+            res.status(404);
+            throw new Error('Order Not Found');
+        }
+    }),
+);
+
+// ORDER IS COMMPLETE USER
+orderRouter.put(
+    '/:id/completeUser',
+    protect,
+    asyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id);
+        if (order) {
+            order.completeUser = true;
+            order.completeUserAt = Date.now();
+
+            const updatedOrder = await order.save();
+            res.json(updatedOrder);
+        } else {
+            res.status(404);
+            throw new Error('Order Not Found');
+        }
+    }),
+);
+
+// ORDER IS COMMPLETE ADMIN
+orderRouter.put(
+    '/:id/completeAdmin',
+    // protect,
+    // admin,
+    asyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id);
+
+        if (order) {
+            order.completeAdmin = true;
+            order.completeAdminAt = Date.now();
+
+            const updatedOrder = await order.save();
+            res.json(updatedOrder);
+        } else {
+            res.status(404);
+            throw new Error('Order Not Found');
+        }
+    }),
+);
+
 // ORDER IS DELIVERED
 orderRouter.put(
     '/:id/delivered',
@@ -223,7 +284,7 @@ orderRouter.put(
 
         if (order) {
             order.isPaid = true;
-            order.deliveredAt = Date.now();
+            order.paidAt = Date.now();
 
             const updatedOrder = await order.save();
             res.json(updatedOrder);

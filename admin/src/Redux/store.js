@@ -20,6 +20,8 @@ import {
     orderDetailsReducer,
     orderListReducer,
     orderPaidReducer,
+    ordercompleteAdminReducer,
+    orderwaitConfirmationReducer,
 } from './Reducers/OrderReducres';
 import { sliderCreateReducer, sliderDeleteReducer, sliderListReducer } from './Reducers/SliderListReducers';
 import {
@@ -54,6 +56,8 @@ const reducer = combineReducers({
     orderDeliver: orderDeliveredReducer,
     orderPaid: orderPaidReducer,
     orderCancel: orderCancelReducer,
+    orderwaitGetConfirmation: orderwaitConfirmationReducer,
+    orderGetcompleteAdmin: ordercompleteAdminReducer,
     sliderList: sliderListReducer,
     deleteSlider: sliderDeleteReducer,
     sliderCreate: sliderCreateReducer,

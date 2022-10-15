@@ -2,10 +2,40 @@
     .container-slider {
         max-width: 1450px;
     }
+    .cutoms-css {
+        height: 100px;
+        width: 100px;
+        background-color: #06dce63d;
+        border-radius: 50%;
+        text-align: center;
+    }
+    .cutoms-css i {
+        font-size: 45px;
+        line-height: 90px;
+        color: #e87f03;
+    }
+    .arrow-cart {
+        font-size: 40px;
+    }
 }
 @media (max-width: 1350px) {
     .rating-bar {
         max-width: 460px;
+    }
+    .cutoms-css {
+        height: 100px;
+        width: 100px;
+        background-color: #06dce63d;
+        border-radius: 50%;
+        text-align: center;
+    }
+    .cutoms-css i {
+        font-size: 45px;
+        line-height: 90px;
+        color: #e87f03;
+    }
+    .arrow-cart {
+        font-size: 40px;
     }
 }
 @media (min-width: 769px) {
@@ -31,6 +61,21 @@
     }
     .rating-bar {
         max-width: 400px;
+    }
+    .cutoms-css {
+        height: 90px;
+        width: 90px;
+        background-color: #06dce63d;
+        border-radius: 50%;
+        text-align: center;
+    }
+    .cutoms-css i {
+        font-size: 40px;
+        line-height: 90px;
+        color: #e87f03;
+    }
+    .arrow-cart {
+        font-size: 35px;
     }
 }
 @media (max-width: 991.98px) {
@@ -215,6 +260,21 @@
     }
     .navbar-list__li:hover {
         background-color: rgba(114, 108, 96, 0.493);
+    }
+    .cutoms-css {
+        height: 60px;
+        width: 60px;
+        background-color: #06dce63d;
+        border-radius: 50%;
+        text-align: center;
+    }
+    .cutoms-css i {
+        font-size: 25px;
+        line-height: 60px;
+        color: #e87f03;
+    }
+    .arrow-cart {
+        font-size: 30px;
     }
 }
 @media (max-width: 767px) {

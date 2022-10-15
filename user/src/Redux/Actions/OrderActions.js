@@ -26,6 +26,9 @@ import {
     ORDER_GET_REVIEW_REQUEST,
     ORDER_GET_REVIEW_SUCCESS,
     ORDER_GET_REVIEW_FAIL,
+    ORDER_COMPLETE_USER_REQUEST,
+    ORDER_COMPLETE_USER_SUCCESS,
+    ORDER_COMPLETE_USER_FAIL,
 } from '../Constants/OrderConstants';
 import axios from 'axios';
 import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
@@ -281,6 +284,36 @@ export const cancelOrder = (order) => async (dispatch, getState) => {
         }
         dispatch({
             type: ORDER_CANCEL_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// COMPLETE ORDER PUT
+export const completeOrder = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: ORDER_COMPLETE_USER_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/orders/${id}/completeUser`, {}, config);
+        dispatch({ type: ORDER_COMPLETE_USER_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: ORDER_COMPLETE_USER_FAIL,
             payload: message,
         });
     }

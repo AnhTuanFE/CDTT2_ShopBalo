@@ -7,7 +7,7 @@ const OrderDetailProducts = (props) => {
     if (!loading) {
         // Calculate Price
         const addDecimals = (num) => {
-            return (Math.round(num * 100) / 100).toFixed(2);
+            return (Math.round(num * 100) / 100).toFixed(0);
         };
 
         order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
@@ -17,11 +17,11 @@ const OrderDetailProducts = (props) => {
         <table className="table border table-lg">
             <thead>
                 <tr>
-                    <th style={{ width: '40%' }}>Product</th>
-                    <th style={{ width: '20%' }}>Unit Price</th>
-                    <th style={{ width: '20%' }}>Quantity</th>
+                    <th style={{ width: '40%' }}>Sản phẩm</th>
+                    <th style={{ width: '20%' }}>Đơn giá</th>
+                    <th style={{ width: '20%' }}>Số lượng</th>
                     <th style={{ width: '20%' }} className="text-end">
-                        Total
+                        Giá tiền
                     </th>
                 </tr>
             </thead>
@@ -41,9 +41,9 @@ const OrderDetailProducts = (props) => {
                                 <div className="info">{item.name}</div>
                             </Link>
                         </td>
-                        <td>${item.price} </td>
+                        <td>{item.price}đ </td>
                         <td>{item.qty} </td>
-                        <td className="text-end"> ${item.qty * item.price}</td>
+                        <td className="text-end"> {item.qty * item.price}đ</td>
                     </tr>
                 ))}
 
@@ -51,36 +51,53 @@ const OrderDetailProducts = (props) => {
                     <td colSpan="4">
                         <article className="float-end">
                             <dl className="dlist">
-                                <dt>Subtotal:</dt> <dd>${order.itemsPrice}</dd>
-                            </dl>
-                            <dl className="dlist">
-                                <dt>Shipping cost:</dt> <dd>${order.shippingPrice}</dd>
-                            </dl>
-                            <dl className="dlist">
-                                <dt>Grand total:</dt>
-                                <dd>
-                                    <b className="h5">${order.totalPrice}</b>
+                                <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                    Tổng tiền:
+                                </dt>{' '}
+                                <dd className="fs-6" style={{ fontWeight: '600' }}>
+                                    {order.itemsPrice}đ
                                 </dd>
                             </dl>
                             <dl className="dlist">
-                                <dt className="text-muted">Status:</dt>
+                                <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                    Phí ship:
+                                </dt>{' '}
+                                <dd className="fs-6" style={{ fontWeight: '600' }}>
+                                    {order.shippingPrice}đ
+                                </dd>
+                            </dl>
+                            <dl className="dlist">
+                                <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                    Tổng cộng:
+                                </dt>
+                                <dd className="fs-5" style={{ fontWeight: '600' }}>
+                                    {order.totalPrice}đ
+                                </dd>
+                            </dl>
+                            <dl className="dlist">
+                                <dt className="text-muted fs-6" style={{ fontWeight: '600' }}>
+                                    Trạng thái:
+                                </dt>
                                 <dd>
-                                    {order?.cancel != 1 ? (
-                                        order.isPaid ? (
-                                            <span className="badge rounded-pill alert alert-success text-success">
-                                                Payment done
-                                            </span>
+                                    {order?.cancel !== 1 ? (
+                                        order?.waitConfirmation &&
+                                        order?.isDelivered &&
+                                        order?.isPaid &&
+                                        order?.completeUser &&
+                                        order?.completeAdmin ? (
+                                            <span className="badge rounded-pill alert-success">Hoàn tất</span>
+                                        ) : order?.waitConfirmation && order?.isDelivered && order?.isPaid ? (
+                                            <span className="badge alert-success">Đã thanh toán</span>
+                                        ) : order?.waitConfirmation && order?.isDelivered ? (
+                                            <span className="badge alert-warning">Đang giao</span>
+                                        ) : order?.waitConfirmation ? (
+                                            <span className="badge alert-warning">Đã xác nhận</span>
                                         ) : (
-                                            <span className="badge rounded-pill alert alert-danger text-danger">
-                                                Awaiting payment
-                                            </span>
+                                            <span className="badge alert-danger">Chờ xác nhận</span>
                                         )
                                     ) : (
-                                        <span className="badge rounded-pill alert-dark text-danger">
-                                            This Order has been cancelled
-                                        </span>
+                                        <span className="badge bg-dark">Đơn này đã bị hủy</span>
                                     )}
-                                    {}
                                 </dd>
                             </dl>
                         </article>

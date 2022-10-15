@@ -65,12 +65,36 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 0.0,
         },
+        waitConfirmation: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        waitConfirmationAt: {
+            type: Date,
+        },
         isPaid: {
             type: Boolean,
             required: true,
             default: false,
         },
         paidAt: {
+            type: Date,
+        },
+        completeUser: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        completeUserAt: {
+            type: Date,
+        },
+        completeAdmin: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        completeAdminAt: {
             type: Date,
         },
         cancel: {
