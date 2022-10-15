@@ -6,15 +6,14 @@ const Footer = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
-                        <h1 className="footer-hearder">Design</h1>
+                        <h1 className="footer-hearder">Thiết kế</h1>
                         <ul className="footer-list">
-                            <li>Pham Thanh Son</li>
-                            <li>Nguyen Khac Tuan</li>
-                            <li>Nguyen Van Lich</li>
+                            <li>Nguyễn Anh Tuấn</li>
+                            <li>Nguyễn Văn Lịch</li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
-                        <h1 className="footer-hearder">Follow Us</h1>
+                        <h1 className="footer-hearder">Theo dõi chúng tôi</h1>
                         <ul className="footer-list">
                             <li>
                                 <a href="#">
@@ -70,16 +69,13 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
-                        <h1 className="footer-hearder">Customer Care</h1>
+                        <h1 className="footer-hearder">Chăm sóc khách hàng</h1>
                         <ul className="footer-list">
                             <li>
-                                <a href="#">Help Center</a>
+                                <a href="#">Trung tâm trợ giúp</a>
                             </li>
                             <li>
-                                <a href="#">Customer Guide</a>
-                            </li>
-                            <li>
-                                <a href="#">Customer Care</a>
+                                <a href="#">Hướng dẫn khách hàng</a>
                             </li>
                         </ul>
                     </div>

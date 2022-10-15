@@ -1,4 +1,4 @@
-import {React, useEffect} from 'react';
+import { React, useEffect } from 'react';
 import TopTotal from './TopTotal';
 import LatestOrder from './LatestOrder';
 import SaleStatistics from './SalesStatistics';
@@ -22,10 +22,10 @@ const Main = () => {
         <>
             <section className="content-main">
                 <div className="content-header">
-                    <h2 className="content-title"> Dashboard </h2>
+                    <h2 className="content-title"> Trang chủ </h2>
                 </div>
                 {/* Top Total */}
-                <TopTotal orders={orders} countProducts={countProducts} countUsers={users?users.length:0} />
+                <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 
                 <div className="row">
                     {/* STATICS */}
@@ -34,9 +34,9 @@ const Main = () => {
                 </div>
 
                 {/* LATEST ORDER */}
-                <div className="card mb-4 shadow-sm">
+                {/* <div className="card mb-4 shadow-sm">
                     <LatestOrder orders={orders} loading={loading} error={error} />
-                </div>
+                </div> */}
             </section>
         </>
     );

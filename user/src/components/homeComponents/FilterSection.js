@@ -72,7 +72,7 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
             <div className="Category-section">
                 <div className="section-flex">
                     <i class="fas fa-align-left"></i>
-                    <h2 className="Category-section__h2">Category</h2>
+                    <h2 className="Category-section__h2">Các loại hàng</h2>
                 </div>
                 <ul className="Category-section__list">
                     {categories.map((category) => (
@@ -95,15 +95,15 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
             <div className="Category-search">
                 <div className="section-flex">
                     <i class="fas fa-filter "></i>
-                    <h2 className="Category-section__h2 Category-search__h2">Filter</h2>
+                    <h2 className="Category-section__h2 Category-search__h2">Lọc sản phẩm</h2>
                 </div>
 
                 <div className="distance-price">
-                    <p className="distance-price__p">Price range</p>
+                    <p className="distance-price__p">Lọc theo giá</p>
                     <div className="distance-price__flex" style={{ display: 'flex', alignItems: 'center' }}>
                         <input
                             type="number"
-                            placeholder="$Min"
+                            placeholder="$Từ"
                             onChange={(e) => setCurentMinPrice(e.target.value)}
                             value={curentMinPrice}
                             min="0"
@@ -111,7 +111,7 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
                         <label>-</label>
                         <input
                             type="number"
-                            placeholder="$Max"
+                            placeholder="$Đến"
                             onChange={(e) => setCurentMaxPrice(e.target.value)}
                             value={curentMaxPrice}
                             min="1"
@@ -119,11 +119,11 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
                     </div>
                     <p style={{ fontSize: '14px', color: 'red' }}>{price.name}</p>
                     <button className="distance-price__submit" onClick={ApplyHandler}>
-                        APPLY
+                        Tìm
                     </button>
                 </div>
                 <div className="assess-star">
-                    <p className="distance-price__p">Review</p>
+                    <p className="distance-price__p">Đánh giá</p>
                     <div className="assess-star__div">
                         <div display={{ display: 'flex', alignItems: 'center' }}>
                             <input
@@ -220,7 +220,7 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
                             onClick={ClearHandle}
                             style={{ fontSize: '0.85rem', color: '#fff' }}
                         >
-                            CLEAR ALL FILTER
+                            Xóa lọc sản phẩm
                         </Link>
                     </button>
                 </div>

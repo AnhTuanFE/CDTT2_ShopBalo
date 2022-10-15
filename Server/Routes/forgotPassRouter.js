@@ -21,7 +21,7 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
     try {
       const oldUser = await User.findOne({ email });
       if (!oldUser) {
-        return res.json({ status: "User Not Exists!!" });
+        return res.json({ status: "Email chưa được đăng ký, vui lòng kiểm tra lại" });
       }
       const secret = JWT_SECRET1 + oldUser.password;
       const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
@@ -50,6 +50,7 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
           console.log("Email sent: " + info.response);
         }
       });
+      res.json({ status: "Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn" });
       console.log(link);
     } catch (error) {}
   });

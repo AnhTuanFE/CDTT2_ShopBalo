@@ -601,7 +601,7 @@ const OrderScreen = ({ match }) => {
                                         </div>
                                     </div>
                                 )}
-                                {!order?.isDelivered && (
+                                {!order?.waitConfirmation && (
                                     <div className="col-lg-12 " style={{ paddingTop: '25px' }}>
                                         <button
                                             onClick={cancelOrderHandler}
@@ -661,6 +661,7 @@ const OrderScreen = ({ match }) => {
                                                         <img
                                                             src={product?.image}
                                                             style={{ height: '120px', width: '120px' }}
+                                                            alt=""
                                                         ></img>
                                                         <p style={{ fontSize: '16px' }}>{product?.name}</p>
                                                         <div

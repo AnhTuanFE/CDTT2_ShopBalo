@@ -63,7 +63,7 @@ const Header = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 d-flex align-items-center display-none">
-                            <p>Hostline: 0123456789</p>
+                            <p>Đường dây nóng: 0123456789</p>
                         </div>
                         <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
                             <Link to="">
@@ -164,7 +164,7 @@ const Header = () => {
                                         <input
                                             type="search"
                                             className="form-control rounded search button-search"
-                                            placeholder="Search"
+                                            placeholder="Tìm kiếm"
                                             onChange={(e) => setKeyword(e.target.value)}
                                         />
                                         <button type="submit" className="search-button">
@@ -189,7 +189,7 @@ const Header = () => {
                                     <input
                                         type="search"
                                         className="form-control rounded search button-search"
-                                        placeholder="Search"
+                                        placeholder="Tìm kiếm"
                                         onChange={(e) => setKeyword(e.target.value)}
                                     />
                                     <button type="submit" className="search-button">

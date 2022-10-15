@@ -5,7 +5,7 @@ const SaleStatistics = () => {
     <div className="col-xl-6 col-lg-12">
       <div className="card mb-4 shadow-sm">
         <article className="card-body">
-          <h5 className="card-title">Sale statistics</h5>
+          <h5 className="card-title">Thống kê bán hàng</h5>
           {/* <iframe
             style={{
               background: "#FFFFFF",

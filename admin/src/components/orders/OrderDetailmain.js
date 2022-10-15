@@ -145,7 +145,7 @@ const OrderDetailmain = (props) => {
                                     </b>
                                 </span>
                                 <br />
-                                <small className="text-black mx-3 ">Order ID: {order._id}</small>
+                                <small className="text-black mx-3 ">ID Đơn hàng: {order._id}</small>
                             </div>
                             {order?.cancel !== 1 && order?.waitConfirmation !== true ? (
                                 <div className="col-lg-3 col-md-6 ms-auto d-flex justify-content-end align-items-center">

@@ -75,24 +75,24 @@ const AddProductMain = () => {
     const isEmptyCheckEdit = () => {
         const msg = {};
         if (isEmpty(category)) {
-            msg.category = 'Plesae input your category';
+            msg.category = 'Vui lòng nhập loại sản phẩm';
             msg.borderRed1 = 'border-red';
         }
         if (isEmpty(name)) {
-            msg.name = 'Please input your name';
+            msg.name = 'Vui lòng nhập tên sản phẩm';
             msg.borderRed2 = 'border-red';
         }
         if (isEmpty(price)) {
-            msg.price = 'Plesae input your price';
+            msg.price = 'Vui lòng nhập giá sản phẩm';
             msg.borderRed3 = 'border-red';
         } else {
             if (price < 0) {
-                msg.price = 'Please enter the positive value';
+                msg.price = 'Vui lòng nhập giá trị dương';
                 msg.borderRed3 = 'border-red';
             }
         }
         if (isEmpty(image)) {
-            msg.image = 'Please input your image';
+            msg.image = 'Vui lòng nhập hình ảnh sản phẩm';
             msg.borderRed4 = 'border-red';
         }
         // if (isEmpty(countInStock)) {
@@ -105,7 +105,7 @@ const AddProductMain = () => {
         //     }
         // }
         if (isEmpty(description)) {
-            msg.description = 'Please input your description';
+            msg.description = 'Vui lòng nhập mô tả sản phẩm';
             msg.borderRed6 = 'border-red';
         }
         setValidate(msg);
@@ -137,9 +137,9 @@ const AddProductMain = () => {
                 <form>
                     <div className="content-header">
                         <Link to="/products" className="btn btn-danger text-white">
-                            Trở về products
+                            Trở về Trang sản phẩm
                         </Link>
-                        <h2 className="content-title">Add product</h2>
+                        <h2 className="content-title">Thêm sản phẩm</h2>
                         <div>
                             {/* <button type="submit" className="btn btn-primary color-orange">
                                 Add Product
@@ -161,7 +161,7 @@ const AddProductMain = () => {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    placeholder="Type here"
+                                                    placeholder="Tên sản phẩm"
                                                     className={`form-control ${validate.borderRed2}`}
                                                     id="product_title"
                                                     //required
@@ -184,7 +184,7 @@ const AddProductMain = () => {
                                                 </label>
                                                 <input
                                                     type="number"
-                                                    placeholder="Type here"
+                                                    placeholder="Giá sản phẩm"
                                                     className={`form-control ${validate.borderRed3}`}
                                                     id="product_price"
                                                     //required
@@ -224,7 +224,7 @@ const AddProductMain = () => {
                                                     }}
                                                     onChange={(e) => setCategory(e.target.value)}
                                                     title="Please select category"
-                                                    placeholder="Please select category"
+                                                    placeholder="Vui lòng chọn thể loại hàng"
                                                 >
                                                     <option value={-1} selected>
                                                         Chọn
@@ -243,7 +243,7 @@ const AddProductMain = () => {
                                                 <input
                                                     className={`form-control ${validate.borderRed4}`}
                                                     type="text"
-                                                    placeholder="URL"
+                                                    placeholder="Đường dẫn"
                                                     value={image}
                                                     //required
                                                     onClick={() => {
@@ -309,7 +309,7 @@ const AddProductMain = () => {
                                                         </label>
                                                         <input
                                                             type="text"
-                                                            placeholder="Type here"
+                                                            placeholder=""
                                                             className={`form-control ${validate.borderRed5}`}
                                                             id="product_price"
                                                             //required
@@ -333,7 +333,7 @@ const AddProductMain = () => {
                                                         </label>
                                                         <input
                                                             type="number"
-                                                            placeholder="Type here"
+                                                            placeholder=""
                                                             className={`form-control ${validate.borderRed5}`}
                                                             id="product_price"
                                                             //required

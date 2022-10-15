@@ -76,9 +76,9 @@ export default function AddNews() {
             <Toast />
             <form onSubmit={submitHandler} class="needs-validation" novalidate>
                 <div className="content-header" style={{ marginBottom: '20px' }}>
-                    <h2 className="content-title">News</h2>
+                    <h2 className="content-title">Tin tức</h2>
                     <button type="submit" className="btn btn-primary color-orange">
-                        AddNews
+                        Thêm tin tức
                     </button>
                 </div>
                 {error && (

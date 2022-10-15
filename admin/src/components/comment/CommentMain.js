@@ -49,7 +49,7 @@ export default function CommentMain() {
         <div className="content-main" style={{ backgroundColor: '#ffffff' }}>
             <div className="content-header">
                 <h2 className="content-title" style={{ padding: '15px' }}>
-                    Comment
+                    Bình luận
                 </h2>
             </div>
             <div class="accordion" id="accordionPanelsStayOpenExample">

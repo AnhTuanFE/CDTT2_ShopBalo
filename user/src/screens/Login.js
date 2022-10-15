@@ -28,23 +28,23 @@ const Login = ({ location, history }) => {
         const msg = {};
         let re = /\S+@\S+\.\S+/;
         if (isEmpty(email)) {
-            msg.email = 'Plesae input your email';
+            msg.email = 'Vui lòng nhập email của bạn';
             msg.borderRed1 = 'border-red';
             msg.colorRed1 = 'color-red';
         } else {
             if (!re.test(email)) {
-                msg.email = 'Incorrect Email';
+                msg.email = 'Email không hợp lệ';
                 msg.borderRed1 = 'border-red';
                 msg.colorRed1 = 'color-red';
             }
         }
         if (isEmpty(password)) {
-            msg.password = 'Please input your password';
+            msg.password = 'Vui lòng nhập mật khẩu';
             msg.borderRed2 = 'border-red';
             msg.colorRed2 = 'color-red';
         } else {
             if (password.length < 6) {
-                msg.password = 'Password must be at least 6 characters';
+                msg.password = 'Mật khẩu phải có it nhất 6 ký tự';
                 msg.borderRed2 = 'border-red';
                 msg.colorRed2 = 'color-red';
             }
@@ -109,16 +109,16 @@ const Login = ({ location, history }) => {
                         />
                         <p className="from-login__email-pass noti-validate">{loginCheck.password}</p>
                         <p className={`from-login__email-pass-color1 Login-from__password ${loginCheck.colorRed2}`}>
-                            Password
+                            Mật khẩu
                         </p>
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Đăng nhập</button>
                     {/* <a href='http://localhost:3000/reset'>Forgot Password</a> */}
                     <p>
-                        <Link to={'/reset'}>Forgot Password</Link>
+                        <Link to={'/reset'}>Quên mật khẩu</Link>
                     </p>
                     <p>
-                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Create Account</Link>
+                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Tạo tài khoản mới</Link>
                     </p>
                 </form>
             </div>

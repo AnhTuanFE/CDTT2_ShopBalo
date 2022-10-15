@@ -15,7 +15,7 @@ const Orders = (props) => {
                 <>
                     {orders.length === 0 ? (
                         <div className="col-12 alert alert-info text-center mt-3">
-                            No Orders
+                            Không có đơn hàng nào
                             <Link
                                 className="btn btn-success mx-2 px-3 py-2"
                                 to="/"
@@ -23,7 +23,7 @@ const Orders = (props) => {
                                     fontSize: '12px',
                                 }}
                             >
-                                START SHOPPING
+                                BẮT ĐẦU MUA SẮM
                             </Link>
                         </div>
                     ) : (
@@ -32,9 +32,9 @@ const Orders = (props) => {
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>STATUS</th>
-                                        <th>DATE</th>
-                                        <th>TOTAL</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày</th>
+                                        <th>Tổng tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,12 +51,12 @@ const Orders = (props) => {
                                             <td>
                                                 {order.cancel != 1 ? (
                                                     order.isPaid ? (
-                                                        <>Paid</>
+                                                        <>Đã thanh toán</>
                                                     ) : (
-                                                        <>awaiting payment</>
+                                                        <>Đang chờ thanh toán</>
                                                     )
                                                 ) : (
-                                                    <span className="btn-dark">This Order has been cancelled</span>
+                                                    <span className="btn-dark">Đơn hàng này đã bị hủy</span>
                                                 )}
                                             </td>
                                             <td>

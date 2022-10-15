@@ -83,9 +83,9 @@ export default function EditNews(props) {
             <Toast />
             <form onSubmit={submitHandlerUpload} class="needs-validation" novalidate>
                 <div className="content-header" style={{ marginBottom: '20px' }}>
-                    <h2 className="content-title">Update News</h2>
+                    <h2 className="content-title">Cập nhật tin tức</h2>
                     <button type="submit" className="btn btn-primary color-orange">
-                        Update News
+                        Cập nhật
                     </button>
                 </div>
                 {error && (

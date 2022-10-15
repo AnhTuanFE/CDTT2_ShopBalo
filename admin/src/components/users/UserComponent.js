@@ -15,63 +15,14 @@ const UserComponent = () => {
         dispatch(listUser());
     }, [dispatch]);
 
-    //find avtar
-    // const accUser =
-    //     users !== undefined &&
-    //     users.map((user) => {
-    //         let avata = avatar.find((avtar) => {
-    //             return user.image === avtar._id;
-    //         });
-    //         user = {
-    //             _id: user._id,
-    //             name: user.name,
-    //             email: user.email,
-    //             image: avata === undefined ? undefined : avata.url,
-    //             isAdmin: user.isAdmin,
-    //         };
-    //         return user;
-    //     });
-    // console.log(accUser);
     //hết
     return (
         <section className="content-main">
             <div className="content-header">
-                <h2 className="content-title">Customers</h2>
-                {/* <div>
-          <Link to="#" className="btn btn-primary">
-            <i className="material-icons md-plus"></i> Create new
-          </Link>
-        </div> */}
+                <h2 className="content-title">Tài khoản người dùng</h2>
             </div>
 
             <div className="card mb-4">
-                {/* <header className="card-header">
-          <div className="row gx-3">
-            <div className="col-lg-4 col-md-6 me-auto">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-control"
-              />
-            </div>
-            <div className="col-lg-2 col-6 col-md-3">
-              <select className="form-select">
-                <option>Show 20</option>
-                <option>Show 30</option>
-                <option>Show 40</option>
-                <option>Show all</option>
-              </select>
-            </div>
-            <div className="col-lg-2 col-6 col-md-3">
-              <select className="form-select">
-                <option>Status: all</option>
-                <option>Active only</option>
-                <option>Disabled</option>
-              </select>
-            </div>
-          </div>
-        </header> */}
-
                 {/* Card */}
                 <div className="card-body">
                     {loading ? (
@@ -98,7 +49,7 @@ const UserComponent = () => {
                                                 {user.isAdmin === true ? (
                                                     <p className="m-0">Admin</p>
                                                 ) : (
-                                                    <p className="m-0">Customer</p>
+                                                    <p className="m-0">Khách hàng</p>
                                                 )}
 
                                                 <p>
@@ -111,27 +62,6 @@ const UserComponent = () => {
                             ))}
                         </div>
                     )}
-
-                    {/* nav */}
-                    {/* <nav className="float-end mt-4" aria-label="Page navigation">
-                        <ul className="pagination">
-                            <li className="page-item disabled">
-                                <Link className="page-link" to="#">
-                                    Previous
-                                </Link>
-                            </li>
-                            <li className="page-item active">
-                                <Link className="page-link" to="#">
-                                    1
-                                </Link>
-                            </li>
-                            <li className="page-item">
-                                <Link className="page-link" to="#">
-                                    Next
-                                </Link>
-                            </li>
-                        </ul>
-                    </nav> */}
                 </div>
             </div>
         </section>

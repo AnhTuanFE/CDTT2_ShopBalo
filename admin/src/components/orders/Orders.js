@@ -51,7 +51,7 @@ const Orders = (props) => {
                         <th scope="col">Thời gian mua</th>
                         <th>Trạng thái</th>
                         <th scope="col" className="text-end">
-                            Action
+                            Quản lý
                         </th>
                     </tr>
                 </thead>

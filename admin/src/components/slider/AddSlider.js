@@ -23,10 +23,10 @@ export default function AddSlider() {
         const msg = {};
         let re = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
         if (isEmpty(url)) {
-            msg.url = 'Please input your url';
+            msg.url = 'Vui lòng nhập đường dẫn';
         } else {
             if (!re.test(url)) {
-                msg.url = 'Please enter valid URL';
+                msg.url = 'Vui lòng nhập đường dẫn phù hợp';
             }
         }
         SetValueUrl(msg);
@@ -62,7 +62,7 @@ export default function AddSlider() {
                 <input
                     type="url"
                     class="form-control"
-                    placeholder="Please type url"
+                    placeholder="Nhập đường dẫn"
                     aria-label="dsasd"
                     aria-describedby="basic-addon1"
                     required
@@ -76,7 +76,7 @@ export default function AddSlider() {
                 />
                 <div class="input-group-prepend">
                     <button class="btn btn-outline-secondary" type="button" onClick={submitHandler}>
-                        Add
+                        Thêm
                     </button>
                 </div>
             </div>

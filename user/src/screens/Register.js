@@ -33,58 +33,58 @@ const Register = ({ location, history }) => {
         const msg = {};
         let re = /\S+@\S+\.\S+/;
         if (isEmpty(name)) {
-            msg.name = 'Please input your name';
+            msg.name = 'Vui lòng nhập tên của bạn';
             msg.borderRed1 = 'border-red';
             msg.colorRed1 = 'color-red';
         }
 
         if (isEmpty(email)) {
-            msg.email = 'Plesae input your email';
+            msg.email = 'Vui lòng nhập email của bạn';
             msg.borderRed2 = 'border-red';
             msg.colorRed2 = 'color-red';
         } else {
             if (!re.test(email)) {
-                msg.email = 'Incorrect Email';
+                msg.email = 'Email sai';
                 msg.borderRed2 = 'border-red';
                 msg.colorRed2 = 'color-red';
             }
         }
 
         if (isEmpty(phone)) {
-            msg.phone = 'Plesae input your phone';
+            msg.phone = 'Vui lòng nhập số điện thoại của bạn';
             msg.borderRed3 = 'border-red';
             msg.colorRed3 = 'color-red';
         } else {
             if (isNaN(phone)) {
-                msg.phone = 'Incorrect phone number';
+                msg.phone = 'Số điện thoại không hợp lệ';
                 msg.borderRed3 = 'border-red';
                 msg.colorRed3 = 'color-red';
             }
         }
         if (isEmpty(password)) {
-            msg.password = 'Please input your password';
+            msg.password = 'Vui lòng nhập mật khẩu';
             msg.borderRed4 = 'border-red';
             msg.colorRed4 = 'color-red';
         } else {
             if (password.length < 6) {
-                msg.password = 'Password must be at least 6 characters';
+                msg.password = 'Mật khẩu phải có ít nhất 6 ký tự';
                 msg.borderRed4 = 'border-red';
                 msg.colorRed4 = 'color-red';
             }
         }
 
         if (isEmpty(cfpassword)) {
-            msg.cfpassword = 'Please input your cfpassword';
+            msg.cfpassword = 'Vui lòng nhập lại mật khẩu';
             msg.borderRed5 = 'border-red';
             msg.colorRed5 = 'color-red';
         } else {
             if (cfpassword.length < 6) {
-                msg.cfpassword = 'CfPassword must be at least 6 characters';
+                msg.cfpassword = 'Mật khẩu nhập lại không khớp';
                 msg.borderRed5 = 'border-red';
                 msg.colorRed5 = 'color-red';
             } else {
                 if (cfpassword !== password) {
-                    msg.cfpassword = 'The password entered is incorrect';
+                    msg.cfpassword = 'Nhập lại mật khẩu không khớp';
                     msg.borderRed5 = 'border-red';
                     msg.colorRed5 = 'color-red';
                 }
@@ -131,7 +131,7 @@ const Register = ({ location, history }) => {
                             }}
                         />
                         <p className="noti-validate">{checkValidate.name}</p>
-                        <p className={`Login-from__name ${checkValidate.colorRed1}`}>Username</p>
+                        <p className={`Login-from__name ${checkValidate.colorRed1}`}>Tên người dùng</p>
                     </div>
 
                     <div className="Login-from">
@@ -177,7 +177,7 @@ const Register = ({ location, history }) => {
                             }}
                         />
                         <p className="noti-validate">{checkValidate.phone}</p>
-                        <p className={`Login-from__phone ${checkValidate.colorRed3}`}>Phone</p>
+                        <p className={`Login-from__phone ${checkValidate.colorRed3}`}>Số ĐT</p>
                     </div>
 
                     <div className="Login-from">
@@ -200,7 +200,7 @@ const Register = ({ location, history }) => {
                             }}
                         />
                         <p className="noti-validate">{checkValidate.password}</p>
-                        <p className={`Login-from__password ${checkValidate.colorRed4}`}>Password</p>
+                        <p className={`Login-from__password ${checkValidate.colorRed4}`}>Mật khẩu</p>
                     </div>
 
                     <div className="Login-from">
@@ -223,13 +223,13 @@ const Register = ({ location, history }) => {
                             }}
                         />
                         <p className="noti-validate">{checkValidate.cfpassword}</p>
-                        <p className={`Login-from__cfpassword ${checkValidate.colorRed5}`}>Cfpassword</p>
+                        <p className={`Login-from__cfpassword ${checkValidate.colorRed5}`}>Nhập lại mật khẩu</p>
                     </div>
 
-                    <button type="submit">Register</button>
+                    <button type="submit">Đăng ký</button>
                     <p>
                         <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-                            I Have Account <strong>Login</strong>
+                            Tôi đã có tài khoản <strong>Đăng nhập</strong>
                         </Link>
                     </p>
                 </form>

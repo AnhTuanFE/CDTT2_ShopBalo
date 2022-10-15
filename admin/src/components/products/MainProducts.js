@@ -51,7 +51,7 @@ const MainProducts = (props) => {
     return (
         <section className="content-main">
             <div className="content-header">
-                <h2 className="content-title">Products</h2>
+                <h2 className="content-title">Các sản phẩm</h2>
                 <div>
                     <Link to="/addproduct" className="btn btn-primary color-orange">
                         Tạo mới
@@ -67,7 +67,7 @@ const MainProducts = (props) => {
                                 <div className="input-group" style={{ alignItems: 'center' }}>
                                     <input
                                         type="search"
-                                        placeholder="Search..."
+                                        placeholder="Tìm kiếm..."
                                         className="form-control p-2"
                                         onChange={(e) => {
                                             setKewywordSearch(e.target.value);
@@ -87,7 +87,7 @@ const MainProducts = (props) => {
                                     handleCategory(e);
                                 }}
                             >
-                                <option value={''}>All category</option>
+                                <option value={''}>Tất cả thể loại</option>
                                 {categories.map((category) => (
                                     <option value={category._id}>{category.name}</option>
                                 ))}
