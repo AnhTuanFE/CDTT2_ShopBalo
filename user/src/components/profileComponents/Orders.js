@@ -33,7 +33,7 @@ const Orders = (props) => {
                                     <tr>
                                         <th>ID</th>
                                         <th>Trạng thái</th>
-                                        <th>Ngày</th>
+                                        <th>Thời gian mua</th>
                                         <th>Tổng tiền</th>
                                     </tr>
                                 </thead>
@@ -49,7 +49,7 @@ const Orders = (props) => {
                                                 </a>
                                             </td>
                                             <td>
-                                                {order.cancel != 1 ? (
+                                                {/* {order.cancel != 1 ? (
                                                     order.isPaid ? (
                                                         <>Đã thanh toán</>
                                                     ) : (
@@ -57,14 +57,66 @@ const Orders = (props) => {
                                                     )
                                                 ) : (
                                                     <span className="btn-dark">Đơn hàng này đã bị hủy</span>
+                                                )} */}
+
+                                                {order?.cancel !== 1 ? (
+                                                    order?.waitConfirmation &&
+                                                    order?.isDelivered &&
+                                                    order?.isPaid &&
+                                                    order?.completeUser &&
+                                                    order?.completeAdmin ? (
+                                                        <span
+                                                            className="fs-6 text-success"
+                                                            style={{ fontWeight: '600' }}
+                                                        >
+                                                            Hoàn tất
+                                                        </span>
+                                                    ) : order?.waitConfirmation &&
+                                                      order?.isDelivered &&
+                                                      order?.isPaid ? (
+                                                        <span
+                                                            className="fs-6 text-success"
+                                                            style={{ fontWeight: '600' }}
+                                                        >
+                                                            Đã thanh toán
+                                                        </span>
+                                                    ) : order?.waitConfirmation && order?.isDelivered ? (
+                                                        <span
+                                                            className="fs-6 text-warning"
+                                                            style={{ fontWeight: '600' }}
+                                                        >
+                                                            Đang giao
+                                                        </span>
+                                                    ) : order?.waitConfirmation ? (
+                                                        <span
+                                                            className="fs-6 text-warning"
+                                                            style={{ fontWeight: '600' }}
+                                                        >
+                                                            Đã xác nhận
+                                                        </span>
+                                                    ) : (
+                                                        <span
+                                                            className="fs-6 text-warning"
+                                                            style={{ fontWeight: '600' }}
+                                                        >
+                                                            Chờ xác nhận
+                                                        </span>
+                                                    )
+                                                ) : (
+                                                    <span className="fs-6" style={{ fontWeight: '600' }}>
+                                                        Đơn này đã bị hủy
+                                                    </span>
                                                 )}
                                             </td>
-                                            <td>
-                                                {order.isPaid
-                                                    ? moment(order.paidAt).calendar()
-                                                    : moment(order.createdAt).calendar()}
+                                            <td className="fs-6" style={{ fontWeight: '600' }}>
+                                                {moment(order.createdAt).hours()}
+                                                {':'}
+                                                {moment(order.createdAt).minutes() < 10
+                                                    ? `0${moment(order.createdAt).minutes()}`
+                                                    : moment(order.createdAt).minutes()}{' '}
+                                                {moment(order.createdAt).format('MM/DD/YYYY')}
                                             </td>
-                                            <td>${order.totalPrice}</td>
+                                            <td>{order.totalPrice}đ</td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -27,9 +27,14 @@ const ShopSection = (props) => {
     return (
         <>
             <div className="container">
-                <div className="section">
+                <div className="section pt-0">
                     <div
-                        style={{ display: 'flex', justifyContent: 'right', marginBottom: '10px', marginRight: '20px' }}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'right',
+                            marginBottom: '10px',
+                            marginRight: '10px',
+                        }}
                     >
                         <div className="">
                             <select
@@ -45,19 +50,34 @@ const ShopSection = (props) => {
                                 <option value="4">Giá giảm dần</option>
                             </select>
                         </div>
+                        <div className="ms-2">
+                            <select
+                                className="form-select"
+                                value={rating}
+                                onChange={(e) => {
+                                    setRating(e.target.value);
+                                }}
+                            >
+                                <option value="0">Lọc...</option>
+                                <option value="5">5 sao</option>
+                                <option value="4">4 sao trở lên</option>
+                                <option value="3">3 sao trở lên</option>
+                                <option value="2">2 sao trở lên</option>
+                                <option value="1">1 sao trở lên</option>
+                            </select>
+                        </div>
                     </div>
-
                     <div className="row">
-                        <FilterSection
+                        {/* <FilterSection
                             setRating={setRating}
                             setMinPrice={setMinPrice}
                             setMaxPrice={setMaxPrice}
                             rating={rating}
                             minPrice={minPrice}
                             maxPrice={maxPrice}
-                        ></FilterSection>
+                        ></FilterSection> */}
 
-                        <div className="col-lg-10 col-md-9 article">
+                        <div className="col-lg-12 col-md-12 article">
                             <div className="shopcontainer row">
                                 {loading ? (
                                     <div className="mb-5">
@@ -70,7 +90,7 @@ const ShopSection = (props) => {
                                         {' '}
                                         {products.length !== 0 ? (
                                             products?.map((product) => (
-                                                <div className="shop col-lg-3 col-md-6 col-sm-12" key={product._id}>
+                                                <div className="shop col-lg-3 col-md-4 col-sm-12" key={product._id}>
                                                     <div className="border-product">
                                                         <Link to={`/products/${product._id}`}>
                                                             <div className="shopBack">

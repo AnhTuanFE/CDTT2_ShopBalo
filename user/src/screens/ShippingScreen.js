@@ -5,27 +5,29 @@ import { listCart, saveShippingAddress } from '../Redux/Actions/cartActions';
 import { listMyOrders, orderGetAddress } from '../Redux/Actions/OrderActions';
 import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions';
 import { ORDER_ADDRESS_MY_RESET } from '../Redux/Constants/OrderConstants';
+import { USER_UPDATE_PROFILE_RESET } from '../Redux/Constants/UserContants';
 
 const ShippingScreen = ({ history }) => {
     // window.scrollTo(0, 0);
     const dispatch = useDispatch();
-    // const orderListMy = useSelector((state) => state.orderAddress);
-    // const { success: successOrder, orderAddress, loading: loadingOrder } = orderListMy;
-    // const cart = useSelector((state) => state.cart);
-    // const { shippingAddress } = cart;
+    const UpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const { success: updatesuccess } = UpdateProfile;
+
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
-    // const userLogin = useSelector((state) => state.userLogin);
-    // const { userInfo, success } = userLogin;
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
-    // const [postalCode, setPostalCode] = useState('');
     const [country, setCountry] = useState('');
     const [image, setImage] = useState('');
 
     useEffect(() => {
+        if (updatesuccess) {
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+            history.push('/payment');
+        }
+    }, [updatesuccess]);
+    useEffect(() => {
         dispatch(getUserDetails('profile'));
-        // dispatch(listCart());
     }, []);
     useEffect(() => {
         if (user.address != undefined) {
@@ -38,7 +40,6 @@ const ShippingScreen = ({ history }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        history.push('/payment');
         dispatch(saveShippingAddress({ address, city, country }));
         dispatch(updateUserProfile({ id: user._id, address, city, country, image }));
     };
@@ -62,13 +63,6 @@ const ShippingScreen = ({ history }) => {
                         required
                         onChange={(e) => setCity(e.target.value)}
                     />
-                    {/* <input
-                        type="text"
-                        placeholder="Enter postal code"
-                        value={postalCode}
-                        required
-                        onChange={(e) => setPostalCode(e.target.value)}
-                    /> */}
                     <input
                         type="text"
                         placeholder="Enter country"

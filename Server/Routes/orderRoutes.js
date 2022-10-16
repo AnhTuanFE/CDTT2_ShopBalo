@@ -56,6 +56,10 @@ orderRouter.post(
         const { orderItemId, rating, comment } = req.body;
         const order = await Order.findById(req.params.id);
         const findItemProduct = order?.orderItems.find((item) => item._id == orderItemId);
+        if (findItemProduct?.productReview.length > 0) {
+            res.status(400);
+            throw new Error('Bạn đã đánh giá rồi');
+        }
         if (rating == '' || comment == '') {
             res.status(400);
             throw new Error('Nhập đầy đủ thông tin');

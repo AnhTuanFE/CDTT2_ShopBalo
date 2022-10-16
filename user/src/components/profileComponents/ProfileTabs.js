@@ -461,7 +461,7 @@ const ProfileTabs = () => {
 
                 <div className="col-lg-4 col-md-4 col-sm-4">
                     <div
-                        className="col-lg-12 col-md-12 col-sm-12 text-center"
+                        className="col-lg-12 col-md-12 col-sm-12 text-center display_none"
                         style={checkFile === true ? {} : { display: 'none' }}
                     >
                         <img
@@ -505,7 +505,7 @@ const ProfileTabs = () => {
                         </div>
                     </div>
                     <div
-                        className="col-lg-12 col-md-12 col-sm-12 text-center"
+                        className="col-lg-12 col-md-12 col-sm-12 text-center display_none"
                         style={
                             checkImage === true
                                 ? { position: 'absolute', height: '230px', width: '230px', background: '#cccccc42' }

@@ -55,32 +55,39 @@ export default function CorouselOder() {
     };
 
     return (
-        <div className="container corousel-container corousel-oder">
-            <h2 className="section-title">
+        <>
+            <div className="container corousel-container corousel-oder">
+                <h2 className="section-title">
+                    <b></b>
+                    <span className="section-title-main">Sản Phẩm Bán Chạy</span>
+                    <b></b>
+                </h2>
+                <div></div>
+                <div className="corousel">
+                    <Slider {...settings}>
+                        {products &&
+                            products?.map((product, index) => {
+                                return (
+                                    <div key={index} className="corousel-div">
+                                        <Link to={`/products/${product._id}`} className="corousel-link">
+                                            <img src={product.image} className="corousel-img"></img>
+                                            <p className="corousel-noti">{product.name}</p>
+                                            <p className="corousel-price">{product.price}đ</p>
+                                            <div className="corousel-rating">
+                                                <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                            </div>
+                                        </Link>
+                                    </div>
+                                );
+                            })}
+                    </Slider>
+                </div>
+            </div>
+            <h2 className="section-title container mt-5">
                 <b></b>
-                <span className="section-title-main">Sản Phẩm Bán Chạy</span>
+                <span className="section-title-main">Tất Cả Sản Phẩm</span>
                 <b></b>
             </h2>
-            <div></div>
-            <div className="corousel">
-                <Slider {...settings}>
-                    {products &&
-                        products?.map((product, index) => {
-                            return (
-                                <div key={index} className="corousel-div">
-                                    <Link to={`/products/${product._id}`} className="corousel-link">
-                                        <img src={product.image} className="corousel-img"></img>
-                                        <p className="corousel-noti">{product.name}</p>
-                                        <p className="corousel-price">{product.price}đ</p>
-                                        <div className="corousel-rating">
-                                            <Rating value={product.rating} text={`(${product.numReviews})`} />
-                                        </div>
-                                    </Link>
-                                </div>
-                            );
-                        })}
-                </Slider>
-            </div>
-        </div>
+        </>
     );
 }

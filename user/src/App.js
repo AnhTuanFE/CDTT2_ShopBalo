@@ -11,6 +11,7 @@ import CartScreen from './screens/CartScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import BuyingProductScreen from './screens/BuyingProductScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
@@ -36,6 +37,7 @@ const App = () => {
                 <Route path="/news/:id" component={NewsScreen} />
                 <Route path="/reset" component={Reset} />
                 <PrivateRouter path="/profile" component={ProfileScreen} />
+                <PrivateRouter path="/byproduct" component={BuyingProductScreen} />
                 <PrivateRouter path="/cart/:id?" component={CartScreen} />
                 <PrivateRouter path="/shipping" component={ShippingScreen} />
                 <PrivateRouter path="/payment" component={PaymentScreen} />

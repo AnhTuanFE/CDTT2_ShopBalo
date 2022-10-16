@@ -8,9 +8,7 @@ import moment from 'moment';
 import { listMyOrders } from '../Redux/Actions/OrderActions';
 import { Link } from 'react-router-dom';
 
-const ProfileScreen = () => {
-    // window.scrollTo(0, 0);
-
+const BuyingProductScreen = () => {
     const dispatch = useDispatch();
     const userUpdate = useSelector((state) => state.userUpdateProfile);
     const { success: successUpdate } = userUpdate;
@@ -18,7 +16,7 @@ const ProfileScreen = () => {
     const { userInfo } = userLogin;
     const orderListMy = useSelector((state) => state.orderListMy);
     const { loading, error, orders } = orderListMy;
-    const [buleanProfile, setBuleanProfile] = useState(true);
+    const [buleanOrder, setBuleanOrder] = useState(true);
 
     //get image
 
@@ -86,29 +84,31 @@ const ProfileScreen = () => {
                                     aria-orientation="vertical"
                                 >
                                     <button
-                                        class={buleanProfile ? 'nav-link active color-red' : 'nav-link'}
-                                        id="v-pills-home-tab"
-                                        data-bs-toggle="pill"
-                                        data-bs-target="#v-pills-home"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="v-pills-home"
-                                        aria-selected="true"
+                                        class="nav-link"
                                         style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
                                     >
                                         <div style={{ fontSize: '18px', paddingRight: '10px' }}>
                                             <i class="fas fa-cogs"></i>
                                         </div>
-                                        Hồ Sơ Cá Nhân
+                                        <Link to="/profile"> Hồ Sơ Cá Nhân</Link>
                                     </button>
                                     <button
-                                        className="nav-link d-flex"
+                                        // class="nav-link d-flex"
+                                        className={buleanOrder ? 'nav-link d-flex color-red' : 'nav-link d-flex'}
+                                        id="v-pills-profile-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-profile"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="v-pills-profile"
+                                        aria-selected="false"
                                         style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
                                     >
                                         <div style={{ fontSize: '18px', paddingRight: '10px' }}>
                                             <i class="fas fa-shopping-cart"></i>
                                         </div>
-                                        <Link to="/byproduct">Danh Sách Mua Hàng</Link>
+                                        Danh Sách Mua Hàng
+                                        <span className="badge2">{orders ? orders.length : 0}</span>
                                     </button>
                                 </div>
                             </div>
@@ -119,11 +119,11 @@ const ProfileScreen = () => {
                     <div class="tab-content col-lg-8 pb-5 pt-lg-0 pt-3" id="v-pills-tabContent">
                         <div
                             class="tab-pane fade show active"
-                            id="v-pills-home"
+                            id="v-pills-profile"
                             role="tabpanel"
-                            aria-labelledby="v-pills-home-tab"
+                            aria-labelledby="v-pills-profile-tab"
                         >
-                            <ProfileTabs />
+                            <Orders orders={orders} loading={loading} error={error} />
                         </div>
                     </div>
                 </div>
@@ -132,4 +132,4 @@ const ProfileScreen = () => {
     );
 };
 
-export default ProfileScreen;
+export default BuyingProductScreen;

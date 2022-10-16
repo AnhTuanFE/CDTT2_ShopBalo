@@ -27,17 +27,12 @@ const CartScreen = ({ match, location, history }) => {
         : 0;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    // useEffect(() => {
-    //   if (productId) {
-    //     console.log("1use")
-    //     // dispatch(addToCart(productId, qty, userInfo._id))
 
-    //   }
-
-    //   // }, [dispatch, productId, qty]);
-    // }, [dispatch, productId, qty]);
     const checkOutHandler = () => {
         history.push('/login?redirect=shipping');
+        for (let i = 0; i < cartItems.length; i++) {
+            dispatch(addToCart(cartItems[i]?.product._id, cartItems[i]?.color, false, userInfo._id));
+        }
     };
     useEffect(() => {
         dispatch(listCart());

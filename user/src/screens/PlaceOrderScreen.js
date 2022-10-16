@@ -17,7 +17,7 @@ const PlaceOrderScreen = ({ history }) => {
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     const currenCartItems = cartItems
-        .filter((item) => item.isBuy == true)
+        .filter((item) => item.isCheck == true)
         .reduce((arr, pro) => {
             arr.push({
                 name: pro.product.name,
@@ -39,7 +39,7 @@ const PlaceOrderScreen = ({ history }) => {
 
     cart.itemsPrice = addDecimals(
         cart.cartItems
-            .filter((item) => item.isBuy == true)
+            .filter((item) => item.isCheck == true)
             .reduce((a, i) => a + i.qty * i.product.price, 0)
             .toFixed(0),
     );
@@ -89,8 +89,8 @@ const PlaceOrderScreen = ({ history }) => {
             <Header />
             <div className="container">
                 <PayModal
-                    Title="PAY"
-                    Body="Do you agree to pay?"
+                    Title="Mua hàng"
+                    Body="Bạn có đồng ý mua hay không?"
                     HandleSubmit={placeOrderHandler}
                     Close="modal"
                 ></PayModal>
@@ -148,7 +148,7 @@ const PlaceOrderScreen = ({ history }) => {
                         ) : (
                             <>
                                 {cart.cartItems
-                                    .filter((item) => item.isBuy == true)
+                                    .filter((item) => item.isCheck == true)
                                     .map((item, index) => (
                                         <div className="order-product row" key={index}>
                                             <div className="col-md-2 col-6">

@@ -42,6 +42,9 @@ cartRoutes.post(
                         if (newArray[i].color == color && typeof qty == 'boolean') {
                             newArray[i].isBuy = !newArray[i]?.isBuy;
                         }
+                        if (newArray[i].color == color && qty == true) {
+                            newArray[i].isCheck = true;
+                        }
                     }
                 }
                 cartExist.cartItems = newArray;
@@ -52,12 +55,8 @@ cartRoutes.post(
             }
             const cartadd = {
                 product: productId,
-                // name: product.name,
-                // image: product.image,
-                // price: product.price,
                 color: color,
                 qty: qty,
-                // countInStock: product.countInStock,
             };
             cartExist.cartItems.push(cartadd);
             await cartExist.save();
@@ -70,12 +69,8 @@ cartRoutes.post(
                 cartItems: [
                     {
                         product: productId,
-                        // name: product.name,
-                        // image: product.image,
-                        // price: product.price,
                         color,
                         qty,
-                        // countInStock: product.countInStock,
                     },
                 ],
             });
@@ -92,8 +87,7 @@ cartRoutes.post(
     // protect,
     asyncHandler(async (req, res) => {
         const { user, pr } = req.body;
-        // const user = req.query.us
-        // const pr = req.params.pr
+
         const cartExist = await Cart.findOne({ user: user });
 
         if (cartExist) {
@@ -121,7 +115,7 @@ cartRoutes.delete(
     asyncHandler(async (req, res) => {
         const cart = await Cart.findOne({ user: req.user._id });
         if (cart) {
-            await Cart.updateMany({ user: req.user._id }, { $pull: { cartItems: { isBuy: true } } });
+            await Cart.updateMany({ user: req.user._id }, { $pull: { cartItems: { isCheck: true } } });
             // await cart.save();
             res.json({ message: 'Cart clear' });
         } else {
