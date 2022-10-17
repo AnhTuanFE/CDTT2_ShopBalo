@@ -66,20 +66,24 @@ const OrderDetailmain = (props) => {
     const [status, setStatus] = useState('0');
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
-            alert('Đồng ý xác nhận');
-            dispatch(waitConfirmationOrder(order._id));
+            if (window.confirm('Đồng ý xác nhận')) {
+                dispatch(waitConfirmationOrder(order._id));
+            }
         }
         if (status === '2' && order?.isDelivered !== true) {
-            alert('Đồng ý xác nhận');
-            dispatch(deliverOrder(order));
+            if (window.confirm('Đồng ý xác nhận')) {
+                dispatch(deliverOrder(order));
+            }
         }
         if (status === '3' && order?.isPaid !== true) {
-            alert('Đồng ý xác nhận');
-            dispatch(paidOrder(order));
+            if (window.confirm('Đồng ý xác nhận')) {
+                dispatch(paidOrder(order));
+            }
         }
         if (status === '4' && order?.completeAdmin !== true) {
-            alert('Đồng ý xác nhận');
-            dispatch(completeAdminOrder(order._id));
+            if (window.confirm('Đồng ý xác nhận')) {
+                dispatch(completeAdminOrder(order._id));
+            }
         }
     }, [status]);
     useEffect(() => {

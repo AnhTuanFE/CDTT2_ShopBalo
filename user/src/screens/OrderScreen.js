@@ -120,6 +120,17 @@ const OrderScreen = ({ match }) => {
     //     dispatch(payOrder(orderId, paymentResult));
     // };
 
+    const handlerSuccessCart = () => {
+        const filterCart = itemOrder.filter((item) => item.productReview.length === 0);
+        if (filterCart.length === 0) {
+            if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
+                dispatch(completeOrder(orderId));
+            }
+        } else {
+            if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
+            }
+        }
+    };
     return (
         <>
             <Header />
@@ -537,26 +548,7 @@ const OrderScreen = ({ match }) => {
                                     //     )} */}
                                     //   </div>
                                     // )
-                                    // order?.cancel != 1 ? (
-                                    //     !order.isPaid &&
-                                    //     (!order.isDelivered ? (
-                                    //         <div className="col-12 bg-warning ">
-                                    //             {loadingPay && <Loading />}
-                                    //             <span className="">Đang chờ xác nhận</span>
-                                    //         </div>
-                                    //     ) : (
-                                    //         <div className="col-12">
-                                    //             {loadingPay && <Loading />}
-                                    //             <div className="bg-danger p-2 col-12">
-                                    //                 <p className="text-white text-center text-sm-start">
-                                    //                     Đang chờ thanh toán
-                                    //                 </p>
-                                    //             </div>
-                                    //         </div>
-                                    //     ))
-                                    // ) : (
-                                    //     <div className="text-white bg-dark p-2 col-12">Đơn hàng này đã bị hủy bỏ</div>
-                                    //             )
+
                                     order?.cancel === 1 && (
                                         <div className="text-white bg-dark p-2 col-12 fs-6 text-center">
                                             Đơn hàng này đã bị hủy bỏ
@@ -575,9 +567,7 @@ const OrderScreen = ({ match }) => {
                                                     fontSize: '17px',
                                                     cursor: 'pointer',
                                                 }}
-                                                onClick={() => {
-                                                    dispatch(completeOrder(orderId));
-                                                }}
+                                                onClick={handlerSuccessCart}
                                             >
                                                 Hoàn tất đơn hàng
                                             </button>
@@ -718,6 +708,8 @@ const OrderScreen = ({ match }) => {
                                                                         product.color,
                                                                         comment,
                                                                     ),
+                                                                    setRating(''),
+                                                                    setComment(''),
                                                                 );
                                                                 dispatch(
                                                                     createOrderReview(
@@ -726,6 +718,8 @@ const OrderScreen = ({ match }) => {
                                                                         rating,
                                                                         comment,
                                                                     ),
+                                                                    setRating(''),
+                                                                    setComment(''),
                                                                 );
                                                             }}
                                                         >

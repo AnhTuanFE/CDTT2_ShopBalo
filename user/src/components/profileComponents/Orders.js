@@ -35,6 +35,7 @@ const Orders = (props) => {
                                         <th>Trạng thái</th>
                                         <th>Thời gian mua</th>
                                         <th>Tổng tiền</th>
+                                        <th>Đánh giá</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,6 +118,9 @@ const Orders = (props) => {
                                                 {moment(order.createdAt).format('MM/DD/YYYY')}
                                             </td>
                                             <td>{order.totalPrice}đ</td>
+                                            <td className="fs-6" style={{ fontWeight: '600' }}>
+                                                {order?.completeUser ? 'Đã đánh giá' : 'Chưa đánh giá'}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
