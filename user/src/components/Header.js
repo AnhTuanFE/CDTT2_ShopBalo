@@ -210,7 +210,9 @@ const Header = () => {
                                         >
                                             <img
                                                 src={`/${
-                                                    userInfo?.image === undefined ? 'images/user.png' : userInfo?.image
+                                                    userInfo?.image === undefined
+                                                        ? 'images/user.png'
+                                                        : `userProfile/${userInfo?.image}`
                                                 }`} // upload ảnh
                                                 alt=""
                                                 style={{

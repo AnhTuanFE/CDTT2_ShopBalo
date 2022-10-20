@@ -35,6 +35,14 @@ import {
     PRODUCT_DELETE_OPTION_SUCCESS,
     PRODUCT_DELETE_OPTION_FAIL,
     PRODUCT_DELETE_OPTION_RESET,
+    PRODUCT_CREATE_IMAGE_REQUEST,
+    PRODUCT_CREATE_IMAGE_SUCCESS,
+    PRODUCT_CREATE_IMAGE_FAIL,
+    PRODUCT_CREATE_IMAGE_RESET,
+    PRODUCT_DELETE_IMAGE_REQUEST,
+    PRODUCT_DELETE_IMAGE_SUCCESS,
+    PRODUCT_DELETE_IMAGE_FAIL,
+    PRODUCT_DELETE_IMAGE_RESET,
 } from '../Constants/ProductConstants';
 
 // ALL PRODUCTS
@@ -192,6 +200,38 @@ export const productCreateCommentChildReducer = (state = {}, action) => {
         case PRODUCT_CREATE_COMMENTCHILD_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_CREATE_COMMENTCHILD_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT IMAGE CREATE
+export const productCreateImageReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_CREATE_IMAGE_REQUEST:
+            return { loading: true };
+        case PRODUCT_CREATE_IMAGE_SUCCESS:
+            return { loading: false, success: true, urlImages: action.payload };
+        case PRODUCT_CREATE_IMAGE_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_CREATE_IMAGE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT IMAGE DELETE
+export const productDeleteImageReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_DELETE_IMAGE_REQUEST:
+            return { loading: true };
+        case PRODUCT_DELETE_IMAGE_SUCCESS:
+            return { loading: false, success: true, deleteImage: 'xóa thành công' };
+        case PRODUCT_DELETE_IMAGE_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_DELETE_IMAGE_RESET:
             return {};
         default:
             return state;

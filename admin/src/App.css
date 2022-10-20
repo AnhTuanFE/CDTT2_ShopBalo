@@ -988,3 +988,20 @@ ul.row-sm {
 .open-option i {
     font-size: 14px;
 }
+/* .img_css {
+    height: 100px;
+    width: 100px;
+    margin-right: 10px;
+} */
+.product_image_arr {
+    position: relative;
+}
+.product_image_p {
+    z-index: 1;
+    position: absolute;
+    top: -15px;
+    font-size: 25px;
+    right: 3px;
+    color: red;
+    cursor: pointer;
+}

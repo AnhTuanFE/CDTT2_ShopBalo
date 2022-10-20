@@ -23,7 +23,7 @@ const PlaceOrderScreen = ({ history }) => {
                 name: pro.product.name,
                 color: pro.color,
                 qty: pro.qty,
-                image: pro.product.image,
+                image: pro.product.image[0].image,
                 price: pro.product.price,
                 product: pro.product._id,
             });
@@ -152,7 +152,10 @@ const PlaceOrderScreen = ({ history }) => {
                                     .map((item, index) => (
                                         <div className="order-product row" key={index}>
                                             <div className="col-md-2 col-6">
-                                                <img src={item.product.image} alt={item.name} />
+                                                <img
+                                                    src={`/productImage/${item.product?.image[0].image}`}
+                                                    alt={item.name}
+                                                />
                                             </div>
                                             <div className="col-md-4 col-6 d-flex align-items-center">
                                                 <Link to={`/products/${item.product}`}>

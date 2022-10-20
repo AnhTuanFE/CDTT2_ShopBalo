@@ -11,7 +11,7 @@ const __dirname = path.resolve();
 const userRouter = express.Router();
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/');
+        cb(null, 'public/userProfile');
     },
 
     // By default, multer removes file extensions so let's add them back
@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     },
 });
-
 
 // LOGIN
 userRouter.post(
@@ -123,7 +122,7 @@ userRouter.put(
         const user = await User.findById(req.user._id);
 
         if (!!user?.image && req.body.image !== user.image) {
-            fs.unlink(path.join(__dirname, 'public', user.image), (err) => {
+            fs.unlink(path.join(__dirname, 'public/userProfile', user.image), (err) => {
                 if (err) console.log('Delete old avatar have err:', err);
             });
         }

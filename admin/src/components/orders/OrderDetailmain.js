@@ -46,23 +46,11 @@ const OrderDetailmain = (props) => {
         successCompleteAdmin,
     ]);
 
-    // const deliverHandler = () => {
-    //     if (window.confirm('Are you sure??')) {
-    //         dispatch(deliverOrder(order));
-    //     }
-    // };
-
     const cancelOrderHandler = () => {
         if (window.confirm('Are you sure??')) {
             dispatch(cancelOrder(order));
         }
     };
-
-    // const paidHandler = () => {
-    //     if (window.confirm('Are you sure??')) {
-    //         dispatch(paidOrder(order));
-    //     }
-    // };
     const [status, setStatus] = useState('0');
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {

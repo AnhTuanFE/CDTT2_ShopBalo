@@ -20,7 +20,11 @@ const Product = (props) => {
                 <tr>
                     <td>{index + 1}</td>
                     <td>
-                        <img src={product.image} alt="Product" style={{ height: '40px', width: '40px' }} />
+                        <img
+                            src={`/productImage/${product?.image[0]?.image}`}
+                            alt="Product"
+                            style={{ height: '40px', width: '40px' }}
+                        />
                     </td>
                     <td>
                         <span> {product.name}</span>

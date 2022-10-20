@@ -1559,3 +1559,11 @@ textarea:focus {
 .button-hover-cart:hover {
     opacity: 0.9;
 }
+
+.css-icon {
+    height: 40px;
+    width: 40px;
+    border: 3px solid #ff9406;
+    border-radius: 50%;
+    background-color: #00483d;
+}

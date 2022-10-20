@@ -87,7 +87,7 @@ const MainProducts = (props) => {
                                     handleCategory(e);
                                 }}
                             >
-                                <option value={''}>Tất cả thể loại</option>
+                                <option value={''}> thể loại</option>
                                 {categories.map((category) => (
                                     <option value={category._id}>{category.name}</option>
                                 ))}

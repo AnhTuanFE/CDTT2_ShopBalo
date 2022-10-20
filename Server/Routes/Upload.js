@@ -7,7 +7,7 @@ const Upload = express.Router();
 //Upload file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public');
+        cb(null, 'public/userProfile');
     },
 
     // By default, multer removes file extensions so let's add them back

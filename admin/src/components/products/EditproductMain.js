@@ -11,17 +11,22 @@ import {
     updateProduct,
     updateOptionProduct,
     deleteOptionProduct,
+    createImageProduct,
+    deleteImageProduct,
 } from './../../Redux/Actions/ProductActions';
 import {
     PRODUCT_UPDATE_RESET,
     PRODUCT_UPDATE_OPTION_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_DELETE_OPTION_RESET,
+    PRODUCT_CREATE_IMAGE_RESET,
+    PRODUCT_DELETE_IMAGE_RESET,
 } from '../../Redux/Constants/ProductConstants';
 import { toast } from 'react-toastify';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
 import { ListCategory } from '../../Redux/Actions/categoryActions';
+import { v4 as uuidv4 } from 'uuid';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -35,7 +40,9 @@ const EditproductMain = (props) => {
     const [category, setCategory] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState([]);
+    const [inputImage, setInputImage] = useState([]);
+    const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
@@ -43,6 +50,8 @@ const EditproductMain = (props) => {
     const [AddColor, setAddColor] = useState('');
     const [AddCountInStock, setAddCountInStock] = useState('');
     const [checkEdit, setCheckEdit] = useState(false);
+    const [checkAdd, setCheckAdd] = useState(true);
+    const [check, setCheck] = useState(false);
     const dispatch = useDispatch();
 
     const productEdit = useSelector((state) => state.productEdit);
@@ -62,10 +71,15 @@ const EditproductMain = (props) => {
     const { success: successDelete } = productOptionDelete;
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
+    const productCreateImage = useSelector((state) => state.productCreateImage);
+    const { urlImages, success: successCreactImage } = productCreateImage;
+    const productDeleteImage = useSelector((state) => state.productDeleteImage);
+    const { success: successDeleteImage } = productDeleteImage;
 
     useEffect(() => {
         if (successOptionUpdate) {
             setCheckEdit(false);
+            setCheckAdd(true);
             dispatch({ type: PRODUCT_UPDATE_OPTION_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
         }
@@ -77,8 +91,12 @@ const EditproductMain = (props) => {
             dispatch({ type: PRODUCT_DELETE_OPTION_RESET });
             toast.success('Đã xóa thành công', ToastObjects);
         }
+        if (successDeleteImage) {
+            dispatch({ type: PRODUCT_DELETE_IMAGE_RESET });
+            toast.success('Đã xóa thành công', ToastObjects);
+        }
         dispatch(editProduct(productId));
-    }, [successOptionUpdate, successOption, successDelete]);
+    }, [successOptionUpdate, successOption, successDelete, successDeleteImage]);
 
     useEffect(() => {
         const options = product?.optionColor?.find((option) => option._id === optionId);
@@ -88,6 +106,36 @@ const EditproductMain = (props) => {
         }
     }, [optionId]);
 
+    useEffect(() => {
+        if (check) {
+            dispatch(
+                updateProduct({
+                    _id: productId,
+                    name,
+                    price,
+                    category,
+                    description,
+                    image,
+                }),
+            );
+            dispatch({ type: PRODUCT_CREATE_IMAGE_RESET });
+            setCheck(false);
+        }
+    }, [check]);
+    useEffect(() => {
+        if (successCreactImage) {
+            for (let i = 0; i < urlImages.length; i++) {
+                setImage((image) => [...image, { image: urlImages[i].filename, id: uuidv4() }]);
+            }
+            setCheck(true);
+            setArrImage([]);
+        }
+    }, [urlImages, successCreactImage]);
+    useEffect(() => {
+        for (let i = 0; i < inputImage.length; i++) {
+            setArrImage((image) => [...image, { image: inputImage[i], id: arrImage.length + i }]);
+        }
+    }, [inputImage]);
     useEffect(() => {
         dispatch(ListCategory());
         if (successUpdate) {
@@ -132,13 +180,25 @@ const EditproductMain = (props) => {
         setAddColor('');
         setAddCountInStock('');
     };
+    const handlerSubmitImage = () => {
+        let images = new FormData();
+        for (let i = 0; i < arrImage.length; i++) {
+            images.append('image', arrImage[i].image);
+        }
+        if (arrImage.length !== 0) {
+            dispatch(createImageProduct(images));
+        }
+        if (arrImage.length === 0) {
+            toast.error('Không thể gửi đi', ToastObjects);
+        }
+    };
     const modules = {
         toolbar: [
             [{ header: [1, 2, false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
             [{ align: [] }],
-            ['link', 'video'],
+            ['link', 'image', 'video'],
             [{ color: [] }, { background: [] }],
             ['clean'],
         ],
@@ -154,6 +214,7 @@ const EditproductMain = (props) => {
         'list',
         'bullet',
         'indent',
+        'image',
         'link',
         'video',
         'align',
@@ -243,7 +304,7 @@ const EditproductMain = (props) => {
 
                                             <div className="mb-0">
                                                 <label className="form-label">Ảnh</label>
-                                                <input
+                                                {/* <input
                                                     className={`form-control `}
                                                     type="text"
                                                     placeholder="URL"
@@ -251,7 +312,96 @@ const EditproductMain = (props) => {
                                                     //required
 
                                                     onChange={(e) => setImage(e.target.value)}
-                                                />
+                                                /> */}
+                                                <div className="row">
+                                                    {image &&
+                                                        image?.map((img) => {
+                                                            return (
+                                                                <div
+                                                                    key={img.id}
+                                                                    className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr"
+                                                                >
+                                                                    <div className="row">
+                                                                        <img
+                                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
+                                                                            src={`/productImage/${img?.image}`}
+                                                                        ></img>
+                                                                        <p
+                                                                            className="product_image_p"
+                                                                            onClick={() => {
+                                                                                dispatch(
+                                                                                    deleteImageProduct(
+                                                                                        productId,
+                                                                                        img.id,
+                                                                                    ),
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            <i class="far fa-times-circle"></i>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    {arrImage !== ' ' &&
+                                                        arrImage?.map((ima) => {
+                                                            return (
+                                                                <div
+                                                                    key={ima.id}
+                                                                    className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr"
+                                                                >
+                                                                    <div
+                                                                        className="row"
+                                                                        style={{ display: 'flex', flexWrap: 'wrap' }}
+                                                                    >
+                                                                        <img
+                                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
+                                                                            src={
+                                                                                ima.image !== undefined
+                                                                                    ? `${URL.createObjectURL(
+                                                                                          ima?.image,
+                                                                                      )}`
+                                                                                    : ''
+                                                                            }
+                                                                        ></img>
+                                                                        <p
+                                                                            className="product_image_p"
+                                                                            onClick={() => {
+                                                                                const retult = arrImage?.filter(
+                                                                                    (image) => image.id !== ima.id,
+                                                                                );
+                                                                                setArrImage(retult);
+                                                                            }}
+                                                                        >
+                                                                            <i class="far fa-times-circle"></i>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                </div>
+                                                <div style={{ display: 'flex' }}>
+                                                    <label
+                                                        for="inputFile"
+                                                        className="form-control mt-2 col-10 col-sm-10 col-md-10 col-lg-10"
+                                                        style={{ cursor: 'pointer' }}
+                                                    >
+                                                        Chọn tệp
+                                                    </label>
+                                                    <input
+                                                        id="inputFile"
+                                                        className="d-none"
+                                                        onChange={(e) => setInputImage(e.target.files)}
+                                                        type="file"
+                                                        multiple
+                                                    />
+                                                    <input
+                                                        type="button"
+                                                        className="col-2 col-sm-2 col-md-2 col-lg-2 mt-2"
+                                                        onClick={handlerSubmitImage}
+                                                        value="Lưu tệp"
+                                                    ></input>
+                                                </div>
                                             </div>
                                             <div className="mb-0">
                                                 <label className="form-label">Nội dung</label>
@@ -328,7 +478,7 @@ const EditproductMain = (props) => {
                                                     </form>
                                                 </div>
                                             )}
-                                            <div className={checkEdit ? 'col-md-6 col-lg-6' : 'col-md-9 col-lg-9'}>
+                                            <div className="col-md-9 col-lg-9">
                                                 <table className="table slider-data">
                                                     <thead>
                                                         <tr>
@@ -364,6 +514,7 @@ const EditproductMain = (props) => {
                                                                                     e.preventDefault();
                                                                                     setOptionId(option._id);
                                                                                     setCheckEdit(true);
+                                                                                    setCheckAdd(false);
                                                                                 }}
                                                                             >
                                                                                 <i class="icon fas fa-edit"></i>
@@ -394,46 +545,48 @@ const EditproductMain = (props) => {
                                                 </table>
                                             </div>
                                             <div className="col-md-3 col-lg-3">
-                                                <form>
-                                                    <div className="mb-0">
-                                                        <label htmlFor="product_price" className="form-label">
-                                                            Màu sắc
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Type here"
-                                                            className={`form-control`}
-                                                            id="product_price"
-                                                            //required
-                                                            value={AddColor}
-                                                            onChange={(e) => setAddColor(e.target.value)}
-                                                        />
-                                                    </div>
+                                                {checkAdd && (
+                                                    <form>
+                                                        <div className="mb-0">
+                                                            <label htmlFor="product_price" className="form-label">
+                                                                Màu sắc
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Type here"
+                                                                className={`form-control`}
+                                                                id="product_price"
+                                                                //required
+                                                                value={AddColor}
+                                                                onChange={(e) => setAddColor(e.target.value)}
+                                                            />
+                                                        </div>
 
-                                                    <div className="mb-0">
-                                                        <label htmlFor="product_price" className="form-label">
-                                                            Số lượng
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            placeholder="Type here"
-                                                            className={`form-control`}
-                                                            id="product_price"
-                                                            //required
-                                                            value={AddCountInStock}
-                                                            onChange={(e) => setAddCountInStock(e.target.value)}
-                                                        />
-                                                    </div>
+                                                        <div className="mb-0">
+                                                            <label htmlFor="product_price" className="form-label">
+                                                                Số lượng
+                                                            </label>
+                                                            <input
+                                                                type="number"
+                                                                placeholder="Type here"
+                                                                className={`form-control`}
+                                                                id="product_price"
+                                                                //required
+                                                                value={AddCountInStock}
+                                                                onChange={(e) => setAddCountInStock(e.target.value)}
+                                                            />
+                                                        </div>
 
-                                                    <div className="d-grid" style={{ marginTop: '10px' }}>
-                                                        <button
-                                                            onClick={submitOptionSaveHandler}
-                                                            className="btn btn-primary py-2 color-orange"
-                                                        >
-                                                            Thêm
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                        <div className="d-grid" style={{ marginTop: '10px' }}>
+                                                            <button
+                                                                onClick={submitOptionSaveHandler}
+                                                                className="btn btn-primary py-2 color-orange"
+                                                            >
+                                                                Thêm
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
