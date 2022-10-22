@@ -14,10 +14,13 @@ import {
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import moment from 'moment';
+import CancelModal from '../Modal/CancelModal';
 
 const OrderDetailmain = (props) => {
     const { orderId } = props;
     const dispatch = useDispatch();
+    // modal
+    const {sta, setSta} = useState(true);
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
@@ -53,7 +56,7 @@ const OrderDetailmain = (props) => {
     // };
 
     const cancelOrderHandler = () => {
-        if (window.confirm('Are you sure??')) {
+        if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
             dispatch(cancelOrder(order));
         }
     };
@@ -100,9 +103,37 @@ const OrderDetailmain = (props) => {
             setStatus('4');
         }
     }, [order]);
+    const cancelOrderHandler1 = () => {
+        // dispatch(
+        //     createOrder({
+        //         orderItems: currenCartItems,
+        //         // shippingAddress: cart.shippingAddress,
+        //         shippingAddress: {
+        //             address: userInfo.address,
+        //             city: userInfo.city,
+        //             postalCode: '',
+        //             country: userInfo.country,
+        //         },
+        //         // paymentMethod: cart.paymentMethod,
+        //         paymentMethod: 'Thanh toán bằng tiền mặt',
+        //         itemsPrice: cart.itemsPrice,
+        //         shippingPrice: cart.shippingPrice,
+        //         taxPrice: cart.taxPrice,
+        //         totalPrice: cart.totalPrice,
+        //         phone: userInfo.phone,
+        //     }),
+        // );
+    };
     return (
         <section className="content-main">
             <div className="content-header">
+                 {/* {sta===true?<CancelModal
+                        Title="Hủy đơn hàng"
+                        Body="Bạn có chắc chắn hủy đơn hàng này không?"
+                        HandleSubmit={cancelOrderHandler1}
+                        Close="modal"
+                    />} */}
+                
                 <div className="col-lg-9 col-md-9">
                     <Link to="/orders" className="btn btn-dark text-white">
                         Quay lại

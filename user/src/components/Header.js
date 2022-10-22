@@ -97,7 +97,7 @@ const Header = () => {
                                         <i class="fas fa-bars"></i>
                                     </div>
                                     <Link className="navbar-brand" to="/">
-                                        <img alt="logo" src="/images/logo.png" />
+                                        <img alt="logo" src="/images/logo2.png" />
                                     </Link>
                                 </div>
                                 {navbar && <NavBar onRemove={removeNavBar}></NavBar>}
@@ -181,7 +181,7 @@ const Header = () => {
                         <div className="row">
                             <div className="col-md-3 col-4 d-flex align-items-center">
                                 <Link className="navbar-brand" to="/">
-                                    <img alt="logo" src="/images/logo.png" />
+                                    <img alt="logo" src="/images/logo2.png" />
                                 </Link>
                             </div>
                             <div className="col-md-6 col-8 header-nav__search">
