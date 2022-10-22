@@ -224,7 +224,7 @@ const Header = () => {
                                                 }}
                                                 className="fix-none"
                                             />
-                                            <span className="name-button__p">{notiUser()}</span>
+                                            <span className="name-button__p ps-1">{notiUser()}</span>
                                             {/* {userInfo.name} */}
                                         </button>
                                         <div className="dropdown-menu">

@@ -28,7 +28,7 @@ const HomeScreen = ({ match }) => {
 
             {/* <CalltoActionSection /> */}
             {!keyword && !category ? <NewsMain /> : ''}
-            {!keyword && !category ? <ContactInfo /> : ''}
+            {/* {!keyword && !category ? <ContactInfo /> : ''} */}
             <Footer />
         </div>
     );

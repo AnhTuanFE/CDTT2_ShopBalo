@@ -24,6 +24,8 @@ export default function NewsMain() {
         slidesToShow: 4,
         slidesToScroll: 4,
         initialSlide: 0,
+        autoplay: true,
+        autoplaySpeed: 4000,
 
         responsive: [
             {
@@ -56,7 +58,7 @@ export default function NewsMain() {
     };
 
     return (
-        <div className="container corousel-container corousel-oder">
+        <div className="container corousel-container corousel-oder mb-3">
             <h2 className="section-title">
                 <b></b>
                 <span className="section-title-main">Tin Tức & Sự Kiện</span>
@@ -68,7 +70,7 @@ export default function NewsMain() {
                     {news &&
                         news?.map((newValue, index) => {
                             return (
-                                <div key={index} className="corousel-div m-2 mx-2">
+                                <div key={index} className="corousel-div">
                                     <Link to={`/news/${newValue._id}`} className="corousel-link">
                                         <img src={newValue.image} className="corousel-img"></img>
                                         <p className="corousel-noti news-title">{newValue.title}</p>{' '}

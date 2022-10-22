@@ -37,7 +37,7 @@ export default function AddSlider() {
     const { loading, error, slider } = sliderCreate;
     useEffect(() => {
         if (slider) {
-            toast.success('Slider Added', ToastObjects);
+            toast.success('Đã thêm thành công', ToastObjects);
             dispatch({ type: SLIDER_CREATE_RESET });
             setUrl('');
         }
@@ -81,40 +81,6 @@ export default function AddSlider() {
                 </div>
             </div>
             <p style={{ color: 'red' }}>{valueUrl.url}</p>
-
-            {/* <form onSubmit={submitHandler} style={{ maxWidth: "1000px" }}>
-        <div className="row mb-4">
-          <div className="col-xl-8 col-lg-8">
-            <div className="card mb-8 shadow-sm ">
-              <div className="card-body">
-                <div className="mb-8 d-flex">
-                  <label htmlFor="product_title" className="form-label">
-                    URL BANNER
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Type here"
-                    className="form-control"
-                    id="product_title"
-                    required
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    style={{ minWidth: 100 }}
-                  >
-                    ADD
-                  </button>
-                </div>
-                <div></div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </form> */}
         </>
     );
 }

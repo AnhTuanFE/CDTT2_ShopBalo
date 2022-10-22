@@ -17,6 +17,8 @@ export default function OfferProduct(data) {
         slidesToShow: 5,
         slidesToScroll: 5,
         initialSlide: 0,
+        autoplay: true,
+        autoplaySpeed: 4000,
 
         responsive: [
             {

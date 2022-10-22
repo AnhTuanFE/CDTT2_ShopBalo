@@ -94,7 +94,10 @@ const PlaceOrderScreen = ({ history }) => {
                     HandleSubmit={placeOrderHandler}
                     Close="modal"
                 ></PayModal>
-                <div className="row  order-detail">
+                <div
+                    className="row  order-detail"
+                    style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                >
                     <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
                         <div className="row " style={{ display: 'flex', alignItems: 'center' }}>
                             <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
@@ -150,7 +153,11 @@ const PlaceOrderScreen = ({ history }) => {
                                 {cart.cartItems
                                     .filter((item) => item.isCheck == true)
                                     .map((item, index) => (
-                                        <div className="order-product row" key={index}>
+                                        <div
+                                            className="order-product row"
+                                            key={index}
+                                            style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                                        >
                                             <div className="col-md-2 col-6">
                                                 <img
                                                     src={`/productImage/${item.product?.image[0].image}`}
@@ -182,7 +189,10 @@ const PlaceOrderScreen = ({ history }) => {
                 </div>
                 <div className="row" style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px' }}>
                     {/* total */}
-                    <div className="col-lg-12 d-flex align-items-end flex-column subtotal-order">
+                    <div
+                        className="col-lg-12 d-flex align-items-end flex-column subtotal-order"
+                        style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                    >
                         <table className="table fix-bottom">
                             <tbody>
                                 <tr>

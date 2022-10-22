@@ -29,10 +29,10 @@ const UpdateCategory = ({ currentCategory }) => {
     };
     useEffect(() => {
         if (success) {
-            toast.success('Update category success', ToastObjects);
+            toast.success('Đã cập nhật thành công', ToastObjects);
         }
         if (error) {
-            toast.error(error, ToastObjects);
+            toast.error('Thể loại đã tồn tại', ToastObjects);
         }
         dispatch({ type: CATEGORY_UPDATE_RESET });
     }, [success, error]);
@@ -63,34 +63,6 @@ const UpdateCategory = ({ currentCategory }) => {
                         />
                     </div>
 
-                    {/* <div className="mb-4">
-          <label htmlFor="product_name" className="form-label">
-            Image
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="form-control py-3"
-            id="product_name"
-            value={image}
-            onChange={(e)=>{
-              setImage(e.target.value)
-            }}
-          />
-        </div> */}
-                    {/* <div className="mb-4">
-          <label className="form-label">Images</label>
-          <input className="form-control" type="file" />
-        </div> */}
-                    {/* <form method="POST" action="api/upload-profile-pic" enctype="multipart/form-data">
-          <div>
-            <label>Select your profile picture:</label>
-            <input type="file" name="profile_pic" />
-          </div>
-          <div>
-            <input type="submit" name="btn_upload_profile_pic" value="Upload" />
-          </div>
-        </form> */}
                     <div className="mb-4">
                         <label className="form-label">Description</label>
                         <textarea
@@ -106,7 +78,7 @@ const UpdateCategory = ({ currentCategory }) => {
 
                     <div className="d-grid">
                         <button className="btn btn-primary py-3" onClick={handleCreateCategory}>
-                            Update Category
+                            Cập nhật
                         </button>
                     </div>
                 </form>

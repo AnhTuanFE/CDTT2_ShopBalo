@@ -15,7 +15,7 @@ export default function Slidermain() {
         dispatch(ListSlider());
     }, [dispatch, successDelete]);
     const handleEditSlide = (url, id) => {
-        let newSlider = window.prompt('Edit Slider', `${url}`);
+        let newSlider = window.prompt('Chỉnh sửa', `${url}`);
         if (newSlider) {
             dispatch(createSlider(newSlider, id));
         }
@@ -76,10 +76,6 @@ export default function Slidermain() {
                         </tr>
                     ))}
                 </tbody>
-                {/* <div className='btn' style={{ padding: "15px 15px" }}>
-                <i className="fas fa-plus " style={{ color: "green", padding: " 15px"}}></i>
-                ADD
-            </div> */}
             </table>
         </div>
     );

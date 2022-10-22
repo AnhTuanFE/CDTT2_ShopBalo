@@ -23,6 +23,8 @@ export default function CorouselOder() {
         slidesToShow: 6,
         slidesToScroll: 6,
         initialSlide: 0,
+        autoplay: true,
+        autoplaySpeed: 4000,
 
         responsive: [
             {

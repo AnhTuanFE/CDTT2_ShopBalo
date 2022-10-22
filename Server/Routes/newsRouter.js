@@ -25,14 +25,9 @@ newsRouter.delete(
     admin,
     asyncHandler(async (req, res) => {
         const News = await news.findById(req.params.id);
-        const ListNews = await news.find({});
-        if (ListNews.length <= 1) {
-            res.status(404);
-            throw new Error('Can delete news');
-        }
         if (News) {
             await News.remove();
-            res.json({ message: 'news deleted' });
+            res.json({ message: 'xóa thành công' });
         } else {
             res.status(404);
             throw new Error('news not Found');
