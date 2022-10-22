@@ -1,10 +1,17 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
 const Orders = (props) => {
     const { loading, error, orders } = props;
+
+    const checkPay = (order) => {
+        const itemProducts = order.orderItems;
+        let productReview = itemProducts?.some((item) => item.productReview.length === 0);
+        return <>{productReview ? 'Chưa đánh giá' : 'Đã đánh giá'}</>;
+    };
+
     return (
         <div className=" d-flex justify-content-center align-items-center flex-column">
             {loading ? (
@@ -31,11 +38,11 @@ const Orders = (props) => {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thời gian mua</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Đánh giá</th>
+                                        <th className="fw-normal fs-6">ID</th>
+                                        <th className="fw-normal fs-6">Trạng thái</th>
+                                        <th className="fw-normal fs-6">Thời gian mua</th>
+                                        <th className="fw-normal fs-6">Tổng tiền</th>
+                                        <th className="fw-normal fs-6">Đánh giá</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,16 +57,6 @@ const Orders = (props) => {
                                                 </a>
                                             </td>
                                             <td>
-                                                {/* {order.cancel != 1 ? (
-                                                    order.isPaid ? (
-                                                        <>Đã thanh toán</>
-                                                    ) : (
-                                                        <>Đang chờ thanh toán</>
-                                                    )
-                                                ) : (
-                                                    <span className="btn-dark">Đơn hàng này đã bị hủy</span>
-                                                )} */}
-
                                                 {order?.cancel !== 1 ? (
                                                     order?.waitConfirmation &&
                                                     order?.isDelivered &&
@@ -119,7 +116,7 @@ const Orders = (props) => {
                                             </td>
                                             <td>{order.totalPrice}đ</td>
                                             <td className="fs-6" style={{ fontWeight: '600' }}>
-                                                {order?.completeUser ? 'Đã đánh giá' : 'Chưa đánh giá'}
+                                                {checkPay(order)}
                                             </td>
                                         </tr>
                                     ))}
