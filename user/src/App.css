@@ -881,7 +881,7 @@ textarea:focus {
 }
 /* FOOTER */
 .footer {
-    background-color: #ececec;
+    background-color: #00483d;
 }
 .card-name {
     width: 18%;
@@ -1133,10 +1133,10 @@ textarea:focus {
 /* footer */
 
 .footer-hearder {
-    font-size: 15px;
+    font-size: 18px;
     padding-top: 10px;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.8);
+    font-weight: 600;
+    color: #ddd;
     padding-bottom: 5px;
 }
 .footer-list {
@@ -1144,21 +1144,22 @@ textarea:focus {
     padding-left: 0;
 }
 .footer-list li {
-    font-size: 15px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+    /* font-weight: 600; */
+    color: #ddd;
 }
 .foorter-flex {
     display: flex;
 }
 .footer-list a {
     font-size: 15px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
+    /* font-weight: 400; */
+    color: #ddd;
 }
 .footer-list i {
     padding: 0 3px;
-    color: #0f72c4;
+    font-size: 16px;
+    color: #ddd;
 }
 /* frofile */
 .setpass {
@@ -1558,4 +1559,12 @@ textarea:focus {
 }
 .button-hover-cart:hover {
     opacity: 0.9;
+}
+
+.css-icon {
+    height: 40px;
+    width: 40px;
+    border: 3px solid #ff9406;
+    border-radius: 50%;
+    background-color: #00483d;
 }

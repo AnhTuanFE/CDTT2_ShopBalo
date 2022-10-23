@@ -24,7 +24,7 @@ export default function EditNews(props) {
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
     const [content, setContent] = useState('');
-
+    const [retult, setRetult] = useState('');
     const modules = {
         toolbar: [
             [{ header: [1, 2, false] }],
@@ -69,14 +69,28 @@ export default function EditNews(props) {
     }, [news]);
     useEffect(() => {
         if (valueUpdateNews) {
-            toast.success('News update success', ToastObjects);
+            toast.success('Đã cập nhật thành công', ToastObjects);
             dispatch({ type: NEWS_UPDATE_RESET });
         }
     }, [dispatch, valueUpdateNews]);
 
+    const valitor = (values) => {
+        const { nameUser, title, image, content } = values;
+        let re = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+        if (nameUser === '' || title === '' || image === '' || content === '') {
+            setRetult('Vui lòng nhập đầy đủ thông tin');
+        } else {
+            if (!re.test(image)) {
+                setRetult('Đường dẫn không phù hợp');
+            } else return true;
+        }
+    };
+
     const submitHandlerUpload = (e) => {
         e.preventDefault();
+        if (!valitor({ nameUser, title, image, content })) return;
         dispatch(updateNews(idNews, { nameUser, title, image, content }));
+        setRetult('');
     };
     return (
         <div className="content-main" style={{ backgroundColor: '#fff' }}>
@@ -88,10 +102,10 @@ export default function EditNews(props) {
                         Cập nhật
                     </button>
                 </div>
-                {error && (
-                    <div class="alert alert-danger" role="alert">
-                        {error}
-                    </div>
+                {retult !== '' && (
+                    <Message variant="alert alert-danger" role="alert">
+                        {retult}
+                    </Message>
                 )}
                 {loading && <Loading />}
                 <div class="form-group">

@@ -125,7 +125,28 @@ orderRouter.get(
     // admin,
     asyncHandler(async (req, res) => {
         const orders = await Order.find({}).sort({ _id: -1 }).populate('user', 'id name email');
-        res.json(orders);
+        const arrOders = [];
+        if (orders) {
+            const orderWait = orders.filter((i) => i.waitConfirmation === false && i.cancel !== 1);
+            const orderSuccessWait = orders.filter(
+                (i) => i.waitConfirmation === true && i.isDelivered !== true && i.cancel !== 1,
+            );
+            const orderDeliver = orders.filter((i) => i.isDelivered === true && i.isPaid !== true && i.cancel !== 1);
+            const orderPay = orders.filter((i) => i.isPaid === true && i.completeAdmin !== true && i.cancel !== 1);
+            const orderSuccess = orders.filter(
+                (i) => i.completeUser === true && i.completeAdmin === true && i.cancel !== 1,
+            );
+            const orderFail = orders.filter((i) => i.cancel === 1);
+            arrOders.push(
+                ...orderWait,
+                ...orderSuccessWait,
+                ...orderDeliver,
+                ...orderPay,
+                ...orderSuccess,
+                ...orderFail,
+            );
+        }
+        res.json(arrOders);
     }),
 );
 

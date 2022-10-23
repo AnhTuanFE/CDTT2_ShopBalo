@@ -25,6 +25,7 @@ import { listProduct } from '../Redux/Actions/ProductActions';
 import { listUser } from '../Redux/Actions/userActions';
 import OfferProduct from '../components/SlideCorousel/offerProduct';
 import './style/SingleProduct.css';
+import DetailProduct from '../components/SlideCorousel/DetailProduct';
 
 const SingleProduct = ({ history, match }) => {
     const [qty, setQty] = useState(1);
@@ -206,7 +207,7 @@ const SingleProduct = ({ history, match }) => {
         const findUser = users?.find((user) => user._id === data.user);
         return (
             <img
-                src={`/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
                 alt=""
                 style={{
                     height: '40px',
@@ -234,7 +235,7 @@ const SingleProduct = ({ history, match }) => {
                                 <div className="row">
                                     <div className="col-md-5">
                                         <div className="single-image">
-                                            <img src={product.image} alt={product.name} />
+                                            <DetailProduct products={product.image} />
                                         </div>
                                     </div>
                                     <div className="col-md-7 product-postion">
@@ -247,7 +248,7 @@ const SingleProduct = ({ history, match }) => {
                                             <div className="product-baner">
                                                 <img
                                                     style={{ width: '100%' }}
-                                                    src="https://m.media-amazon.com/images/S/aplus-media/vc/2b83d5b5-3c19-4578-8137-7e5094bbc801.__CR0,0,970,300_PT0_SX970_V1___.jpg"
+                                                    src="http://balo.giaodienwebmau.com/wp-content/uploads/2021/06/ant_index_bottom_banner_big_2.jpg"
                                                     alt=""
                                                 ></img>
                                             </div>
@@ -608,7 +609,7 @@ const SingleProduct = ({ history, match }) => {
                                         placeholder="Xin mời để lại câu hỏi, BaloStore sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
                                         onChange={(e) => {
                                             setQuestion(e.target.value);
-                                            setImageProduct(product.image);
+                                            setImageProduct(product?.image[0].image);
                                             setNameProduct(product.name);
                                         }}
                                     ></textarea>

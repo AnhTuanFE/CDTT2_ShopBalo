@@ -258,6 +258,12 @@ const ProfileTabs = () => {
         }
     }, [file]);
     useEffect(() => {
+        let newImage = new FormData();
+        let x = newImage.append('image', 'hehe');
+        console.log(x, 'jjjjj');
+        console.log(newImage, 'hhh');
+    }, []);
+    useEffect(() => {
         if (url !== undefined) {
             setImage(url.filename);
         }
@@ -466,8 +472,10 @@ const ProfileTabs = () => {
                     >
                         <img
                             src={
-                                (url?.filename === undefined ? user?.image : url?.filename) ||
-                                (user?.image === undefined ? '/images/user.png' : user?.image)
+                                (url?.filename === undefined
+                                    ? `/userProfile/${user?.image}`
+                                    : `/userProfile/${url?.filename}`) ||
+                                (user?.image === undefined ? '/images/user.png' : `/userProfile/${user?.image}`)
                             }
                             style={{
                                 height: '120px',

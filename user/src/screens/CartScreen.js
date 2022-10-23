@@ -142,7 +142,10 @@ const CartScreen = ({ match, location, history }) => {
                                 <div key={item?._id} className="cart-iterm row">
                                     {findCartCountInStock(item)}
                                     <div className="cart-image col-md-1">
-                                        <img src={item.product?.image} alt={item.product?.name} />
+                                        <img
+                                            src={`/productImage/${item.product?.image[0].image}`}
+                                            alt={item.product?.name}
+                                        />
                                     </div>
                                     <div className="cart-text col-md-3 d-flex align-items-center">
                                         <Link to={`/products/${item.product?._id}`}>

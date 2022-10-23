@@ -23,7 +23,8 @@ export default function AddNews() {
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
     const [content, setContent] = useState('');
-    
+    const [retult, setRetult] = useState('');
+
     const modules = {
         toolbar: [
             [{ header: [1, 2, false] }],
@@ -57,7 +58,7 @@ export default function AddNews() {
     const { loading, error, news } = newsCreate;
     useEffect(() => {
         if (news) {
-            toast.success('News add success', ToastObjects);
+            toast.success('Đã thêm thành công', ToastObjects);
             dispatch({ type: NEWS_CREATE_RESET });
             setNameUser('');
             setTitle('');
@@ -65,10 +66,23 @@ export default function AddNews() {
             setContent('');
         }
     }, [dispatch, news]);
+    const valitor = (values) => {
+        const { nameUser, title, image, content } = values;
+        let re = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+        if (nameUser === '' || title === '' || image === '' || content === '') {
+            setRetult('Vui lòng nhập đầy đủ thông tin');
+        } else {
+            if (!re.test(image)) {
+                setRetult('Đường dẫn không phù hợp');
+            } else return true;
+        }
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
+        if (!valitor({ nameUser, title, image, content })) return;
         dispatch(createNews({ nameUser, title, image, content }));
+        setRetult('');
     };
 
     return (
@@ -81,11 +95,7 @@ export default function AddNews() {
                         Thêm tin tức
                     </button>
                 </div>
-                {error && (
-                    <div class="alert alert-danger" role="alert">
-                        {error}
-                    </div>
-                )}
+                {retult !== '' && <Message variant="alert-danger text-center fs-6">{retult}</Message>}
                 {loading && <Loading />}
                 <div class="form-group">
                     <label for="validationCustom01">Người đăng bài</label>

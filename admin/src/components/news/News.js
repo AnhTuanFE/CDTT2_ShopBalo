@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createNews, ListNews, deleteNews } from '../../Redux/Actions/NewsAction';
+import { ListNews, deleteNews } from '../../Redux/Actions/NewsAction';
+import { NEWS_DELETE_RESET } from '../../Redux/Constants/NewsConstants';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
 import Toast from '../LoadingError/Toast';
 import './style.css';
 import { Link } from 'react-router-dom';
 
+const ToastObjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 export default function News() {
-    const ToastObjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
-    };
     const newsList = useSelector((state) => state.newsList);
     const { news } = newsList;
     const newsDelete = useSelector((state) => state.deleteNews);
     const { error: errorDelete, success: successDelete } = newsDelete;
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(ListNews());
-    }, [dispatch, successDelete]);
-    // const handleEditNews = (id) => {
-    //     if (id) {
-    //         dispatch(createNews(id));
-    //     }
-    // };
+    }, []);
+
+    useEffect(() => {
+        if (successDelete) {
+            toast.success('Đã xóa thành công', ToastObjects);
+            dispatch({ type: NEWS_DELETE_RESET });
+            dispatch(ListNews());
+        }
+    }, [successDelete]);
+
+    console.log(newsDelete);
     const handleDeleteNews = (id) => {
         if (window.confirm('Are you sure??')) {
             dispatch(deleteNews(id));
@@ -39,8 +46,7 @@ export default function News() {
                 <div className="content-header" style={{ marginBottom: '20px' }}>
                     <h2 className="content-title">Tin tức</h2>
                 </div>
-                {/* {loadingUpdate && <Loading />} */}
-                {/* <Toast /> */}
+                <Toast />
                 <table className="table slider-data">
                     <thead>
                         <tr>

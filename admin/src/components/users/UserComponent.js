@@ -32,13 +32,15 @@ const UserComponent = () => {
                     ) : (
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
                             {users?.map((user) => (
-                                <div className="col" key={user._id}>
+                                <div className="col-3 col-sm-3 col-md-3 col-lg-3" key={user._id}>
                                     <div className="card card-user shadow-sm">
                                         <div className="card-header">
                                             <img
                                                 className="img-md img-avatar"
                                                 src={
-                                                    user?.image === undefined ? './images/user.png' : `./${user?.image}`
+                                                    user?.image === undefined
+                                                        ? '/images/user.png'
+                                                        : `/userProfile/${user?.image}`
                                                 }
                                                 alt="User pic"
                                             />

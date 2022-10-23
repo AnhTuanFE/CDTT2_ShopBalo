@@ -6,10 +6,14 @@ const Footer = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
-                        <h1 className="footer-hearder">Thiết kế</h1>
+                        <h1 className="footer-hearder">Người phát triển</h1>
                         <ul className="footer-list">
-                            <li>Nguyễn Anh Tuấn</li>
-                            <li>Nguyễn Văn Lịch</li>
+                            <li>
+                                <span>Nguyễn Anh Tuấn</span>
+                            </li>
+                            <li>
+                                <span>Nguyễn Văn Lịch</span>
+                            </li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
@@ -27,46 +31,21 @@ const Footer = () => {
                                     Instagram
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fab fa-linkedin"></i>
-                                    LinkedIn
-                                </a>
-                            </li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
-                        <div className="foorter-flex">
-                            <div className="card-name">
-                                <img
-                                    alt="mastercard"
-                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/1200px-MasterCard_Logo.svg.png"
-                                />
-                            </div>
-                            <div className="card-name">
-                                <img
-                                    alt="visa"
-                                    src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
-                                />
-                            </div>
-                            <div className="card-name">
-                                <img alt="paypal" src="https://pbs.twimg.com/media/EfTZlEnWAAMn1lX.png" />
-                            </div>
-                        </div>
-                        <div className="foorter-flex">
-                            <div className="card-name">
-                                <img
-                                    alt="express"
-                                    src="https://icons.iconarchive.com/icons/designbolts/credit-card-payment/256/American-Express-icon.png"
-                                />
-                            </div>
-                            <div className="card-name">
-                                <img
-                                    alt="discover"
-                                    src="https://icons-for-free.com/iconfiles/png/512/cash+checkout+discover+network+online+shopping+payment+method-1320191225548835050.png"
-                                />
-                            </div>
-                        </div>
+                        <h1 className="footer-hearder">Liên hệ</h1>
+                        <ul className="footer-list">
+                            <li>
+                                <i class="fas fa-phone-alt"></i>
+                                <span className="fw-bold ps-1">Điện thoại: </span>0123456789
+                            </li>
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span className="fw-bold ps-1">Địa chỉ: </span>
+                                566/191 - Nguyễn Thái Sơn - Phường 5 - Gò Vấp - TP.HCM
+                            </li>
+                        </ul>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
                         <h1 className="footer-hearder">Chăm sóc khách hàng</h1>

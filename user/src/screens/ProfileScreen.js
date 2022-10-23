@@ -53,7 +53,7 @@ const ProfileScreen = () => {
                                     }}
                                 >
                                     <img
-                                        src={user?.image || './images/user.png'}
+                                        src={`/userProfile/${user?.image}` || './images/user.png'}
                                         alt=""
                                         style={{
                                             height: '100px',

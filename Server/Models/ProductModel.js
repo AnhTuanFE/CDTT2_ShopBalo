@@ -70,7 +70,8 @@ const productSchema = mongoose.Schema(
             required: true,
         },
         image: {
-            type: String,
+            type: Array,
+            required: true,
         },
         description: {
             type: String,

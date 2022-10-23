@@ -5,6 +5,10 @@ import { admin, protect } from './../Middleware/AuthMiddleware.js';
 import Category from '../Models/CategoryModel.js';
 import Order from './../Models/OrderModel.js';
 import Cart from '../Models/CartModel.js';
+import path from 'path';
+import fs from 'fs';
+
+const __dirname = path.resolve();
 const productRoute = express.Router();
 
 // GET PRODUCT
@@ -264,8 +268,14 @@ productRoute.delete(
     admin,
     asyncHandler(async (req, res) => {
         const product = await Product.findById(req.params.id);
-        // const cart = await Cart.find({ 'cartItems.product': req.params.id });
-
+        const listImage = product?.image;
+        if (listImage) {
+            for (let i = 0; i < listImage.length; i++) {
+                fs.unlink(path.join(__dirname, 'public/productImage', listImage[i].image), (err) => {
+                    if (err) console.log('Delete old productImage have err:', err);
+                });
+            }
+        }
         if (product) {
             await Cart.updateMany({}, { $pull: { cartItems: { product: req.params.id } } });
             await product.remove();
@@ -427,4 +437,29 @@ productRoute.put(
         }
     }),
 );
+
+// DELETE IMAGE PRODUCT
+productRoute.post(
+    '/:id/deleteImage',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { imageId } = req.body;
+        const product = await Product.findById(req.params.id);
+        const listImage = product?.image;
+        const finDelete = listImage.find((image) => image.id == imageId);
+        if (finDelete) {
+            fs.unlink(path.join(__dirname, 'public/productImage', finDelete.image), (err) => {
+                if (err) console.log('Delete old productImage have err:', err);
+            });
+        }
+        if (product) {
+            const filterImage = listImage.filter((image) => image.id != imageId);
+            product.image = filterImage;
+            const newProduct = await product.save();
+            res.status(201).json(newProduct);
+        }
+    }),
+);
+
 export default productRoute;

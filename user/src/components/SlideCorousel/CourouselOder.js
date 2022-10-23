@@ -23,6 +23,8 @@ export default function CorouselOder() {
         slidesToShow: 6,
         slidesToScroll: 6,
         initialSlide: 0,
+        autoplay: true,
+        autoplaySpeed: 4000,
 
         responsive: [
             {
@@ -70,7 +72,10 @@ export default function CorouselOder() {
                                 return (
                                     <div key={index} className="corousel-div">
                                         <Link to={`/products/${product._id}`} className="corousel-link">
-                                            <img src={product.image} className="corousel-img"></img>
+                                            <img
+                                                src={`/productImage/${product?.image[0]?.image}`}
+                                                className="corousel-img"
+                                            ></img>
                                             <p className="corousel-noti">{product.name}</p>
                                             <p className="corousel-price">{product.price}đ</p>
                                             <div className="corousel-rating">

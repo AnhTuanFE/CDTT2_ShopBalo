@@ -27,10 +27,10 @@ const CreateCategory = () => {
 
     useEffect(() => {
         if (success) {
-            toast.success('Category Added', ToastObjects);
+            toast.success('Đã thêm thành công', ToastObjects);
         }
         if (error) {
-            toast.error(error, ToastObjects);
+            toast.error('Thể loại đã tồn tại', ToastObjects);
         }
         dispatch({ type: CATEGORY_ADD_RESET });
     }, [success, error]);

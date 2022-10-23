@@ -6,6 +6,7 @@ import { listMyOrders, orderGetAddress } from '../Redux/Actions/OrderActions';
 import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions';
 import { ORDER_ADDRESS_MY_RESET } from '../Redux/Constants/OrderConstants';
 import { USER_UPDATE_PROFILE_RESET } from '../Redux/Constants/UserContants';
+import Message from './../components/LoadingError/Error';
 
 const ShippingScreen = ({ history }) => {
     // window.scrollTo(0, 0);
@@ -19,6 +20,7 @@ const ShippingScreen = ({ history }) => {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [image, setImage] = useState('');
+    const [retult, setRetult] = useState('');
 
     useEffect(() => {
         if (updatesuccess) {
@@ -38,36 +40,45 @@ const ShippingScreen = ({ history }) => {
         }
     }, [dispatch, user]);
 
+    const valitor = (values) => {
+        const { address, city, country } = values;
+        if (address === '' || city === '' || country === '') {
+            setRetult('Vui lòng nhập đầy đủ thông tin');
+        } else return true;
+    };
     const submitHandler = async (e) => {
         e.preventDefault();
+        if (!valitor({ address, city, country })) return;
         dispatch(saveShippingAddress({ address, city, country }));
         dispatch(updateUserProfile({ id: user._id, address, city, country, image }));
+        setRetult('');
     };
     return (
         <>
             <Header />
             <div className="container d-flex justify-content-center align-items-center login-center">
                 <form className="Login col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
+                    {retult !== '' && <Message variant="alert-danger text-center fs-6">{retult}</Message>}
                     <h4>Địa chỉ giao hàng</h4>
                     <input
                         type="text"
-                        placeholder="Enter address"
+                        placeholder="Đường/Hẹp - Thôn/Phường"
                         value={address}
-                        required
+                        // required
                         onChange={(e) => setAddress(e.target.value)}
                     />
                     <input
                         type="text"
-                        placeholder="Enter city"
+                        placeholder="Xã - Huyện/Quận"
                         value={city}
-                        required
+                        // required
                         onChange={(e) => setCity(e.target.value)}
                     />
                     <input
                         type="text"
-                        placeholder="Enter country"
+                        placeholder="Tỉnh/Thành phố"
                         value={country}
-                        required
+                        // required
                         onChange={(e) => setCountry(e.target.value)}
                     />
                     <button type="submit">Tiếp tục</button>

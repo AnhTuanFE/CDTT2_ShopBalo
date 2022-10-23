@@ -37,7 +37,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
 
     useEffect(() => {
         if (successDelete) {
-            toast.success('Delete category success', ToastObjects);
+            toast.success('Đã xóa thành công', ToastObjects);
         }
         if (errorDelete) {
             toast.error(errorDelete, ToastObjects);

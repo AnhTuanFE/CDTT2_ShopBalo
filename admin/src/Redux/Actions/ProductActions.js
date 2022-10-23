@@ -29,6 +29,12 @@ import {
     PRODUCT_DELETE_OPTION_REQUEST,
     PRODUCT_DELETE_OPTION_SUCCESS,
     PRODUCT_DELETE_OPTION_FAIL,
+    PRODUCT_CREATE_IMAGE_REQUEST,
+    PRODUCT_CREATE_IMAGE_FAIL,
+    PRODUCT_CREATE_IMAGE_SUCCESS,
+    PRODUCT_DELETE_IMAGE_REQUEST,
+    PRODUCT_DELETE_IMAGE_SUCCESS,
+    PRODUCT_DELETE_IMAGE_FAIL,
 } from '../Constants/ProductConstants';
 import axios from 'axios';
 import { logout } from './userActions';
@@ -312,6 +318,61 @@ export const createProductCommentChild = (productId, question) => async (dispatc
         }
         dispatch({
             type: PRODUCT_CREATE_COMMENTCHILD_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const createImageProduct = (images) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_IMAGE_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+
+        const { data } = await axios.post(`/api/imageProfile/`, images, config);
+
+        dispatch({ type: PRODUCT_CREATE_IMAGE_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_CREATE_IMAGE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const deleteImageProduct = (productId, imageId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_DELETE_IMAGE_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.post(`/api/products/${productId}/deleteImage`, { imageId }, config);
+
+        dispatch({ type: PRODUCT_DELETE_IMAGE_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_DELETE_IMAGE_FAIL,
             payload: message,
         });
     }

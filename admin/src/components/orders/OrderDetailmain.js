@@ -49,43 +49,39 @@ const OrderDetailmain = (props) => {
         successCompleteAdmin,
     ]);
 
-    // const deliverHandler = () => {
-    //     if (window.confirm('Are you sure??')) {
-    //         dispatch(deliverOrder(order));
-    //     }
-    // };
-
     const cancelOrderHandler = () => {
         if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
             dispatch(cancelOrder(order));
         }
     };
-
-    // const paidHandler = () => {
-    //     if (window.confirm('Are you sure??')) {
-    //         dispatch(paidOrder(order));
-    //     }
-    // };
     const [status, setStatus] = useState('0');
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
             if (window.confirm('Đồng ý xác nhận')) {
                 dispatch(waitConfirmationOrder(order._id));
+            } else {
+                setStatus('0');
             }
         }
         if (status === '2' && order?.isDelivered !== true) {
-            if (window.confirm('Đồng ý xác nhận')) {
+            if (window.confirm('Đồng ý giao hàng')) {
                 dispatch(deliverOrder(order));
+            } else {
+                setStatus('1');
             }
         }
         if (status === '3' && order?.isPaid !== true) {
-            if (window.confirm('Đồng ý xác nhận')) {
+            if (window.confirm('Đồng ý thanh toán')) {
                 dispatch(paidOrder(order));
+            } else {
+                setStatus('2');
             }
         }
         if (status === '4' && order?.completeAdmin !== true) {
-            if (window.confirm('Đồng ý xác nhận')) {
+            if (window.confirm('Đồng ý hoàn tất')) {
                 dispatch(completeAdminOrder(order._id));
+            } else {
+                setStatus('3');
             }
         }
     }, [status]);

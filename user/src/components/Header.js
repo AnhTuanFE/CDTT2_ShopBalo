@@ -210,7 +210,9 @@ const Header = () => {
                                         >
                                             <img
                                                 src={`/${
-                                                    userInfo?.image === undefined ? 'images/user.png' : userInfo?.image
+                                                    userInfo?.image === undefined
+                                                        ? 'images/user.png'
+                                                        : `userProfile/${userInfo?.image}`
                                                 }`} // upload ảnh
                                                 alt=""
                                                 style={{
@@ -222,7 +224,7 @@ const Header = () => {
                                                 }}
                                                 className="fix-none"
                                             />
-                                            <span className="name-button__p">{notiUser()}</span>
+                                            <span className="name-button__p ps-1">{notiUser()}</span>
                                             {/* {userInfo.name} */}
                                         </button>
                                         <div className="dropdown-menu">

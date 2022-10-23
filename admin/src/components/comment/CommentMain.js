@@ -27,7 +27,7 @@ export default function CommentMain() {
         const findUser = users?.find((user) => user._id === data.user);
         return (
             <img
-                src={`/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
                 alt=""
                 style={{
                     height: '40px',
@@ -77,7 +77,7 @@ export default function CommentMain() {
                                             <tr>
                                                 <td>
                                                     <img
-                                                        src={product?.imageProduct}
+                                                        src={`/productImage/${product?.imageProduct}`}
                                                         alt=""
                                                         style={{ height: '40px', width: '40px' }}
                                                     />

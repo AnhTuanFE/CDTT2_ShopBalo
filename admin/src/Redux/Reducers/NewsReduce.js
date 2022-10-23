@@ -16,6 +16,7 @@ import {
     NEWS_UPDATE_SUCCESS,
     NEWS_UPDATE_FAIL,
     NEWS_UPDATE_RESET,
+    NEWS_DELETE_RESET,
 } from '../Constants/NewsConstants.js';
 
 export const newsListReducer = (state = { news: [] }, action) => {
@@ -23,10 +24,7 @@ export const newsListReducer = (state = { news: [] }, action) => {
         case NEWS_LIST_REQUEST:
             return { loading: true, news: [...state.news] };
         case NEWS_LIST_SUCCESS:
-            return {
-                loading: false,
-                news: action.payload,
-            };
+            return { loading: false, news: action.payload };
         case NEWS_LIST_FAIL:
             return { loading: false, error: action.payload };
         default:
@@ -40,10 +38,7 @@ export const editNewsReducer = (state = { news: [] }, action) => {
         case NEWS_EDIT_REQUEST:
             return { loading: true };
         case NEWS_EDIT_SUCCESS:
-            return {
-                loading: false,
-                news: action.payload,
-            };
+            return { loading: false, news: action.payload };
         case NEWS_EDIT_FAIL:
             return { loading: false, error: action.payload };
         default:
@@ -54,16 +49,13 @@ export const editNewsReducer = (state = { news: [] }, action) => {
 export const newsDeleteReducer = (state = {}, action) => {
     switch (action.type) {
         case NEWS_DELETE_REQUEST:
-            return {
-                loading: true,
-            };
+            return { loading: true };
         case NEWS_DELETE_SUCCESS:
-            return {
-                loading: false,
-                success: true,
-            };
+            return { loading: false, success: true };
         case NEWS_DELETE_FAIL:
             return { loading: false, error: action.payload };
+        case NEWS_DELETE_RESET:
+            return {};
         default:
             return state;
     }
