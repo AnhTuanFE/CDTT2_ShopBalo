@@ -160,7 +160,7 @@ const SingleProduct = ({ history, match }) => {
         }
     }, [product._id]);
     useEffect(() => {
-        if (product !== undefined) {
+        if (product !== undefined && maxPrice) {
             dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
         }
     }, [category, maxPrice]);
