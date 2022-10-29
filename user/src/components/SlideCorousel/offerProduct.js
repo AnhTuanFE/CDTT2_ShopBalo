@@ -66,10 +66,10 @@ export default function OfferProduct(data) {
                                             src={`/productImage/${product?.image[0]?.image}`}
                                             className="corousel-img"
                                         ></img>
-                                        <p className="corousel-noti">{product.name}</p>
-                                        <p className="corousel-price">{product.price}đ</p>
+                                        <p className="corousel-noti">{product?.name}</p>
+                                        <p className="corousel-price">{product?.price?.toLocaleString('de-DE')}đ</p>
                                         <div className="corousel-rating">
-                                            <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                            <Rating value={product?.rating} text={`(${product?.numReviews})`} />
                                         </div>
                                     </Link>
                                 </div>

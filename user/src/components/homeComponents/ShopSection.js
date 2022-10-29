@@ -19,9 +19,22 @@ const ShopSection = (props) => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [sortProducts, setSortProducts] = useState('1');
+    const [keySearch, setKeySearch] = useState([]);
+
+    useEffect(() => {
+        const getSearch = JSON.parse(localStorage.getItem('keySearch'));
+        if (getSearch !== null) {
+            if (getSearch.length > 4) {
+                getSearch.shift();
+                setKeySearch([...getSearch]);
+            } else {
+                setKeySearch([...getSearch]);
+            }
+        }
+    }, [products]);
     useEffect(() => {
         dispatch(listCart());
-        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
+        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts, keySearch));
     }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts]);
 
     return (
@@ -108,7 +121,7 @@ const ShopSection = (props) => {
                                                                 </Link>
                                                             </p>
 
-                                                            <h3>{product.price}đ</h3>
+                                                            <h3>{product?.price?.toLocaleString('de-DE')}đ</h3>
                                                             <Rating
                                                                 value={product.rating}
                                                                 text={`(${product.numReviews})`}

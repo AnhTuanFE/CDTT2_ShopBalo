@@ -3,6 +3,21 @@ import Header from './../components/Header';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, clearFromCart, listCart, removefromcart } from './../Redux/Actions/cartActions';
+import { Checkbox } from 'primereact/checkbox';
+import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
+import 'primereact/resources/primereact.min.css'; //core css
+import 'primeicons/primeicons.css'; //icons
+import { CART_CREATE_RESET } from '../Redux/Constants/CartConstants';
+import { toast } from 'react-toastify';
+import Toast from '../components/LoadingError/Toast';
+import Loading from '../components/LoadingError/Loading';
+
+const Toastobjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 
 const CartScreen = ({ match, location, history }) => {
     window.scrollTo(0, 0);
@@ -10,15 +25,15 @@ const CartScreen = ({ match, location, history }) => {
     const productId = match.params.id;
     const qty = location.search ? Number(location.search.split('=')[1]) : 1;
     const color = location.search && location.search.split('=')[2];
-    // console.log(color);
 
+    const [checked, setChecked] = useState(false);
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     // console.log(cartItems, 'heheh');
     const cartDel = useSelector((state) => state.cartDelete);
     const { loading: loa, success: suc, mesage: mes } = cartDel;
     const cartCreate = useSelector((state) => state.cartCreate);
-    const { loading: loadingCreate, success: successCreate } = cartCreate;
+    const { loading: loadingCreate, success: successCreate, error: errorCreate } = cartCreate;
     const total = cartItems
         ? cartItems
               .filter((item) => item.isBuy == true)
@@ -30,12 +45,18 @@ const CartScreen = ({ match, location, history }) => {
 
     const checkOutHandler = () => {
         history.push('/login?redirect=shipping');
-        for (let i = 0; i < cartItems.length; i++) {
-            dispatch(addToCart(cartItems[i]?.product._id, cartItems[i]?.color, false, userInfo._id));
-        }
     };
     useEffect(() => {
+        if (errorCreate) {
+            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            dispatch({ type: CART_CREATE_RESET });
+        }
+    }, [dispatch, errorCreate]);
+    useEffect(() => {
         dispatch(listCart());
+        if (successCreate) {
+            dispatch({ type: CART_CREATE_RESET });
+        }
     }, [suc, successCreate]);
 
     const removeFromCartHandle = (id) => {
@@ -44,22 +65,20 @@ const CartScreen = ({ match, location, history }) => {
         }
     };
     function findCartCountInStock(item) {
-        const optionColor = item?.product?.optionColor;
-        const findCart = optionColor?.find((option) => option.color === item.color);
+        const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
         return (
             <>
-                {findCart?._id !== '' ? (
-                    <div className="col-md-1 cart-check">
-                        <input
-                            type="checkbox"
-                            checked={findCart?.isBuy}
-                            onChange={(e) => {
+                {findCart?.countInStock !== '' ? (
+                    <div className="col-md-1 cart-checkbok">
+                        <Checkbox
+                            checked={item?.isBuy}
+                            onChange={() => {
                                 dispatch(addToCart(item?.product._id, item?.color, true, userInfo._id));
                             }}
-                        ></input>
+                        />
                     </div>
                 ) : (
-                    <div className="col-md-1 cart-check">
+                    <div className="col-md-1 cart-checkbok">
                         <span className="span" style={{ fontSize: '12px', color: 'red' }}>
                             Hết hàng
                         </span>
@@ -101,6 +120,8 @@ const CartScreen = ({ match, location, history }) => {
         <>
             <Header />
             {/* Cart */}
+            {loadingCreate && <Loading />}
+            <Toast />
             <div className="container">
                 {cartItems?.length === 0 ? (
                     <div className=" alert alert-info text-center mt-3">
@@ -155,7 +176,7 @@ const CartScreen = ({ match, location, history }) => {
                                     {findCartColor(item)}
                                     <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-start  d-flex flex-column justify-content-center col-sm-7 quantity-css">
                                         <h6>Giá</h6>
-                                        <h4>{item.product?.price}đ</h4>
+                                        <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
                                     </div>
                                     <div
                                         className=" col-md-1 delete-cart"
@@ -175,7 +196,7 @@ const CartScreen = ({ match, location, history }) => {
                         <div className="cart-buttons d-flex align-items-center row">
                             <div className="total col-md-6">
                                 <span className="sub">Tổng tiền:</span>
-                                <span className="total-price">{total}đ</span>
+                                <span className="total-price">{Number(total)?.toLocaleString('de-DE')}đ</span>
                             </div>
                             {total > 0 && (
                                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">

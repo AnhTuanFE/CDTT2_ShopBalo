@@ -1,0 +1,11 @@
+.input-group__search {
+    width: 100%;
+}
+.list-group li {
+    padding: 12px 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+.list-group li:hover {
+    background-color: rgb(219, 214, 214);
+}

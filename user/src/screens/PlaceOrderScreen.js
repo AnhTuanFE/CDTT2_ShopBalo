@@ -7,17 +7,27 @@ import { ORDER_CREATE_RESET } from '../Redux/Constants/OrderConstants';
 import Header from './../components/Header';
 import Message from './../components/LoadingError/Error';
 import PayModal from '../components/Modal/PayModal';
+import { toast } from 'react-toastify';
+import Loading from '../components/LoadingError/Loading';
+import Toast from '../components/LoadingError/Toast';
 import { getUserDetails } from '../Redux/Actions/userActions';
+
+const Toastobjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 
 const PlaceOrderScreen = ({ history }) => {
     // window.scrollTo(0, 0);
+    const dispatch = useDispatch();
     // const userDetails = useSelector((state) => state.userDetails);
     // const { loading, user } = userDetails;
-    const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     const currenCartItems = cartItems
-        .filter((item) => item.isCheck == true)
+        .filter((item) => item.isBuy == true)
         .reduce((arr, pro) => {
             arr.push({
                 name: pro.product.name,
@@ -31,7 +41,7 @@ const PlaceOrderScreen = ({ history }) => {
         }, []);
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    // console.log(currenCartItems, 'hihi');
+
     // Calculate Price
     const addDecimals = (num) => {
         return (Math.round(num * 100) / 100).toFixed(0);
@@ -39,7 +49,7 @@ const PlaceOrderScreen = ({ history }) => {
 
     cart.itemsPrice = addDecimals(
         cart.cartItems
-            .filter((item) => item.isCheck == true)
+            .filter((item) => item.isBuy == true)
             .reduce((a, i) => a + i.qty * i.product.price, 0)
             .toFixed(0),
     );
@@ -53,13 +63,19 @@ const PlaceOrderScreen = ({ history }) => {
     const orderCreate = useSelector((state) => state.orderCreate);
     const { order, success, error } = orderCreate;
     useEffect(() => {
-        // dispatch(getUserDetails('profile'));
+        if (error) {
+            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            dispatch({ type: ORDER_CREATE_RESET });
+        }
+    }, [error]);
+    useEffect(() => {
         dispatch(listCart());
         if (success) {
             history.push(`/order/${order._id}`);
             dispatch({ type: ORDER_CREATE_RESET });
+            dispatch(clearFromCart(userInfo._id));
         }
-    }, [history, dispatch, success, order]);
+    }, [history, dispatch, success, order, userInfo]);
 
     const placeOrderHandler = () => {
         //if (window.confirm("Are you sure"))
@@ -80,13 +96,16 @@ const PlaceOrderScreen = ({ history }) => {
                 taxPrice: cart.taxPrice,
                 totalPrice: cart.totalPrice,
                 phone: userInfo.phone,
+                name: userInfo.name,
+                email: userInfo.email,
             }),
         );
-        dispatch(clearFromCart(userInfo._id));
     };
     return (
         <>
             <Header />
+            {error && <Loading />}
+            <Toast />
             <div className="container">
                 <PayModal
                     Title="Mua hàng"
@@ -151,7 +170,7 @@ const PlaceOrderScreen = ({ history }) => {
                         ) : (
                             <>
                                 {cart.cartItems
-                                    .filter((item) => item.isCheck == true)
+                                    .filter((item) => item.isBuy == true)
                                     .map((item, index) => (
                                         <div
                                             className="order-product row"
@@ -179,7 +198,7 @@ const PlaceOrderScreen = ({ history }) => {
                                             </div>
                                             <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
                                                 <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
-                                                <h6>{item?.qty * item?.product?.price}đ</h6>
+                                                <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
                                             </div>
                                         </div>
                                     ))}
@@ -199,22 +218,22 @@ const PlaceOrderScreen = ({ history }) => {
                                     <td>
                                         <strong>Sản phẩm</strong>
                                     </td>
-                                    <td>{cart.itemsPrice}đ</td>
+                                    <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
                                     <td>
                                         <strong>Thuế</strong>
                                     </td>
-                                    <td>{cart.taxPrice}đ</td>
+                                    <td>{Number(cart?.taxPrice)?.toLocaleString('de-DE')}đ</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <strong>Phí vận chuyển</strong>
                                     </td>
-                                    <td>{cart.shippingPrice}đ</td>
+                                    <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
 
                                     <td>
                                         <strong>Tổng tiền</strong>
                                     </td>
-                                    <td>{cart.totalPrice}đ</td>
+                                    <td>{Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -224,13 +243,10 @@ const PlaceOrderScreen = ({ history }) => {
                     className="row"
                     style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px', marginBottom: '30px' }}
                 >
-                    {error && (
-                        <div className="">
-                            <Message variant="alert-danger">{error}</Message>
-                        </div>
-                    )}
                     <div className="col-lg-12 fix-right">
-                        <div style={{ fontWeight: '600', paddingRight: '10px' }}>Tổng tiền: {cart.totalPrice}đ</div>
+                        <div style={{ fontWeight: '600', paddingRight: '10px' }}>
+                            Tổng tiền: {Number(cart.totalPrice)?.toLocaleString('de-DE')}đ
+                        </div>
                         {cart.cartItems.length === 0 ? null : (
                             <button
                                 type="submit"

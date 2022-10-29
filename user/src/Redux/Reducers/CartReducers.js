@@ -4,6 +4,7 @@ import {
     // CART_CLEAR_ITEMS,
     CART_CREATE_FAIL,
     CART_CREATE_REQUEST,
+    CART_CREATE_RESET,
     CART_CREATE_SUCCESS,
     CART_DELETE_FAIL,
     CART_DELETE_REQUEST,
@@ -72,6 +73,8 @@ export const CreateCartReducer = (state = {}, action) => {
                 loading: false,
                 error: action.payload,
             };
+        case CART_CREATE_RESET:
+            return {};
         default:
             return state;
     }

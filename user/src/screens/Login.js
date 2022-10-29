@@ -24,6 +24,7 @@ const Login = ({ location, history }) => {
             history.push(redirect);
         }
     }, [userInfo, history, redirect]);
+
     const funtionCheck = () => {
         const msg = {};
         let re = /\S+@\S+\.\S+/;
@@ -70,7 +71,7 @@ const Login = ({ location, history }) => {
                 <form className="Login col-md-6 col-lg-4 col-10" onSubmit={submitHandler}>
                     <div className="Login-from from-login">
                         <input
-                            type="email"
+                            type="text"
                             //placeholder="Email"
                             className={loginCheck.borderRed1}
                             value={email}

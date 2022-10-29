@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
-import ProfileTabs from '../components/profileComponents/ProfileTabs';
-import { getUserDetails, updateUserProfile } from '../Redux/Actions/userActions';
 import Orders from './../components/profileComponents/Orders';
 import moment from 'moment';
 import { listMyOrders } from '../Redux/Actions/OrderActions';
@@ -10,8 +8,6 @@ import { Link } from 'react-router-dom';
 
 const BuyingProductScreen = () => {
     const dispatch = useDispatch();
-    const userUpdate = useSelector((state) => state.userUpdateProfile);
-    const { success: successUpdate } = userUpdate;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const orderListMy = useSelector((state) => state.orderListMy);
@@ -19,13 +15,9 @@ const BuyingProductScreen = () => {
     const [buleanOrder, setBuleanOrder] = useState(true);
 
     //get image
-
-    const userDetail = useSelector((state) => state.userDetails);
-    const { user } = userDetail;
     useEffect(() => {
         dispatch(listMyOrders());
-        dispatch(getUserDetails('profile'));
-    }, [dispatch, successUpdate]);
+    }, [dispatch]);
 
     return (
         <>
@@ -51,7 +43,7 @@ const BuyingProductScreen = () => {
                                     }}
                                 >
                                     <img
-                                        src={`/userProfile/${user?.image}` || './images/user.png'}
+                                        src={`/userProfile/${userInfo?.image}` || './images/user.png'}
                                         alt=""
                                         style={{
                                             height: '100px',

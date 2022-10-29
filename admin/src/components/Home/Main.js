@@ -5,18 +5,22 @@ import SaleStatistics from './SalesStatistics';
 import ProductsStatistics from './ProductsStatistics';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../../Redux/Actions/ProductActions';
+import { getOrderCompleteAll } from '../../Redux/Actions/OrderActions';
 
 const Main = () => {
     const dispatch = useDispatch();
 
-    const orderList = useSelector((state) => state.orderList);
-    const { loading, error, orders } = orderList;
+    // const orderList = useSelector((state) => state.orderList);
+    // const { loading, error, orders } = orderList;
+    const orderListComplete = useSelector((state) => state.orderListComplete);
+    const { orders: AllOrders } = orderListComplete;
     const productList = useSelector((state) => state.productList);
     const { countProducts } = productList;
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
     useEffect(() => {
         dispatch(listProducts());
+        dispatch(getOrderCompleteAll());
     }, [dispatch]);
     return (
         <>
@@ -25,7 +29,7 @@ const Main = () => {
                     <h2 className="content-title"> Trang chủ </h2>
                 </div>
                 {/* Top Total */}
-                <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
+                <TopTotal orders={AllOrders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 
                 <div className="row">
                     {/* STATICS */}

@@ -93,7 +93,7 @@ textarea:focus {
 }
 .search-button {
     width: 20%;
-    background-color: #e51f28;
+    background-color: #00483d;
     color: white;
     border: 0;
     text-transform: uppercase;
@@ -158,10 +158,10 @@ textarea:focus {
     color: #ffffff !important;
     margin: 0 !important;
 }
-.dropdown-menu a:hover {
+/* .dropdown-menu a:hover {
     background-color: #1cb803 !important;
     color: #ffffff !important;
-}
+} */
 .mobile-header {
     display: none;
 }
@@ -522,7 +522,7 @@ textarea:focus {
 .Login-from__name {
     position: absolute;
     top: 3px;
-    width: 90px;
+    max-width: 150px;
     text-align: center;
     height: 20px;
     background-color: #fff;
@@ -588,7 +588,7 @@ textarea:focus {
 .Login-from__cfpassword {
     position: absolute;
     bottom: 215px;
-    width: 102px;
+    max-width: 150px;
     text-align: center;
     height: 20px;
     background-color: #fff;
@@ -794,6 +794,11 @@ textarea:focus {
 }
 .cart-check {
     line-height: 100px;
+}
+.cart-checkbok {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .delete-cart {
     line-height: 100px;
@@ -1487,7 +1492,7 @@ textarea:focus {
     color: black !important;
 }
 .dropdown-menu a:hover {
-    background-color: orangered !important;
+    background-color: #00483d !important;
     color: #fff !important;
 }
 .fix-culum {
@@ -1521,7 +1526,7 @@ textarea:focus {
     position: relative;
 }
 .button-search {
-    border: 2px solid #e51f28;
+    /* border: 2px solid #e51f28; */
 }
 .userImage {
     height: 50px;
@@ -1567,4 +1572,8 @@ textarea:focus {
     border: 3px solid #ff9406;
     border-radius: 50%;
     background-color: #00483d;
+}
+.form-control:focus {
+    border-color: none;
+    box-shadow: 0 0 0 0.1rem rgb(3 100 244 / 30%);
 }

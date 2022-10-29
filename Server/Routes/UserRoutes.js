@@ -26,7 +26,10 @@ userRouter.post(
     asyncHandler(async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-
+        if (user?.disabled) {
+            res.status(400);
+            throw new Error('Tài khoản đã bạn đã bị khóa, vui lòng liên hệ shop để có thể lấy lại');
+        }
         if (user && (await user.matchPassword(password))) {
             res.json({
                 _id: user._id,
@@ -40,6 +43,7 @@ userRouter.post(
                 city: user.city,
                 country: user.country,
                 image: user.image,
+                disabled: user.disabled,
             });
         } else {
             res.status(401);
@@ -79,6 +83,7 @@ userRouter.post(
                 city: user.city,
                 country: user.country,
                 image: user.image,
+                disabled: user.disabled,
                 token: generateToken(user._id),
             });
         } else {
@@ -90,7 +95,7 @@ userRouter.post(
 
 // PROFILE
 userRouter.get(
-    '/profile',
+    '/user',
     protect,
     asyncHandler(async (req, res) => {
         const user = await User.findById(req.user._id);
@@ -106,6 +111,7 @@ userRouter.get(
                 city: user.city,
                 country: user.country,
                 image: user.image,
+                disabled: user.disabled,
             });
         } else {
             res.status(404);
@@ -120,7 +126,10 @@ userRouter.put(
     protect,
     asyncHandler(async (req, res) => {
         const user = await User.findById(req.user._id);
-
+        if (user?.disabled) {
+            res.status(400);
+            throw new Error('account lock up');
+        }
         if (!!user?.image && req.body.image !== user.image) {
             fs.unlink(path.join(__dirname, 'public/userProfile', user.image), (err) => {
                 if (err) console.log('Delete old avatar have err:', err);
@@ -156,8 +165,8 @@ userRouter.put(
                 address: user.address,
                 city: user.city,
                 country: user.country,
-                //image: newImage === undefined ? user.image : newImage,
                 image: user.image,
+                disabled: user.disabled,
             });
         } else {
             res.status(404);
@@ -189,4 +198,34 @@ userRouter.get(
         res.json(allUser);
     }),
 );
+
+// PUT DISPAD USER
+userRouter.put(
+    '/:id/disabled',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { disabled } = req.body;
+        const user = await User.findById(req.params.id);
+        if (user.isAdmin) {
+            res.status(400);
+            throw new Error('error');
+        }
+        if (disabled == user.disabled) {
+            if (disabled == true) {
+                res.status(400);
+                throw new Error(disabled);
+            } else {
+                res.status(400);
+                throw new Error(disabled);
+            }
+        }
+        if (user) {
+            user.disabled = disabled;
+            const retult = await user.save();
+            res.status(201).json(retult);
+        }
+    }),
+);
+
 export default userRouter;

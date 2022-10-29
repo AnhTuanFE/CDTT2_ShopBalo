@@ -13,11 +13,11 @@ const cartItem = mongoose.Schema(
             require: true,
             default: false,
         },
-        isCheck: {
-            type: Boolean,
-            require: true,
-            default: false,
-        },
+        // isCheck: {
+        //     type: Boolean,
+        //     require: true,
+        //     default: false,
+        // },
     },
     {
         timestamps: true,

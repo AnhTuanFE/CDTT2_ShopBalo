@@ -26,6 +26,10 @@ cartRoutes.post(
         const { productId, color, qty, _id } = req.body;
         // const product = await Pcolorroduct.findById(productId);
         const cartExist = await Cart.findOne({ user: _id });
+        if (req?.user?.disabled) {
+            res.status(400);
+            throw new Error('account look up');
+        }
         if (cartExist) {
             const productExit = cartExist?.cartItems?.filter((value) => value.product == productId);
             const findColor = productExit?.find((value) => value.color == color);
@@ -33,18 +37,11 @@ cartRoutes.post(
             if (findColor) {
                 const newArray = cartExist?.cartItems;
                 for (let i = 0; i <= newArray.length - 1; i++) {
-                    if (newArray[i].product == productId && typeof qty != 'boolean') {
-                        if (newArray[i].color == color && typeof qty != 'boolean') {
-                            newArray[i].qty = qty;
-                        }
+                    if (newArray[i].product == productId && newArray[i].color == color && typeof qty != 'boolean') {
+                        newArray[i].qty = qty;
                     }
-                    if (newArray[i].product == productId && typeof qty == 'boolean') {
-                        if (newArray[i].color == color && typeof qty == 'boolean') {
-                            newArray[i].isBuy = !newArray[i]?.isBuy;
-                        }
-                        if (newArray[i].color == color && qty == true) {
-                            newArray[i].isCheck = true;
-                        }
+                    if (newArray[i].product == productId && newArray[i].color == color && typeof qty == 'boolean') {
+                        newArray[i].isBuy = !newArray[i]?.isBuy;
                     }
                 }
                 cartExist.cartItems = newArray;
@@ -115,7 +112,7 @@ cartRoutes.delete(
     asyncHandler(async (req, res) => {
         const cart = await Cart.findOne({ user: req.user._id });
         if (cart) {
-            await Cart.updateMany({ user: req.user._id }, { $pull: { cartItems: { isCheck: true } } });
+            await Cart.updateMany({ user: req.user._id }, { $pull: { cartItems: { isBuy: true } } });
             // await cart.save();
             res.json({ message: 'Cart clear' });
         } else {

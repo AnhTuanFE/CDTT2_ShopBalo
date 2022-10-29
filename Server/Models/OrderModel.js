@@ -113,6 +113,14 @@ const orderSchema = mongoose.Schema(
             type: String,
             require: true,
         },
+        name: {
+            type: String,
+            require: true,
+        },
+        email: {
+            type: String,
+            require: true,
+        },
     },
     {
         timestamps: true,

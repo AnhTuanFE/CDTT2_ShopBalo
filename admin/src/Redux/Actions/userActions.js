@@ -1,4 +1,7 @@
 import {
+    USER_DISABLED_FAIL,
+    USER_DISABLED_REQUEST,
+    USER_DISABLED_SUCCESS,
     USER_LIST_FAIL,
     USER_LIST_REQUEST,
     USER_LIST_RESET,
@@ -84,6 +87,36 @@ export const listUser = () => async (dispatch, getState) => {
         }
         dispatch({
             type: USER_LIST_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// ALL USER
+export const disabledUser = (id, disabled) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_DISABLED_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/users/${id}/disabled`, { disabled }, config);
+
+        dispatch({ type: USER_DISABLED_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: USER_DISABLED_FAIL,
             payload: message,
         });
     }

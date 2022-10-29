@@ -30,7 +30,7 @@ const Product = (props) => {
                         <span> {product.name}</span>
                     </td>
                     <td>
-                        <span> {product.price}đ</span>
+                        <span> {product?.price?.toLocaleString('de-DE')}đ</span>
                     </td>
                     <td>
                         <span> {product.countInStock}</span>

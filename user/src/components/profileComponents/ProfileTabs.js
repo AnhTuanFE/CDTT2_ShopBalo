@@ -51,7 +51,7 @@ const ProfileTabs = () => {
     const dispatch = useDispatch();
 
     const userDetails = useSelector((state) => state.userDetails);
-    const { loading, error, user } = userDetails;
+    const { loading, error, user, success: successDetail } = userDetails;
 
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
     const {
@@ -142,30 +142,29 @@ const ProfileTabs = () => {
         return true;
     }
     useEffect(() => {
-        dispatch(listCart());
         if (!toast.isActive(toastId.current)) {
             if (updatesuccessPass === true) {
                 toastId.current = toast.success('Mật khẩu cập nhật thành công', Toastobjects);
                 dispatch({ type: USER_UPDATE_PROFILE_RESET });
             }
         }
-    }, [updatesuccessPass]);
+    }, [dispatch, updatesuccessPass]);
     useEffect(() => {
-        // toast.success('Profile Updated lôm  lôm', Toastobjects);
-        // if (!toast.isActive(toastId.current)) {
-        //     toastId.current = toast.success('Profile Updated', Toastobjects);
-        // }
         if (updatesuccess) {
             toast.success('Cập nhật thông tin thành công', Toastobjects);
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
-    }, [updatesuccess]);
+    }, [dispatch, updatesuccess]);
     useEffect(() => {
-        if (errorProfile !== undefined) {
+        if (errorProfile === 'account lock up') {
+            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        }
+        if (errorProfile !== undefined && errorProfile !== 'account lock up') {
             toast.error('Cập nhật không thành công', Toastobjects);
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
-    }, [errorProfile]);
+    }, [dispatch, errorProfile]);
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -179,22 +178,11 @@ const ProfileTabs = () => {
         if (errorProfile) {
             toastId.current = toast.error(error, Toastobjects);
         }
-    }, [dispatch, user]);
+    }, [dispatch, user, successDetail]);
 
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        // const newUser = new FormData();
-        // newUser.append('image', image);
-        // newUser.append('id', user._id);
-        // newUser.append('name', name);
-        // newUser.append('email', email);
-        // newUser.append('phone', phone);
-        // newUser.append('country', country);
-        // newUser.append('city', city);
-        // newUser.append('address', address);
-
-        // dispatch(updateUserProfile(newUser));
         dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image }));
     };
     const submitUpdatePassword = (e) => {
@@ -257,12 +245,6 @@ const ProfileTabs = () => {
                 });
         }
     }, [file]);
-    useEffect(() => {
-        let newImage = new FormData();
-        let x = newImage.append('image', 'hehe');
-        console.log(x, 'jjjjj');
-        console.log(newImage, 'hhh');
-    }, []);
     useEffect(() => {
         if (url !== undefined) {
             setImage(url.filename);
@@ -473,9 +455,9 @@ const ProfileTabs = () => {
                         <img
                             src={
                                 (url?.filename === undefined
-                                    ? `/userProfile/${user?.image}`
+                                    ? `/userProfile/${image}`
                                     : `/userProfile/${url?.filename}`) ||
-                                (user?.image === undefined ? '/images/user.png' : `/userProfile/${user?.image}`)
+                                (user?.image === undefined ? '/images/user.png' : `/userProfile/${image}`)
                             }
                             style={{
                                 height: '120px',
