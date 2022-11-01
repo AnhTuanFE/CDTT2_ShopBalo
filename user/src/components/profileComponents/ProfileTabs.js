@@ -21,8 +21,11 @@ import { withStyles } from '@material-ui/core/styles';
 import ImgDialog from '../editAvatar/ImgDialog';
 import getCroppedImg from '../editAvatar/cropImage';
 import '../editAvatar/style.css';
+import { ListProvince } from '../../Redux/Actions/AdressProvinceActions';
+
 
 const ProfileTabs = () => {
+    const [distric, setDistric] = useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -60,6 +63,12 @@ const ProfileTabs = () => {
         loading: updateLoading,
         error: errorProfile,
     } = userUpdateProfile;
+
+    const province = useSelector((state) => state.province);
+    useEffect(()=> {
+        dispatch(ListProvince())
+    },[])
+    const GetDataProvince = province.province;
 
     function checkProfile() {
         let x = Number(checkbox);
@@ -268,6 +277,31 @@ const ProfileTabs = () => {
             setImage(url.filename);
         }
     }, [url]);
+
+    // ================ đổi input = seclct
+    const handleChooseProvince = (e) => 
+    {
+        const temp = e.target.value;
+        const arrDistric =  GetDataProvince.find((arr) => {
+            return arr.code == temp.toString()
+        })
+        // obiect
+        setDistric(arrDistric)
+        setCountry(arrDistric.name)
+    }
+    const handleChooseCiTy = (e)=> {
+        setCity(e.target.value)
+    }
+    const GetDefaulDistrict = ()=> {
+        const tamp = country
+        const defaultDistric =  GetDataProvince.find((arr) => {
+            return arr.name == tamp.toString()
+        })
+        setDistric(defaultDistric)
+    }
+
+    // ================ đổi input = seclct
+
     return (
         <>
             <Toast />
@@ -354,9 +388,53 @@ const ProfileTabs = () => {
                             </div>
                         </div>
 
+                        {/* ĐỔI TỪ ĐÂY */}
+                        <div className="col-md-12"
+                            style={{
+                                marginBottom: '32px',
+                            }}
+                        >
+                            <div className="form">
+                                <label>Tỉnh/Thành phố</label>
+                                <select 
+                                    onChange={handleChooseProvince}
+                                    className='carSelect'
+                                    >
+                                    <option disabled selected hidden>{country}</option>
+                                    {
+                                        GetDataProvince.map((pro,index)=> (
+                                            <option key={index} value={pro.code}>{pro.name}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className="col-md-12"
+                            style={{
+                                marginBottom: '32px',
+                            }}
+                        >
+                            <div className="form">
+                                <label>Huyện/Quận</label>
+                                <select
+                                    onChange={handleChooseCiTy}
+                                    className='carSelect'
+                                    onClick={GetDefaulDistrict}
+                                    >
+                                    <option disabled selected hidden>{city}</option>
+                                    {
+                                        distric?.districts
+                                        ?.map((dis,index)=> {
+                                            return (<option key={index} >{dis.name}</option>)
+                                        })
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
                         <div className="col-md-12">
                             <div className="form">
-                                <label>Địa chỉ</label>
+                                <label>Đường/Hẻm - Thôn/Phường</label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -365,34 +443,6 @@ const ProfileTabs = () => {
                                     onChange={(e) => setAddress(e.target.value)}
                                 />
                                 <p className="noti-validate">{objProfile.address}</p>
-                            </div>
-                        </div>
-
-                        <div className="col-md-12">
-                            <div className="form">
-                                <label>Huyện/Quận</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    value={city}
-                                    // required
-                                    onChange={(e) => setCity(e.target.value)}
-                                />
-                                <p className="noti-validate">{objProfile.city}</p>
-                            </div>
-                        </div>
-
-                        <div className="col-md-12">
-                            <div className="form">
-                                <label>Tỉnh/Thành phố</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    value={country}
-                                    // required
-                                    onChange={(e) => setCountry(e.target.value)}
-                                />
-                                <p className="noti-validate">{objProfile.country}</p>
                             </div>
                         </div>
 

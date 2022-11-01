@@ -17,7 +17,7 @@ const TopTotal = (props) => {
                         <div className="text">
                             <h6 className="mb-1">Tổng doanh số</h6>{' '}
                             <span className="fs-5" style={{ fontWeight: '600' }}>
-                                {totalSale.toFixed(0)}đ
+                                {totalSale.toLocaleString('en-us', {minimumFractionDigits: 0})}đ
                             </span>
                         </div>
                     </article>

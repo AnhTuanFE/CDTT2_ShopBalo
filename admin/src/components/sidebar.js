@@ -9,7 +9,7 @@ const Sidebar = () => {
                     <Link to="/" className="brand-wrap">
                         <img
                             src="/images/logo2.png"
-                            style={{ height: '64' }}
+                            style={{ height: '84' }}
                             className="logo"
                             alt="Ecommerce dashboard template"
                         />

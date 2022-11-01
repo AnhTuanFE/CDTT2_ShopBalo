@@ -73,3 +73,11 @@ body {
         border-right-style: none;
         border-right-width: medium;
 }
+.logoShop {
+	width: 36%;
+    display: flex;
+    margin: auto;
+}
+.headcContent {
+	text-align: center;
+}

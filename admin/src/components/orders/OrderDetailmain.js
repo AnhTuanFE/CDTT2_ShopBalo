@@ -14,13 +14,16 @@ import {
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import moment from 'moment';
+// modal
 import CancelModal from '../Modal/CancelModal';
 
 const OrderDetailmain = (props) => {
     const { orderId } = props;
     const dispatch = useDispatch();
     // modal
-    const {sta, setSta} = useState(true);
+    const [cancel, setCancel] = useState(false);
+
+    // const [hiden, setHiden] = useState(true);
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
@@ -49,11 +52,17 @@ const OrderDetailmain = (props) => {
         successCompleteAdmin,
     ]);
 
-    const cancelOrderHandler = () => {
-        if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
-            dispatch(cancelOrder(order));
-        }
-    };
+    // const cancelOrderHandler = () => {
+    //     if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
+    //         dispatch(cancelOrder(order));
+    //     }
+    // };
+    const setTrueCancel = () => {
+            setCancel(true)
+    }
+    const setFalseCancel = () => {
+        setCancel(false)
+}
     const [status, setStatus] = useState('0');
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
@@ -100,36 +109,20 @@ const OrderDetailmain = (props) => {
         }
     }, [order]);
     const cancelOrderHandler1 = () => {
-        // dispatch(
-        //     createOrder({
-        //         orderItems: currenCartItems,
-        //         // shippingAddress: cart.shippingAddress,
-        //         shippingAddress: {
-        //             address: userInfo.address,
-        //             city: userInfo.city,
-        //             postalCode: '',
-        //             country: userInfo.country,
-        //         },
-        //         // paymentMethod: cart.paymentMethod,
-        //         paymentMethod: 'Thanh toán bằng tiền mặt',
-        //         itemsPrice: cart.itemsPrice,
-        //         shippingPrice: cart.shippingPrice,
-        //         taxPrice: cart.taxPrice,
-        //         totalPrice: cart.totalPrice,
-        //         phone: userInfo.phone,
-        //     }),
-        // );
-    };
+        setCancel(false);
+        dispatch(cancelOrder(order));
+    }
     return (
         <section className="content-main">
-            <div className="content-header">
-                 {/* {sta===true?<CancelModal
+                {   cancel && ( <CancelModal
                         Title="Hủy đơn hàng"
                         Body="Bạn có chắc chắn hủy đơn hàng này không?"
                         HandleSubmit={cancelOrderHandler1}
                         Close="modal"
-                    />} */}
-                
+                        setFalseCancel={setFalseCancel}
+                    />)
+                }
+            <div className="content-header">
                 <div className="col-lg-9 col-md-9">
                     <Link to="/orders" className="btn btn-dark text-white">
                         Quay lại
@@ -181,7 +174,8 @@ const OrderDetailmain = (props) => {
                             {order?.cancel !== 1 && order?.waitConfirmation !== true ? (
                                 <div className="col-lg-3 col-md-6 ms-auto d-flex justify-content-end align-items-center">
                                     <button
-                                        onClick={cancelOrderHandler}
+                                        // onClick={cancelOrderHandler}
+                                        onClick={setTrueCancel}
                                         className="btn btn-dark col-12"
                                         style={{ marginBottom: '15px' }}
                                         disabled={order?.waitConfirmation}

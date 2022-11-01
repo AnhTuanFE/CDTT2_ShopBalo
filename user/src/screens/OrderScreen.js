@@ -451,7 +451,7 @@ const OrderScreen = ({ match }) => {
                                                     }
                                                 >
                                                     <img
-                                                        src={item.image}
+                                                        // src={item.image}
                                                         src={`/productImage/${item.image}`}
                                                         alt={item.name}
                                                     />
