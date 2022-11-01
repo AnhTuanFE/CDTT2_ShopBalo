@@ -11,9 +11,23 @@ orderRouter.post(
     '/',
     protect,
     asyncHandler(async (req, res) => {
-        const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice, phone } =
-            req.body;
+        const {
+            orderItems,
+            shippingAddress,
+            paymentMethod,
+            itemsPrice,
+            taxPrice,
+            shippingPrice,
+            totalPrice,
+            phone,
+            name,
+            email,
+        } = req.body;
 
+        if (req?.user?.disabled) {
+            res.status(400);
+            throw new Error('account look up');
+        }
         if (orderItems && orderItems.length === 0) {
             res.status(400);
             throw new Error('No order items');
@@ -29,6 +43,8 @@ orderRouter.post(
                 shippingPrice,
                 totalPrice,
                 phone,
+                name,
+                email,
             });
             for (let i = 0; i < orderItems.length; i++) {
                 const findProduct = await Product.findById(orderItems[i].product);
@@ -124,29 +140,67 @@ orderRouter.get(
     // protect,
     // admin,
     asyncHandler(async (req, res) => {
-        const orders = await Order.find({}).sort({ _id: -1 }).populate('user', 'id name email');
-        const arrOders = [];
-        if (orders) {
-            const orderWait = orders.filter((i) => i.waitConfirmation === false && i.cancel !== 1);
-            const orderSuccessWait = orders.filter(
-                (i) => i.waitConfirmation === true && i.isDelivered !== true && i.cancel !== 1,
-            );
-            const orderDeliver = orders.filter((i) => i.isDelivered === true && i.isPaid !== true && i.cancel !== 1);
-            const orderPay = orders.filter((i) => i.isPaid === true && i.completeAdmin !== true && i.cancel !== 1);
-            const orderSuccess = orders.filter(
-                (i) => i.completeUser === true && i.completeAdmin === true && i.cancel !== 1,
-            );
-            const orderFail = orders.filter((i) => i.cancel === 1);
-            arrOders.push(
-                ...orderWait,
-                ...orderSuccessWait,
-                ...orderDeliver,
-                ...orderPay,
-                ...orderSuccess,
-                ...orderFail,
-            );
+        const pageSize = 15;
+        const page = Number(req.query.pageNumber) || 1;
+        const status = Number(req.query.status) || 0;
+
+        let search = {};
+        if (req.query.keyword) {
+            search.email = {
+                $regex: req.query.keyword,
+                $options: 'i',
+            };
         }
-        res.json(arrOders);
+        if (status == 0) {
+            search.cancel = 0;
+        }
+        if (status == 1) {
+            search.waitConfirmation = false;
+            search.cancel = 0;
+        }
+        if (status == 2) {
+            search.cancel = 0;
+            search.waitConfirmation = true;
+            search.isDelivered = false;
+        }
+        if (status == 3) {
+            search.cancel = 0;
+            search.isDelivered = true;
+            search.isPaid = false;
+        }
+        if (status == 4) {
+            search.cancel = 0;
+            search.isPaid = true;
+            search.completeAdmin = false;
+        }
+        if (status == 5) {
+            search.cancel = 0;
+            search.completeUser = true;
+            search.completeAdmin = true;
+        }
+        if (status == 6) {
+            search.cancel = 1;
+        }
+        const count = await Order.countDocuments({ ...search });
+        let orders = await Order.find({ ...search })
+            .limit(pageSize)
+            .skip(pageSize * (page - 1))
+            .sort({ _id: -1 })
+            .populate('user', 'id name email');
+
+        res.json({ orders, page, pages: Math.ceil(count / pageSize) });
+    }),
+);
+
+orderRouter.get(
+    '/complete',
+    // protect,
+    // admin,
+    asyncHandler(async (req, res) => {
+        const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
+        if (orders) {
+            res.json(orders);
+        }
     }),
 );
 
@@ -226,11 +280,17 @@ orderRouter.put(
     // protect,
     // admin,
     asyncHandler(async (req, res) => {
+        const { status } = req.body;
         const order = await Order.findById(req.params.id);
 
         if (order) {
-            order.waitConfirmation = true;
-            order.waitConfirmationAt = Date.now();
+            if (status) {
+                order.waitConfirmation = true;
+                order.waitConfirmationAt = Date.now();
+            } else {
+                order.waitConfirmation = false;
+                order.waitConfirmationAt = Date.now();
+            }
 
             const updatedOrder = await order.save();
             res.json(updatedOrder);
@@ -345,7 +405,10 @@ orderRouter.delete(
     protect,
     asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id);
-
+        if (req?.user?.disabled) {
+            res.status(400);
+            throw new Error('account look up');
+        }
         if (order != undefined || req.user._id == order.user) {
             if (order.isDelivered != true) {
                 order.cancel = 1;

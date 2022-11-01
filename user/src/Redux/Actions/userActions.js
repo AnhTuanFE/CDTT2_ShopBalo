@@ -20,7 +20,7 @@ import {
 } from '../Constants/UserContants';
 import axios from 'axios';
 import { ORDER_LIST_MY_RESET } from '../Constants/OrderConstants';
-import { addToCart, listCart } from './cartActions';
+// import { addToCart, listCart } from './cartActions';
 import { CART_LIST_MY_RESET } from '../Constants/CartConstants';
 
 // LOGIN
@@ -93,7 +93,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/users/profile`, config);
+        const { data } = await axios.get(`/api/users/user`, config);
         dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

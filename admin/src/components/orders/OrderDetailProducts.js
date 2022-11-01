@@ -41,9 +41,9 @@ const OrderDetailProducts = (props) => {
                                 <div className="info">{item.name}</div>
                             </Link>
                         </td>
-                        <td>{item.price}đ </td>
+                        <td>{item?.price?.toLocaleString('de-DE')}đ </td>
                         <td>{item.qty} </td>
-                        <td className="text-end"> {item.qty * item.price}đ</td>
+                        <td className="text-end"> {(item.qty * item.price)?.toLocaleString('de-DE')}đ</td>
                     </tr>
                 ))}
 
@@ -55,7 +55,7 @@ const OrderDetailProducts = (props) => {
                                     Tổng tiền:
                                 </dt>{' '}
                                 <dd className="fs-6" style={{ fontWeight: '600' }}>
-                                    {order.itemsPrice}đ
+                                    {Number(order.itemsPrice)?.toLocaleString('de-DE')}đ
                                 </dd>
                             </dl>
                             <dl className="dlist">
@@ -63,7 +63,7 @@ const OrderDetailProducts = (props) => {
                                     Phí ship:
                                 </dt>{' '}
                                 <dd className="fs-6" style={{ fontWeight: '600' }}>
-                                    {order.shippingPrice}đ
+                                    {Number(order.shippingPrice)?.toLocaleString('de-DE')}đ
                                 </dd>
                             </dl>
                             <dl className="dlist">
@@ -71,7 +71,7 @@ const OrderDetailProducts = (props) => {
                                     Tổng cộng:
                                 </dt>
                                 <dd className="fs-5" style={{ fontWeight: '600' }}>
-                                    {order.totalPrice}đ
+                                    {Number(order.totalPrice)?.toLocaleString('de-DE')}đ
                                 </dd>
                             </dl>
                             <dl className="dlist">

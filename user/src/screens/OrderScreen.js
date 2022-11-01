@@ -13,7 +13,11 @@ import {
 } from '../Redux/Actions/OrderActions';
 import { createProductReview } from '../Redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants';
-import { ORDER_CREATE_REVIEW_RESET, ORDER_COMPLETE_USER_RESET } from '../Redux/Constants/OrderConstants';
+import {
+    ORDER_CREATE_REVIEW_RESET,
+    ORDER_COMPLETE_USER_RESET,
+    ORDER_CANCEL_RESET,
+} from '../Redux/Constants/OrderConstants';
 import Loading from './../components/LoadingError/Loading';
 import Message from './../components/LoadingError/Error';
 import moment from 'moment';
@@ -23,6 +27,15 @@ import 'primereact/resources/primereact.min.css'; //core css
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 import { ORDER_PAY_RESET } from '../Redux/Constants/OrderConstants';
+import { toast } from 'react-toastify';
+import Toast from '../components/LoadingError/Toast';
+
+const Toastobjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 
 const OrderScreen = ({ match }) => {
     // window.scrollTo(0, 0);
@@ -44,11 +57,13 @@ const OrderScreen = ({ match }) => {
     const orderGetItemRetult = useSelector((state) => state.orderGetItemRetult);
     const { itemOrder } = orderGetItemRetult;
     const orderCancel = useSelector((state) => state.orderCancel);
-    const { loading: loadingCancel, success: successCancel } = orderCancel;
+    const { loading: loadingCancel, success: successCancel, error: errorCancel } = orderCancel;
     const reviews = useSelector((state) => state.productReviewCreate);
     const { success: successReview, error: errorReview } = reviews;
     const orderGetComplete = useSelector((state) => state.orderGetComplete);
     const { success: successComplete } = orderGetComplete;
+    const userDetail = useSelector((state) => state.userDetails);
+    const { success: successDetail, user } = userDetail;
 
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
@@ -57,11 +72,20 @@ const OrderScreen = ({ match }) => {
         setComment('');
         setBulean('');
     }, [bulean]);
+
     const cancelOrderHandler = () => {
-        if (window.confirm('Are you sure??')) {
+        if (window.confirm('Bạn có đồng ý hủy đơn hàng không?')) {
             dispatch(cancelOrder(order));
         }
     };
+
+    useEffect(() => {
+        if (errorCancel) {
+            dispatch({ type: ORDER_CANCEL_RESET });
+            toast.error('Tài khoản đã bị khóa', Toastobjects);
+        }
+    }, [errorCancel]);
+
     //gọi thêm userLogin để lấy số điện thoại
     const orderCreateReviewsRetult = useSelector((state) => state.orderCreateReviewsRetult);
     const { success: successReviewOrder, orderReview } = orderCreateReviewsRetult;
@@ -135,6 +159,8 @@ const OrderScreen = ({ match }) => {
         <>
             <Header />
             <div className="container">
+                <Toast />
+                {loadingCancel && <Loading />}
                 {loading ? (
                     <Loading />
                 ) : error ? (
@@ -479,7 +505,7 @@ const OrderScreen = ({ match }) => {
                                                 </div>
                                                 <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-center  d-flex flex-column justify-content-center ">
                                                     <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Tổng tiền</h4>
-                                                    <h6>{item.qty * item.price}đ</h6>
+                                                    <h6>{(item.qty * item.price)?.toLocaleString('de-DE')}đ</h6>
                                                 </div>
                                                 {order?.isPaid && itemOrder[index].productReview.length === 0 && (
                                                     <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-center  d-flex flex-column justify-content-center ">
@@ -513,25 +539,33 @@ const OrderScreen = ({ match }) => {
                                             <td>
                                                 <strong className="fs-6">Sản phẩm:</strong>
                                             </td>
-                                            <td className="fs-6">{order.itemsPrice}đ</td>
+                                            <td className="fs-6">
+                                                {Number(order?.itemsPrice)?.toLocaleString('de-DE')}đ
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong className="fs-6">Phí vận chuyển:</strong>
                                             </td>
-                                            <td className="fs-6">{order.shippingPrice}đ</td>
+                                            <td className="fs-6">
+                                                {Number(order?.shippingPrice)?.toLocaleString('de-DE')}đ
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong className="fs-6">Thuế:</strong>
                                             </td>
-                                            <td className="fs-6">{order.taxPrice}đ</td>
+                                            <td className="fs-6">
+                                                {Number(order?.taxPrice)?.toLocaleString('de-DE')}đ
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <strong className="fs-6">Tổng tiền:</strong>
                                             </td>
-                                            <td className="fs-6">{order.totalPrice}đ</td>
+                                            <td className="fs-6">
+                                                {Number(order?.totalPrice)?.toLocaleString('de-DE')}đ
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -666,7 +700,7 @@ const OrderScreen = ({ match }) => {
                                                             }}
                                                         >
                                                             <p style={{ paddingRight: '5px' }}>
-                                                                Giá: {product?.price}
+                                                                Giá: {Number(product?.price)?.toLocaleString('de-DE')}
                                                                 <span style={{ fontSize: '14px' }}>đ</span>
                                                             </p>
 
@@ -704,6 +738,7 @@ const OrderScreen = ({ match }) => {
                                                         <button
                                                             className="col-12 bg-orange border-0 p-3 rounded text-white"
                                                             type="button"
+                                                            data-bs-dismiss={successReviewOrder === true ? 'modal' : ''}
                                                             onClick={() => {
                                                                 dispatch(
                                                                     createProductReview(

@@ -41,6 +41,10 @@ const Footer = () => {
                                 <span className="fw-bold ps-1">Điện thoại: </span>0123456789
                             </li>
                             <li>
+                                <i class="fas fa-envelope"></i>
+                                <span className="fw-bold ps-1">Email: </span>Nguyenvanlich@gmail.com
+                            </li>
+                            <li>
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span className="fw-bold ps-1">Địa chỉ: </span>
                                 566/191 - Nguyễn Thái Sơn - Phường 5 - Gò Vấp - TP.HCM

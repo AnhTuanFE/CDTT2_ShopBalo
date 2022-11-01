@@ -5,6 +5,8 @@ import { logout, updateUserProfile, getUserDetails } from '../Redux/Actions/user
 import { listCart } from '../Redux/Actions/cartActions';
 import { ListAvatar } from '../Redux/Actions/avatarAction';
 import NavBar from './navbar';
+import Suggestions from './suggestions/Suggestions';
+import './suggestions/style.css';
 
 const Header = () => {
     const [keyword, setKeyword] = useState('');
@@ -16,6 +18,8 @@ const Header = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const { error } = userLogin;
+    const userDetail = useSelector((state) => state.userDetails);
+    const { user } = userDetail;
 
     const clickIconNavBar = () => {
         setNavbar(true);
@@ -37,6 +41,18 @@ const Header = () => {
             }
         }
     };
+
+    useEffect(() => {
+        dispatch(getUserDetails());
+    }, [userInfo]);
+
+    useEffect(() => {
+        if (user?.disabled) {
+            alert('Tài khoản đã bị khóa, vui lòng liên hệ sđt 6969 hay email nguvl@gmail.com để liên hệ lấy lại.');
+            dispatch(logout());
+            history.push('/');
+        }
+    }, [user]);
 
     function avatarUser() {
         const stringUser = userInfo.name;
@@ -160,16 +176,22 @@ const Header = () => {
                                     </Link>
                                 </div>
                                 <div className="col-12 d-flex align-items-center">
-                                    <form onSubmit={submitHandler} className="input-group">
+                                    <form onSubmit={submitHandler} className="input-group input-group__search">
                                         <input
                                             type="search"
-                                            className="form-control rounded search button-search"
                                             placeholder="Tìm kiếm"
                                             onChange={(e) => setKeyword(e.target.value)}
+                                            className="form-control rounded search button-search dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
                                         />
                                         <button type="submit" className="search-button">
                                             <i className="fas fa-search submit-search"></i>
                                         </button>
+                                        <div className="dropdown-menu input-group__search">
+                                            <Suggestions />
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -185,16 +207,22 @@ const Header = () => {
                                 </Link>
                             </div>
                             <div className="col-md-6 col-8 header-nav__search">
-                                <form onSubmit={submitHandler} className="input-group">
+                                <form onSubmit={submitHandler} className="input-group input-group__search">
                                     <input
                                         type="search"
-                                        className="form-control rounded search button-search"
                                         placeholder="Tìm kiếm"
                                         onChange={(e) => setKeyword(e.target.value)}
+                                        className="form-control rounded search button-search dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
                                     />
                                     <button type="submit" className="search-button">
                                         <i className="fas fa-search submit-search"></i>
                                     </button>
+                                    <div className="dropdown-menu input-group__search">
+                                        <Suggestions />
+                                    </div>
                                 </form>
                                 <NavBar></NavBar>
                             </div>

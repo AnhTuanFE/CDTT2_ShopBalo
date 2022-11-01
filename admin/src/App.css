@@ -944,24 +944,45 @@ ul.row-sm {
     background-color: #ee2624;
 }
 /* pagition */
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    text-align: center;
+    border-radius: 50%;
+}
 .page-item {
-    margin: 0 8px;
+    margin: 0 5px;
 }
 .pagination .page-link {
-    padding: 10px 22px;
-    color: black;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 50%;
 }
 .icon-right i {
-    margin-left: 12px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
-    color: #000;
+    color: #6785db;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
 }
 .icon-left i {
-    margin-right: 12px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
-    color: #000;
+    color: #6785db;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
 }
 .page-item.active .page-link {
     background-color: #fb5533;
@@ -1004,5 +1025,12 @@ ul.row-sm {
     right: 3px;
     color: red;
     cursor: pointer;
+}
+.boder-dabost {
+    background: #ffffff;
+    border-radius: 10px;
+}
+.table-responsive {
+    overflow-y: hidden;
 }
 

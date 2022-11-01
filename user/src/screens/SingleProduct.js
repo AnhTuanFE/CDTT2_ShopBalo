@@ -19,6 +19,7 @@ import {
     PRODUCT_CREATE_COMMENTCHILD_RESET,
     PRODUCT_CREATE_COMMENT_RESET,
 } from '../Redux/Constants/ProductConstants';
+import { CART_CREATE_RESET } from '../Redux/Constants/CartConstants';
 import moment from 'moment';
 import { addToCart } from '../Redux/Actions/cartActions';
 import { listProduct } from '../Redux/Actions/ProductActions';
@@ -26,6 +27,15 @@ import { listUser } from '../Redux/Actions/userActions';
 import OfferProduct from '../components/SlideCorousel/offerProduct';
 import './style/SingleProduct.css';
 import DetailProduct from '../components/SlideCorousel/DetailProduct';
+import { toast } from 'react-toastify';
+import Toast from '../components/LoadingError/Toast';
+
+const Toastobjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 
 const SingleProduct = ({ history, match }) => {
     const [qty, setQty] = useState(1);
@@ -67,6 +77,8 @@ const SingleProduct = ({ history, match }) => {
     const { products, page, pages } = productList;
     const userList = useSelector((state) => state.userAll);
     const { users } = userList;
+    const cartCreate = useSelector((state) => state.cartCreate);
+    const { success: successAddCart, loading: loadingAddCart, error: errorAddCart } = cartCreate;
     // const commentsSort = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
     // const reviewsSort = product.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
     const {
@@ -148,7 +160,7 @@ const SingleProduct = ({ history, match }) => {
         }
     }, [product._id]);
     useEffect(() => {
-        if (product !== undefined) {
+        if (product !== undefined && maxPrice) {
             dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
         }
     }, [category, maxPrice]);
@@ -178,11 +190,21 @@ const SingleProduct = ({ history, match }) => {
         setMediumReview(retult);
     }, [reviewCart]);
 
+    useEffect(() => {
+        if (successAddCart) {
+            dispatch({ type: CART_CREATE_RESET });
+            history.push(`/cart/${productId}?qty=${qty}?color=${color}`);
+        }
+        if (errorAddCart) {
+            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            dispatch({ type: CART_CREATE_RESET });
+        }
+    }, [dispatch, successAddCart, errorAddCart]);
+
     const AddToCartHandle = (e) => {
         e.preventDefault();
         if (userInfo) {
             dispatch(addToCart(productId, color, qty, userInfo._id));
-            history.push(`/cart/${productId}?qty=${qty}?color=${color}`);
         } else history.push('/login');
     };
     const submitHandler = (e) => {
@@ -224,6 +246,8 @@ const SingleProduct = ({ history, match }) => {
         <>
             <Header />
             <div className="container single-product">
+                <Toast />
+                {loadingAddCart && <Loading />}
                 {loading ? (
                     <Loading />
                 ) : error ? (
@@ -255,7 +279,7 @@ const SingleProduct = ({ history, match }) => {
                                             <div className="product-count col-lg-12 ">
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
                                                     <h6>Giá</h6>
-                                                    <span>{product.price}đ</span>
+                                                    <span>{product?.price?.toLocaleString('de-DE')}đ</span>
                                                 </div>
                                                 <div className="flex-box d-flex justify-content-between align-items-center">
                                                     <h6>Trạng thái</h6>

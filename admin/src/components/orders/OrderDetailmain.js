@@ -67,7 +67,7 @@ const OrderDetailmain = (props) => {
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
             if (window.confirm('Đồng ý xác nhận')) {
-                dispatch(waitConfirmationOrder(order._id));
+                dispatch(waitConfirmationOrder(order._id, true));
             } else {
                 setStatus('0');
             }
@@ -128,11 +128,28 @@ const OrderDetailmain = (props) => {
                         Quay lại
                     </Link>
                 </div>
+                {order?.waitConfirmation && order?.isDelivered !== true && (
+                    <div className="col-lg-3 col-md-3 d-flex justify-content-end">
+                        <button
+                            className="btn btn-success text-white"
+                            onClick={() => {
+                                if (window.confirm('Đồng ý thu hồi')) {
+                                    dispatch(waitConfirmationOrder(order._id, false));
+                                    setStatus('0');
+                                } else {
+                                    setStatus('1');
+                                }
+                            }}
+                        >
+                            Thu hồi
+                        </button>
+                    </div>
+                )}
                 <div className="col-lg-3 col-md-3">
                     <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
                         {order?.cancel !== 1 && (
                             <>
-                                <option value={'0'}>Lựa chọn...</option>
+                                <option value={'0'}>Trạng thái...</option>
                                 <option value={'1'}>Xác nhận</option>
                                 {order?.waitConfirmation && <option value={'2'}>Giao hàng</option>}
                                 {order?.waitConfirmation && order?.isDelivered && (

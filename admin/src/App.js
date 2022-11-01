@@ -24,7 +24,6 @@ import EditNewsScreen from './screens/EditNewsScreen';
 import NewsScreen from './screens/NewsScreen';
 import CommentScreen from './screens/CommentScreen';
 
-
 function App() {
     const dispatch = useDispatch();
 
@@ -54,7 +53,20 @@ function App() {
                         exact
                     />
                     <PrivateRouter path="/category" component={CategoriesScreen} />
-                    <PrivateRouter path="/orders" component={OrderScreen} />
+                    <PrivateRouter path="/orders" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/page/:pageNumber" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/search/:keyword" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/status/:status" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/search/:keyword/status/:status" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/page/:pageNumber/status/:status" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/page/:pageNumber/search/:keyword" component={OrderScreen} exact />
+                    <PrivateRouter path="/orders/page/:pageNumber" component={OrderScreen} exact />
+                    <PrivateRouter
+                        path="/orders/search/:keyword/page/:pageNumber/status/:status"
+                        component={OrderScreen}
+                        exact
+                    />
+
                     <PrivateRouter path="/order/:id" component={OrderDetailScreen} />
                     <PrivateRouter path="/addproduct" component={AddProduct} />
                     <PrivateRouter path="/users" component={UsersScreen} />
