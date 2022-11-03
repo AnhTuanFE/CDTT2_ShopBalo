@@ -81,3 +81,6 @@ body {
 .headcContent {
 	text-align: center;
 }
+.warning {
+	color: red;
+}
