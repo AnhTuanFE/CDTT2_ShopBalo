@@ -228,9 +228,9 @@ const EditproductMain = (props) => {
                 <form>
                     <div className="content-header">
                         <Link to="/products" className="btn btn-danger text-white">
-                            Trở về products
+                            Trở về Trang sản phẩm
                         </Link>
-                        <h2 className="content-title">Update Product</h2>
+                        <h2 className="content-title">Cập nhật sản phẩm</h2>
                         <div>
                             {/* <button type="submit" className="btn btn-primary">
                                 Update now
@@ -397,7 +397,7 @@ const EditproductMain = (props) => {
                                                     />
                                                     <input
                                                         type="button"
-                                                        className="col-2 col-sm-2 col-md-2 col-lg-2 mt-2"
+                                                        className="col-2 col-sm-2 col-md-2 col-lg-2 mt-2 mb-2"
                                                         onClick={handlerSubmitImage}
                                                         value="Lưu tệp"
                                                     ></input>

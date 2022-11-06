@@ -31,7 +31,7 @@ export default function NavBar({ onRemove }) {
                 <div className="modal-tablet"></div>
                 <div className="modal-nav">
                     <div className="modal-nav__img">
-                        <img src="/images/logo2.png"></img>
+                        <img src="/images/logo2.png" alt=""></img>
                     </div>
                     <ul className="modal-nav__list">
                         {categories.map((category) => (

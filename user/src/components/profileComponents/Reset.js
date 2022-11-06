@@ -9,13 +9,14 @@ export default class Reset extends Component {
         super(props);
         this.state = {
             email: '',
+            defaulInput: '',
+            linkEmail: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e) {
         e.preventDefault();
         const { email } = this.state;
-        // console.log(email);
         fetch('http://localhost:3000/api/forgotPass/forgotPassword', {
             method: 'POST',
             crossDomain: true,
@@ -33,6 +34,8 @@ export default class Reset extends Component {
                 // console.log(data, "userRegister");
                 alert(data.status);
             });
+            this.setState({email: ''})
+            this.setState({linkEmail: true})
     }
     render() {
         return (
@@ -40,8 +43,9 @@ export default class Reset extends Component {
                 <div className={cx('row justify-content-center')}>
                     <div className={cx('col-lg-8 col-md-10')}>
                         <div className={cx('forgot')}>
-                            <h2>Quên mật khẩu?</h2>
-                            <p>Thay đổi mật khẩu của bạn trong ba bước đơn giản !</p>
+                            <img className={cx('logoShop')} alt='hình ảnh' src="/images/logo2.png"/>
+                            <h2 className={cx('headContent')}>Quên mật khẩu?</h2>
+                            <p className={cx('textContent')}>Thay đổi mật khẩu của bạn trong ba bước đơn giản !</p>
                             <ol className={cx('list-unstyled')}>
                                 <li>
                                     <span className={cx('text-primary text-medium')}>1. </span>Nhập địa chỉ email của
@@ -60,23 +64,35 @@ export default class Reset extends Component {
                         <form className={cx('card mt-4')}>
                             <div className={cx('card-body')}>
                                 <div className={cx('form-group')}>
-                                    <label for="email-for-pass">Nhập địa chỉ email của bạn</label>
+                                    <h2 for="email-for-pass" className={cx('labelEmail')}>Nhập địa chỉ email của bạn</h2>
                                     <input
                                         id="email-for-pass"
                                         className="form-control"
                                         type="email"
                                         placeholder="YourEmail@gmail.com"
                                         onChange={(e) => this.setState({ email: e.target.value })}
+                                        value={this.state.email}
                                     />
                                 </div>
                             </div>
                             <div className={cx('card-footer')}>
-                                <button className={cx('btn btn-success')} type="submit" onClick={this.handleSubmit}>
+                                <button className={cx('btn-success')} type="submit" onClick={this.handleSubmit}>
                                     Gửi
                                 </button>
-                                <a href="http://localhost:3000/" className={cx('btn btn-danger')}>
+                                <a href="http://localhost:3000/" className={cx('btn-danger')}>
                                     Trở lại trang chủ
                                 </a>
+                                {
+                                    this.state.linkEmail && (<a className={cx('btn-danger')} href='https://accounts.google.com/'>
+                                        <i class="fa fa-chevron-circle-right" aria-hidden="true" style={
+                                            {
+                                                paddingRight: "20px",
+                                                paddingLeft: "10px",
+                                            }
+                                        }></i>
+                                        Đi đến email của bạn
+                                        </a>)
+                                }
                             </div>
                         </form>
                     </div>

@@ -33,6 +33,7 @@ import {
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { Avatarload } from './Reducers/AvatarReducer';
+import { Province } from './Reducers/AdressProvinceReducers';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
 import { categoryListReducer } from './Reducers/CategoryReducers';
 
@@ -66,6 +67,7 @@ const reducer = combineReducers({
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
     avatarLoad: Avatarload,
+    province: Province,
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
 });

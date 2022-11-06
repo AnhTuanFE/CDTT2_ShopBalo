@@ -1,0 +1,13 @@
+.wrapSelect {
+    display: flex;
+    flex-direction: column;
+}
+.carSelect {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: 1.8px solid #e4e4e4;
+    border-radius: 5px;
+    color: #8a8a8a;
+    /* margin-bottom: 20px; */
+}

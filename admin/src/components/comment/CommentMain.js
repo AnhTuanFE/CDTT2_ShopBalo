@@ -49,7 +49,7 @@ export default function CommentMain() {
         const findUser = users?.find((user) => user._id === data.user);
         return (
             <img
-                src={`/userProfile/${findUser?.image}` || '/images/logo.png'} // upload ảnh
+                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
                 alt=""
                 style={{
                     height: '40px',

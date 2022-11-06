@@ -40,7 +40,7 @@ const ShopSection = (props) => {
     return (
         <>
             <div className="container mt-2">
-                <div className="section pt-0">
+                <div className=" pt-0">
                     <div
                         style={{
                             display: 'flex',

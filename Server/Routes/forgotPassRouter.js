@@ -25,7 +25,7 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
       }
       const secret = JWT_SECRET1 + oldUser.password;
       const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-        expiresIn: "5m",
+        expiresIn: "120m",
       });
       const link = `http://localhost:5000/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
       var transporter = nodemailer.createTransport({
@@ -58,7 +58,7 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
 //   gọi api thay đổi mật khẩu
   forgotPassRouter.get("/reset-password/:id/:token1", async (req, res) => {
     const { id, token1 } = req.params;
-    console.log(req.params);
+    // console.log(req.params);
     const oldUser = await User.findOne({ _id: id });
     if (!oldUser) {
       return res.json({ status: "User Not Exists!!" });

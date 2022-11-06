@@ -7,7 +7,7 @@ const Pagination = (props) => {
     return (
         pages > 1 && (
             <nav
-                className="float-end mt-4"
+                className="col-lg-12 col-md-12 mt-5"
                 aria-label="Page navigation"
                 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
@@ -24,7 +24,7 @@ const Pagination = (props) => {
                         <i class="fas fa-angle-double-left"></i>
                     </Link>
                 </div>
-                <ul className="pagination justify-content-center">
+                <ul className="pagination justify-content-center" style={{ marginTop: '0', marginBottom: '0' }}>
                     {[...Array(pages).keys()].map((x) => (
                         <li className={`page-item ${x + 1 === page ? 'active' : ''}`} key={x + 1}>
                             <Link

@@ -178,7 +178,7 @@ const PlaceOrderScreen = ({ history }) => {
                 <div className="row order-products justify-content-between">
                     <div className="col-lg-12 fix-padding cart-scroll">
                         {cart.cartItems.length === 0 ? (
-                            <Message variant="alert-info mt-5">No product is selected</Message>
+                            <Message variant="alert-info mt-5">Không có sản phẩm nào được chọn</Message>
                         ) : (
                             <>
                                 {cart.cartItems
@@ -270,6 +270,7 @@ const PlaceOrderScreen = ({ history }) => {
                             >
                                 Đặt hàng
                             </button>
+                            
                         )}
                     </div>
                 </div>

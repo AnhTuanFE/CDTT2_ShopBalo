@@ -194,12 +194,12 @@ body.offcanvas-active {
 .navbar-aside .aside-top .brand-wrap {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    display: inline-block;
+    width: 75%;
+    display: flex;
+    justify-content: center;
 }
 .navbar-aside .aside-top .logo {
-    height: 46px;
-    width: auto;
-    max-width: 200px;
+    width: 80%;
 }
 
 .main-header {

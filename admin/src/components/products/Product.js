@@ -55,7 +55,6 @@ const Product = (props) => {
                             </div>
                         </div>
                     </td>
-                    <td></td>
                 </tr>
             )}
         </>

@@ -8,8 +8,8 @@ const Sidebar = () => {
                 <div className="aside-top">
                     <Link to="/" className="brand-wrap">
                         <img
-                            src="/images/logo.png"
-                            style={{ height: '46' }}
+                            src="/images/logo2.png"
+                            style={{ height: '84' }}
                             className="logo"
                             alt="Ecommerce dashboard template"
                         />
@@ -44,7 +44,7 @@ const Sidebar = () => {
                         <li className="menu-item">
                             <NavLink activeClassName="active" className="menu-link" to="/category">
                                 <i className="icon fas fa-list"></i>
-                                <span className="text">Thể loại</span>
+                                <span className="text">Danh mục</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">

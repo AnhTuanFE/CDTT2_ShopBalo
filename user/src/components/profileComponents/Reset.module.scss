@@ -1,16 +1,17 @@
-body {
-    background-position: center;
-    // background-color: #eee;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: #505050;
-    font-family: 'Rubik', Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 1.5;
-    text-transform: none;
+// body {
+//     background-position: center;
+//     // background-color: #eee;
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     color: #505050;
+//     font-family: 'Rubik', Helvetica, Arial, sans-serif;
+//     font-size: 18px;
+//     font-weight: normal;
+//     line-height: 1.5;
+//     text-transform: none;
+// }
+.card {
 }
-
 .forgot {
     background-color: #fff;
     padding: 12px;
@@ -18,20 +19,58 @@ body {
 }
 
 .padding-bottom-3x {
-    padding-bottom: 72px !important;
+    // padding-bottom: 72px !important;
 }
 
 .card-footer {
     background-color: #fff;
 }
 
-.btn {
-    font-size: 13px;
+.logoShop {
+    width: 36%;
+    display: flex;
+    margin: auto;
 }
+.headContent {
+    text-align: center;
+}
+.textContent {
+    text-align: center;
+    padding-bottom: 20px;
+}
+.labelEmail {
+    padding-bottom: 20px;
+}
+
 .form-control:focus {
+    font-size: 13px;
     color: #495057;
     background-color: #fff;
     border-color: #76b7e9;
     outline: 0;
     box-shadow: 0 0 0 0px #28a745;
+}
+.btn-success {
+    font-size: 18px;
+    // font-weight: normal;
+    line-height: 1.5;
+    // font-size: 13px;
+    padding: 12px 36px;
+    border: 0;
+    background-color: #ee2624;
+    border-radius: 5px;
+    text-transform: uppercase;
+    color: white;
+}
+.btn-danger {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-left: 20px;
+    background-color: #28a745;
+    padding: 15px 6px;
+    border: 0;
+    // background-color: #ee2624;
+    border-radius: 5px;
+    // text-transform: uppercase;
+    color: white;
 }

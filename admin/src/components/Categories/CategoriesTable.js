@@ -105,7 +105,6 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                                         </div>
                                     </div>
                                 </td>
-                                <td></td>
                             </tr>
                         ))}
                 </tbody>

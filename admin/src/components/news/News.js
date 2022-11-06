@@ -88,7 +88,6 @@ export default function News() {
                                             </div>
                                         </div>
                                     </td>
-                                    <td></td>
                                 </tr>
                             ))}
                     </tbody>

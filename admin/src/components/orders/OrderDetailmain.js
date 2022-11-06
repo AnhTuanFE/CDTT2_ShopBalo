@@ -14,10 +14,16 @@ import {
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import moment from 'moment';
+// modal
+import CancelModal from '../Modal/CancelModal';
 
 const OrderDetailmain = (props) => {
     const { orderId } = props;
     const dispatch = useDispatch();
+    // modal
+    const [cancel, setCancel] = useState(false);
+
+    // const [hiden, setHiden] = useState(true);
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
@@ -46,10 +52,16 @@ const OrderDetailmain = (props) => {
         successCompleteAdmin,
     ]);
 
-    const cancelOrderHandler = () => {
-        if (window.confirm('Are you sure??')) {
-            dispatch(cancelOrder(order));
-        }
+    // const cancelOrderHandler = () => {
+    //     if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
+    //         dispatch(cancelOrder(order));
+    //     }
+    // };
+    const setTrueCancel = () => {
+        setCancel(true);
+    };
+    const setFalseCancel = () => {
+        setCancel(false);
     };
     const [status, setStatus] = useState('0');
     useEffect(() => {
@@ -96,9 +108,21 @@ const OrderDetailmain = (props) => {
             setStatus('4');
         }
     }, [order]);
-
+    const cancelOrderHandler1 = () => {
+        setCancel(false);
+        dispatch(cancelOrder(order));
+    };
     return (
         <section className="content-main">
+            {cancel && (
+                <CancelModal
+                    Title="Hủy đơn hàng"
+                    Body="Bạn có chắc chắn hủy đơn hàng này không?"
+                    HandleSubmit={cancelOrderHandler1}
+                    Close="modal"
+                    setFalseCancel={setFalseCancel}
+                />
+            )}
             <div className="content-header">
                 <div className="col-lg-6 col-md-6">
                     <Link to="/orders" className="btn btn-dark text-white">
@@ -168,7 +192,8 @@ const OrderDetailmain = (props) => {
                             {order?.cancel !== 1 && order?.waitConfirmation !== true ? (
                                 <div className="col-lg-3 col-md-6 ms-auto d-flex justify-content-end align-items-center">
                                     <button
-                                        onClick={cancelOrderHandler}
+                                        // onClick={cancelOrderHandler}
+                                        onClick={setTrueCancel}
                                         className="btn btn-dark col-12"
                                         style={{ marginBottom: '15px' }}
                                         disabled={order?.waitConfirmation}
