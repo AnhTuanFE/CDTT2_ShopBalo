@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ProductsStatistics = () => {
+const OrderBuyingStatistics = () => {
     return (
-        <div className="col-xl-6 col-lg-12">
+        <div className="col-xl-4 col-lg-12">
             <div className="card mb-4 shadow-sm">
                 <article className="card-body">
-                    <h5 className="card-title">Thống kê sản phẩm</h5>
+                    <h5 className="card-title">Thống kê tổng số đơn đã Orders</h5>
                     <iframe
                         style={{
                             background: '#FFFFFF',
@@ -15,7 +15,7 @@ const ProductsStatistics = () => {
                             width: '100%',
                             height: '350px',
                         }}
-                        src="https://charts.mongodb.com/charts-fashionshop-ibyab/embed/charts?id=62b00918-8c4a-4639-8430-25d6a44daffd&maxDataAge=3600&theme=light&autoRefresh=true"
+                        src="https://charts.mongodb.com/charts-baloshop-ivxlf/embed/charts?id=635cef64-6434-4c6b-8200-9c6324679253&maxDataAge=3600&theme=light&autoRefresh=true"
                     ></iframe>
                 </article>
             </div>
@@ -23,4 +23,4 @@ const ProductsStatistics = () => {
     );
 };
 
-export default ProductsStatistics;
+export default OrderBuyingStatistics;

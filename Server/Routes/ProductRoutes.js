@@ -70,13 +70,12 @@ productRoute.get(
     '/ProductCommentAll',
     asyncHandler(async (req, res) => {
         let commentArr = [];
-        const products = await Product.find({}).sort({ _id: -1 });
-        const comments = products.filter((product) => product.comments != '');
-        for (let i = 0; i < comments.length; i++) {
-            commentArr.push(...comments[i].comments);
+        const products = await Product.find({}).sort({ _id: -1 }).populate('comments.user', 'name image');
+        const filterProduct = products.filter((product) => product.comments != '');
+        for (let i = 0; i < filterProduct.length; i++) {
+            commentArr.push(...filterProduct[i].comments);
         }
         const commentSort = commentArr.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
-
         res.json(commentSort);
     }),
 );
@@ -84,7 +83,7 @@ productRoute.get(
 productRoute.get(
     '/:id/onlyProduct/allComments',
     asyncHandler(async (req, res) => {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('comments.user', 'name image');
         const allComments = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) =>
             a > b ? 1 : a < b ? -1 : 0,
         );
@@ -101,7 +100,7 @@ productRoute.get(
 productRoute.get(
     '/:id/onlyProduct/allReview',
     asyncHandler(async (req, res) => {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('reviews.user', 'name image');
         const allReview = product?.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
         if (allReview == undefined) {
             res.status(400);
@@ -159,7 +158,7 @@ productRoute.post(
     '/:id/review',
     protect,
     asyncHandler(async (req, res) => {
-        const { rating, color, comment } = req.body;
+        const { rating, color, comment, name } = req.body;
         const product = await Product.findById(req.params.id);
         const order = await Order.find({ user: req.user._id });
         let listOrder = [];
@@ -186,7 +185,7 @@ productRoute.post(
                 throw new Error('Sản phẩm đã được đánh giá');
             }
             const review = {
-                name: req.user.name,
+                name: name,
                 rating: Number(rating),
                 color,
                 comment,
@@ -240,10 +239,10 @@ productRoute.post(
     '/:id/commentchild',
     protect,
     asyncHandler(async (req, res) => {
-        const { questionChild, reviewId } = req.body;
+        const { questionChild, idComment } = req.body;
         const product = await Product.findById(req.params.id);
         const commentUsers = product.comments;
-        const findComment = commentUsers.find((commentUser) => commentUser._id == reviewId);
+        const findComment = commentUsers.find((commentUser) => commentUser._id == idComment);
         if (product) {
             const commentChild = {
                 name: req.user.name,
@@ -458,6 +457,43 @@ productRoute.post(
             product.image = filterImage;
             const newProduct = await product.save();
             res.status(201).json(newProduct);
+        }
+    }),
+);
+
+// DELETE COMMENTS PRODUCT
+productRoute.post(
+    '/:id/deleteComment',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { idComment } = req.body;
+        const product = await Product.findById(req.params.id);
+        const finDelete = product.comments.filter((comment) => comment._id != idComment);
+        if (finDelete) {
+            product.comments = finDelete;
+            await product.save();
+            res.status(201).json('success delete comment');
+        }
+    }),
+);
+
+//DELETE COMMENTS CHILD
+productRoute.post(
+    '/:id/deleteCommentChild',
+    protect,
+    admin,
+    asyncHandler(async (req, res) => {
+        const { idComment, idCommentChild } = req.body;
+        const product = await Product.findById(req.params.id);
+        const findComment = product.comments.find((comment) => comment._id == idComment);
+        if (findComment) {
+            const findDelete = findComment.commentChilds.filter((commentChild) => commentChild._id != idCommentChild);
+            if (findDelete) {
+                findComment.commentChilds = findDelete;
+                await product.save();
+                res.status(201).json('success delete commentChild');
+            }
         }
     }),
 );

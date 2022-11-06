@@ -43,6 +43,14 @@ import {
     PRODUCT_DELETE_IMAGE_SUCCESS,
     PRODUCT_DELETE_IMAGE_FAIL,
     PRODUCT_DELETE_IMAGE_RESET,
+    PRODUCT_DELETE_COMMENT_REQUEST,
+    PRODUCT_DELETE_COMMENT_SUCCESS,
+    PRODUCT_DELETE_COMMENT_FAIL,
+    PRODUCT_DELETE_COMMENT_RESET,
+    PRODUCT_DELETE_COMMENTCHILD_REQUEST,
+    PRODUCT_DELETE_COMMENTCHILD_SUCCESS,
+    PRODUCT_DELETE_COMMENTCHILD_FAIL,
+    PRODUCT_DELETE_COMMENTCHILD_RESET,
 } from '../Constants/ProductConstants';
 
 // ALL PRODUCTS
@@ -232,6 +240,38 @@ export const productDeleteImageReducer = (state = {}, action) => {
         case PRODUCT_DELETE_IMAGE_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_DELETE_IMAGE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT COMMENTS DELETE
+export const productDeleteCommentsReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_DELETE_COMMENT_REQUEST:
+            return { loading: true };
+        case PRODUCT_DELETE_COMMENT_SUCCESS:
+            return { loading: false, success: true, deleteComment: action.payload };
+        case PRODUCT_DELETE_COMMENT_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_DELETE_COMMENT_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+// PRODUCT COMMENTSCHILD DELETE
+export const productDeleteCommentsChildReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_DELETE_COMMENTCHILD_REQUEST:
+            return { loading: true };
+        case PRODUCT_DELETE_COMMENTCHILD_SUCCESS:
+            return { loading: false, success: true, deleteCommentChild: action.payload };
+        case PRODUCT_DELETE_COMMENTCHILD_FAIL:
+            return { loading: false, error: action.payload };
+        case PRODUCT_DELETE_COMMENTCHILD_RESET:
             return {};
         default:
             return state;

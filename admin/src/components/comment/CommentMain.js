@@ -1,23 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ListProductCommentAll, createProductCommentChild } from '../../Redux/Actions/ProductActions';
+import {
+    ListProductCommentAll,
+    createProductCommentChild,
+    deleteCommentsProduct,
+    deleteCommentsChildProduct,
+} from '../../Redux/Actions/ProductActions';
+import {
+    PRODUCT_DELETE_COMMENTCHILD_RESET,
+    PRODUCT_DELETE_COMMENT_RESET,
+} from '../../Redux/Constants/ProductConstants';
 import moment from 'moment';
 import { listUser } from '../../Redux/Actions/userActions';
 import './style.css';
+import Message from '../LoadingError/Error';
+import Loading from '../LoadingError/Loading';
+
 export default function CommentMain() {
     const dispatch = useDispatch();
     const commentList = useSelector((state) => state.productCommentGet);
-    const { products } = commentList;
+    const { products, loading, error } = commentList;
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate);
     const { success: successCommentChild } = productCommentChildCreate;
+    const productDeleteComments = useSelector((state) => state.productDeleteComments);
+    const { success: successDeleteComment, error: errorComment } = productDeleteComments;
+    const productDeleteCommentsChild = useSelector((state) => state.productDeleteCommentsChild);
+    const { success: successDeleteCommentChild, error: errorCommentChild } = productDeleteCommentsChild;
     const [buleanReview, setBuleanReview] = useState('');
     const [productId, setProductId] = useState('');
-    const [reviewId, setReviewId] = useState('');
+    const [idComment, setIdComment] = useState('');
     const [questionChild, setQuestionChild] = useState('');
     useEffect(() => {
+        if (successCommentChild) {
+            dispatch({ type: PRODUCT_DELETE_COMMENT_RESET });
+        }
+        if (successDeleteCommentChild) {
+            dispatch({ type: PRODUCT_DELETE_COMMENTCHILD_RESET });
+        }
         dispatch(ListProductCommentAll());
-    }, [successCommentChild]);
+    }, [dispatch, successCommentChild, successDeleteComment, successDeleteCommentChild]);
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
     useEffect(() => {
@@ -42,8 +64,18 @@ export default function CommentMain() {
     }
     const submitQuestionChild = (e) => {
         e.preventDefault();
-        dispatch(createProductCommentChild(productId, { questionChild, reviewId }));
+        dispatch(createProductCommentChild(productId, { questionChild, idComment }));
         setQuestionChild('');
+    };
+    const handlerCommentDelete = (idProduct, idComment) => {
+        if (window.confirm('Bạn có chắc chắn thu hồi tin nhắn này không')) {
+            dispatch(deleteCommentsProduct(idProduct, idComment));
+        }
+    };
+    const handlerCommentChildDelete = (idProduct, idComment, idCommentChild) => {
+        if (window.confirm('Bạn có chắc chắn thu hồi tin nhắn này không')) {
+            dispatch(deleteCommentsChildProduct(idProduct, idComment, idCommentChild));
+        }
     };
     return (
         <div className="content-main" style={{ backgroundColor: '#ffffff' }}>
@@ -52,6 +84,9 @@ export default function CommentMain() {
                     Bình luận
                 </h2>
             </div>
+            {loading && <Loading />}
+            {error && <Message variant="alert-danger">{error}</Message>}
+            {errorCommentChild && <Message variant="alert-danger">{errorCommentChild}</Message>}
             <div class="accordion" id="accordionPanelsStayOpenExample">
                 {products?.map((product, index) => {
                     return (
@@ -68,9 +103,12 @@ export default function CommentMain() {
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Sản phẩm</th>
-                                                <th scope="col">Số lượng</th>
+                                                <th scope="col" style={{ width: '10%' }}>
+                                                    #
+                                                </th>
+                                                <th scope="col" style={{ width: '90%' }}>
+                                                    Sản phẩm
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -83,7 +121,6 @@ export default function CommentMain() {
                                                     />
                                                 </td>
                                                 <td>{product?.nameProduct}</td>
-                                                <td>{product?.amountProduct}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -103,9 +140,20 @@ export default function CommentMain() {
                                         }}
                                     >
                                         <div className="rating-review__flex">
-                                            {findProductUser(product)}
+                                            <img
+                                                src={`/userProfile/${product?.user?.image}` || '/images/logo.png'} // upload ảnh
+                                                alt=""
+                                                style={{
+                                                    height: '40px',
+                                                    width: '40px',
+                                                    borderRadius: '50%',
+                                                    marginRight: '5px',
+                                                    objectFit: 'cover',
+                                                }}
+                                                className="fix-none"
+                                            />
                                             <div className="product-rating">
-                                                <strong>{product.name}</strong>
+                                                <strong>{product?.name}</strong>
                                             </div>
                                         </div>
                                         <div style={{ paddingLeft: '10px' }}>
@@ -125,17 +173,28 @@ export default function CommentMain() {
                                         style={{ display: 'flex', flexDirection: 'column' }}
                                     >
                                         <span>{product.question}</span>
-                                        <span
-                                            className="commentChild"
-                                            onClick={() => {
-                                                setReviewId(product._id);
-                                                setProductId(product.idProduct);
-                                                setBuleanReview(product._id);
-                                            }}
-                                        >
-                                            <i class="fas fa-comments-alt" style={{ paddingRight: '5px' }}></i>
-                                            Trả lời
-                                        </span>
+                                        <div className="d-flex justify-content-end">
+                                            <span
+                                                className="commentChild pe-2 text-dark"
+                                                onClick={() => {
+                                                    handlerCommentDelete(product?.idProduct, product?._id);
+                                                }}
+                                            >
+                                                <i class="fas fa-comment-times" style={{ paddingRight: '5px' }}></i>
+                                                Thu hồi
+                                            </span>
+                                            <span
+                                                className="commentChild ps-2"
+                                                onClick={() => {
+                                                    setIdComment(product._id);
+                                                    setProductId(product.idProduct);
+                                                    setBuleanReview(product._id);
+                                                }}
+                                            >
+                                                <i class="fas fa-comments-alt" style={{ paddingRight: '5px' }}></i>
+                                                Trả lời
+                                            </span>
+                                        </div>
                                     </div>
                                     <div className="product-review" style={{ padding: '0px', boxShadow: 'none' }}>
                                         {product.commentChilds?.map((child) => (
@@ -167,6 +226,38 @@ export default function CommentMain() {
                                                 </div>
                                                 <div className="alert mt-3 product-review">
                                                     <span>{child.questionChild}</span>
+                                                    <div className="d-flex justify-content-end">
+                                                        <span
+                                                            className="commentChild text-dark pe-2"
+                                                            onClick={() => {
+                                                                handlerCommentChildDelete(
+                                                                    product?.idProduct,
+                                                                    product?._id,
+                                                                    child._id,
+                                                                );
+                                                            }}
+                                                        >
+                                                            <i
+                                                                class="fas fa-comment-times"
+                                                                style={{ paddingRight: '5px' }}
+                                                            ></i>
+                                                            Thu hồi
+                                                        </span>
+                                                        <span
+                                                            className="commentChild ps-2"
+                                                            onClick={() => {
+                                                                setIdComment(product._id);
+                                                                setProductId(product.idProduct);
+                                                                setBuleanReview(product._id);
+                                                            }}
+                                                        >
+                                                            <i
+                                                                class="fas fa-comments-alt"
+                                                                style={{ paddingRight: '5px' }}
+                                                            ></i>
+                                                            Trả lời
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}

@@ -57,10 +57,16 @@ const ShopSection = (props) => {
                                     setSortProducts(e.target.value);
                                 }}
                             >
-                                <option value="1">Sản phẩm mới</option>
+                                <option style={{ fontSize: '13px' }} value="1">
+                                    Sản phẩm mới
+                                </option>
                                 {/* <option value="2">Most prominent</option> */}
-                                <option value="3">Giá tăng dần</option>
-                                <option value="4">Giá giảm dần</option>
+                                <option style={{ fontSize: '13px' }} value="3">
+                                    Giá tăng dần
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="4">
+                                    Giá giảm dần
+                                </option>
                             </select>
                         </div>
                         <div className="ms-2">
@@ -71,12 +77,24 @@ const ShopSection = (props) => {
                                     setRating(e.target.value);
                                 }}
                             >
-                                <option value="0">Lọc...</option>
-                                <option value="5">5 sao</option>
-                                <option value="4">4 sao trở lên</option>
-                                <option value="3">3 sao trở lên</option>
-                                <option value="2">2 sao trở lên</option>
-                                <option value="1">1 sao trở lên</option>
+                                <option style={{ fontSize: '13px' }} value="0">
+                                    Đánh giá
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="5">
+                                    5 sao
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="4">
+                                    4 sao trở lên
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="3">
+                                    3 sao trở lên
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="2">
+                                    2 sao trở lên
+                                </option>
+                                <option style={{ fontSize: '13px' }} value="1">
+                                    1 sao trở lên
+                                </option>
                             </select>
                         </div>
                     </div>

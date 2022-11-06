@@ -18,9 +18,10 @@ const OrderDetailProducts = (props) => {
             <thead>
                 <tr>
                     <th style={{ width: '40%' }}>Sản phẩm</th>
-                    <th style={{ width: '20%' }}>Đơn giá</th>
-                    <th style={{ width: '20%' }}>Số lượng</th>
-                    <th style={{ width: '20%' }} className="text-end">
+                    <th style={{ width: '15%' }}>Màu sắc</th>
+                    <th style={{ width: '15%' }}>Đơn giá</th>
+                    <th style={{ width: '15%' }}>Số lượng</th>
+                    <th style={{ width: '15%' }} className="text-end">
                         Giá tiền
                     </th>
                 </tr>
@@ -41,6 +42,7 @@ const OrderDetailProducts = (props) => {
                                 <div className="info">{item.name}</div>
                             </Link>
                         </td>
+                        <td>{item?.color}</td>
                         <td>{item?.price?.toLocaleString('de-DE')}đ </td>
                         <td>{item.qty} </td>
                         <td className="text-end"> {(item.qty * item.price)?.toLocaleString('de-DE')}đ</td>
@@ -48,7 +50,7 @@ const OrderDetailProducts = (props) => {
                 ))}
 
                 <tr>
-                    <td colSpan="4">
+                    <td colSpan="6">
                         <article className="float-end">
                             <dl className="dlist">
                                 <dt className="fs-6" style={{ fontWeight: '600' }}>

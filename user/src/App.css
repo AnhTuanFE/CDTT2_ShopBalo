@@ -85,7 +85,7 @@ textarea:focus {
     background-color: #f4f4f4;
 }
 .navbar-brand img {
-    width: 60%;
+    width: 33%;
 }
 .input-group {
     height: 45px;
@@ -831,8 +831,9 @@ textarea:focus {
 .cart-qty h6,
 .cart-price h6 {
     margin-bottom: 10px;
-    color: #8c8c8c;
-    font-size: 13px;
+    color: #2c2c2c;
+    font-size: 14px;
+    font-weight: 600;
     text-transform: uppercase;
 }
 .total {

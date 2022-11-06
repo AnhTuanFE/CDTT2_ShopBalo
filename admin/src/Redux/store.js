@@ -15,6 +15,8 @@ import {
     productDeleteOptionReducer,
     productCreateImageReducer,
     productDeleteImageReducer,
+    productDeleteCommentsReducer,
+    productDeleteCommentsChildReducer,
 } from './Reducers/ProductReducers';
 import {
     orderCancelReducer,
@@ -57,6 +59,8 @@ const reducer = combineReducers({
     productCommentChildCreate: productCreateCommentChildReducer,
     productCreateImage: productCreateImageReducer,
     productDeleteImage: productDeleteImageReducer,
+    productDeleteComments: productDeleteCommentsReducer,
+    productDeleteCommentsChild: productDeleteCommentsChildReducer,
     orderList: orderListReducer,
     orderDetails: orderDetailsReducer,
     orderDeliver: orderDeliveredReducer,

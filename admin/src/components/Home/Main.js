@@ -2,7 +2,8 @@ import { React, useEffect } from 'react';
 import TopTotal from './TopTotal';
 import LatestOrder from './LatestOrder';
 import SaleStatistics from './SalesStatistics';
-import ProductsStatistics from './ProductsStatistics';
+import BuyOrdersPrice from './BuyOrdersPrice';
+import OrderBuyingStatistics from './OrderBuyingStatistics';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../../Redux/Actions/ProductActions';
 import { getOrderCompleteAll } from '../../Redux/Actions/OrderActions';
@@ -33,8 +34,9 @@ const Main = () => {
 
                 <div className="row">
                     {/* STATICS */}
+                    <OrderBuyingStatistics />
+                    <BuyOrdersPrice />
                     <SaleStatistics />
-                    <ProductsStatistics />
                 </div>
 
                 {/* LATEST ORDER */}

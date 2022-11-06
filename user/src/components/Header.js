@@ -113,7 +113,7 @@ const Header = () => {
                                         <i class="fas fa-bars"></i>
                                     </div>
                                     <Link className="navbar-brand" to="/">
-                                        <img alt="logo" src="/images/logo.png" />
+                                        <img alt="logo" src="/images/logo2.png" />
                                     </Link>
                                 </div>
                                 {navbar && <NavBar onRemove={removeNavBar}></NavBar>}
@@ -130,12 +130,27 @@ const Header = () => {
                                                 <i class="fas fa-user"></i>
                                             </button>
                                             <div className="dropdown-menu">
-                                                <Link className="dropdown-item" to="/profile">
-                                                    Profile
+                                                <Link
+                                                    className="dropdown-item"
+                                                    style={{
+                                                        textTransform: 'capitalize',
+                                                        fontSize: '12px',
+                                                    }}
+                                                    to="/profile"
+                                                >
+                                                    Tài khoản của tôi
                                                 </Link>
 
-                                                <Link className="dropdown-item" to="#" onClick={logoutHandler}>
-                                                    Logout
+                                                <Link
+                                                    className="dropdown-item"
+                                                    style={{
+                                                        textTransform: 'capitalize',
+                                                        fontSize: '12px',
+                                                    }}
+                                                    to="#"
+                                                    onClick={logoutHandler}
+                                                >
+                                                    Đăng xuất
                                                 </Link>
                                             </div>
                                         </div>
@@ -203,7 +218,7 @@ const Header = () => {
                         <div className="row">
                             <div className="col-md-3 col-4 d-flex align-items-center">
                                 <Link className="navbar-brand" to="/">
-                                    <img alt="logo" src="/images/logo.png" />
+                                    <img alt="logo" src="/images/logo2.png" />
                                 </Link>
                             </div>
                             <div className="col-md-6 col-8 header-nav__search">

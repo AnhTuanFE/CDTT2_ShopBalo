@@ -125,8 +125,14 @@ const PlaceOrderScreen = ({ history }) => {
                                 </div>
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
-                                <p>{`Tên: ${userInfo.name}`}</p>
-                                <p>{`Số điện thoại: ${userInfo.phone}`}</p>
+                                <p>
+                                    <span style={{ fontWeight: '600' }}>Họ tên:</span>
+                                    {userInfo.name}
+                                </p>
+                                <p>
+                                    <span style={{ fontWeight: '600' }}>Số điện thoại:</span>
+                                    {userInfo.phone}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -142,7 +148,10 @@ const PlaceOrderScreen = ({ history }) => {
                                 </div>
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9">
-                                <p>Địa chỉ: {`${userInfo?.city}, ${userInfo?.address}, ${userInfo?.country}`}</p>
+                                <p>
+                                    <span style={{ fontWeight: '600' }}>Địa chỉ:</span>{' '}
+                                    {`${userInfo?.city}, ${userInfo?.address}, ${userInfo?.country}`}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -156,7 +165,10 @@ const PlaceOrderScreen = ({ history }) => {
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9">
                                 <p>
-                                    <p>Phương thức: {'Thanh toán bằng tiền mặt'}</p>
+                                    <p>
+                                        <span style={{ fontWeight: '600' }}>Phương thức:</span>{' '}
+                                        {'Thanh toán bằng tiền mặt'}
+                                    </p>
                                 </p>
                             </div>
                         </div>
@@ -188,15 +200,15 @@ const PlaceOrderScreen = ({ history }) => {
                                                     <h6>{item.product.name}</h6>
                                                 </Link>
                                             </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
+                                            <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
                                                 <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Phân loại hàng</h4>
                                                 <h6>{item?.color}</h6>
                                             </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-6  d-flex align-items-center flex-column justify-content-center ">
+                                            <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
                                                 <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
                                                 <h6>{item?.qty}</h6>
                                             </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
+                                            <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-end  d-flex flex-column justify-content-center ">
                                                 <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
                                                 <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
                                             </div>

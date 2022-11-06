@@ -115,7 +115,7 @@ export const listProductDetails = (id) => async (dispatch) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const createProductReview = (productId, rating, color, comment) => async (dispatch, getState) => {
+export const createProductReview = (productId, rating, color, comment, name) => async (dispatch, getState) => {
     try {
         dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
 
@@ -130,7 +130,7 @@ export const createProductReview = (productId, rating, color, comment) => async 
             },
         };
 
-        await axios.post(`/api/products/${productId}/review`, { rating, color, comment }, config);
+        await axios.post(`/api/products/${productId}/review`, { rating, color, comment, name }, config);
         dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

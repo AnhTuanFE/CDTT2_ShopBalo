@@ -11,7 +11,7 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Họ tên: {order.user.name} <br />
+                            Họ tên: {order.name} <br />
                             <p>Số điện thoại: {order.phone}</p>
                         </p>
                     </div>

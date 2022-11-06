@@ -29,6 +29,7 @@ import axios from 'axios';
 import { ORDER_PAY_RESET } from '../Redux/Constants/OrderConstants';
 import { toast } from 'react-toastify';
 import Toast from '../components/LoadingError/Toast';
+import { listCart } from '../Redux/Actions/cartActions';
 
 const Toastobjects = {
     pauseOnFocusLoss: false,
@@ -82,7 +83,7 @@ const OrderScreen = ({ match }) => {
     useEffect(() => {
         if (errorCancel) {
             dispatch({ type: ORDER_CANCEL_RESET });
-            toast.error('Tài khoản đã bị khóa', Toastobjects);
+            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
         }
     }, [errorCancel]);
 
@@ -93,6 +94,9 @@ const OrderScreen = ({ match }) => {
     const { userInfo } = userLogin;
 
     useEffect(() => {
+        if (orderId) {
+            dispatch(listCart());
+        }
         dispatch(orderGetItemOrder(orderId));
     }, [orderId, successReviewOrder]);
     useEffect(() => {
@@ -181,11 +185,11 @@ const OrderScreen = ({ match }) => {
                                     </div>
                                     <div className="col-lg-10 col-sm-9 mb-lg-9 fix-display">
                                         <p>
-                                            <span style={{ fontWeight: '600' }}>Họ tên:</span> {order.user.name}
+                                            <span style={{ fontWeight: '600' }}>Họ tên:</span> {order.name}
                                         </p>
                                         <p>
                                             {' '}
-                                            <span style={{ fontWeight: '600' }}>Số điện thoại:</span> {userInfo.phone}
+                                            <span style={{ fontWeight: '600' }}>Số điện thoại:</span> {order.phone}
                                         </p>
                                     </div>
                                 </div>
@@ -473,7 +477,7 @@ const OrderScreen = ({ match }) => {
                                                     className={
                                                         order?.isPaid && itemOrder[index].productReview.length === 0
                                                             ? 'col-md-1 col-4'
-                                                            : 'col-md-2 col-4'
+                                                            : 'col-md-2 col-6'
                                                     }
                                                 >
                                                     <img
@@ -486,7 +490,7 @@ const OrderScreen = ({ match }) => {
                                                     className={
                                                         order?.isPaid && itemOrder[index].productReview.length === 0
                                                             ? 'col-md-3 col-4 d-flex align-items-center'
-                                                            : 'col-md-4 col-4 d-flex align-items-center'
+                                                            : 'col-md-4 col-6 d-flex align-items-center'
                                                     }
                                                 >
                                                     <Link to={`/products/${item.product}`}>
@@ -746,6 +750,7 @@ const OrderScreen = ({ match }) => {
                                                                         rating,
                                                                         product.color,
                                                                         comment,
+                                                                        order.name,
                                                                     ),
                                                                     setRating(''),
                                                                     setComment(''),
@@ -756,6 +761,7 @@ const OrderScreen = ({ match }) => {
                                                                         orderItemId,
                                                                         rating,
                                                                         comment,
+                                                                        order.name,
                                                                     ),
                                                                     setRating(''),
                                                                     setComment(''),

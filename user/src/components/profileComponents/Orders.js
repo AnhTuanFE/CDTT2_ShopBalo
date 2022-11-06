@@ -34,7 +34,7 @@ const Orders = (props) => {
                             </Link>
                         </div>
                     ) : (
-                        <div className="table-responsive">
+                        <div className="table-responsive" style={{ overflowX: 'scroll' }}>
                             <table className="table">
                                 <thead>
                                     <tr>

@@ -31,13 +31,15 @@ export default function NavBar({ onRemove }) {
                 <div className="modal-tablet"></div>
                 <div className="modal-nav">
                     <div className="modal-nav__img">
-                        <img src="/images/logo.png"></img>
+                        <img src="/images/logo2.png"></img>
                     </div>
                     <ul className="modal-nav__list">
                         {categories.map((category) => (
-                            <li className="navbar-list__li">
-                                <label>{category.name}</label>
-                            </li>
+                            <Link to={`/category/${category._id}`}>
+                                <li className="navbar-list__li" onClick={onRemove}>
+                                    {category.name}
+                                </li>
+                            </Link>
                         ))}
                     </ul>
                     <div className="modal-icon" onClick={onRemove}>

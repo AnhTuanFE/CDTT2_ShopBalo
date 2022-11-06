@@ -69,8 +69,9 @@ orderRouter.post(
     '/:id/poductReview',
     protect,
     asyncHandler(async (req, res) => {
-        const { orderItemId, rating, comment } = req.body;
-        const order = await Order.findById(req.params.id);
+        const { orderItemId, rating, comment, name } = req.body;
+        const orders = await Order.find({ user: req.user._id });
+        const order = orders.find((order) => order.id == req.params.id);
         const findItemProduct = order?.orderItems.find((item) => item._id == orderItemId);
         if (findItemProduct?.productReview.length > 0) {
             res.status(400);
@@ -82,7 +83,7 @@ orderRouter.post(
         }
         if (findItemProduct) {
             const newReview = {
-                userName: req.user.name,
+                userName: name,
                 rating,
                 comment,
             };

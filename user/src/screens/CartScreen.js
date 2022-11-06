@@ -69,7 +69,7 @@ const CartScreen = ({ match, location, history }) => {
         return (
             <>
                 {findCart?.countInStock !== '' ? (
-                    <div className="col-md-1 cart-checkbok">
+                    <div className="col-md-1 col-2 cart-checkbok">
                         <Checkbox
                             checked={item?.isBuy}
                             onChange={() => {
@@ -78,7 +78,7 @@ const CartScreen = ({ match, location, history }) => {
                         />
                     </div>
                 ) : (
-                    <div className="col-md-1 cart-checkbok">
+                    <div className="col-md-1 col-2 cart-checkbok">
                         <span className="span" style={{ fontSize: '12px', color: 'red' }}>
                             Hết hàng
                         </span>
@@ -162,13 +162,13 @@ const CartScreen = ({ match, location, history }) => {
                             {cartItems?.map((item) => (
                                 <div key={item?._id} className="cart-iterm row">
                                     {findCartCountInStock(item)}
-                                    <div className="cart-image col-md-1">
+                                    <div className="cart-image col-md-1 col-4">
                                         <img
                                             src={`/productImage/${item.product?.image[0].image}`}
                                             alt={item.product?.name}
                                         />
                                     </div>
-                                    <div className="cart-text col-md-3 d-flex align-items-center">
+                                    <div className="cart-text col-md-3 col-6 d-flex align-items-center">
                                         <Link to={`/products/${item.product?._id}`}>
                                             <h4>{item.product?.name}</h4>
                                         </Link>

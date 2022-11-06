@@ -50,7 +50,7 @@ const SingleProduct = ({ history, match }) => {
     const [bulean, setBulean] = useState(false);
     const [question, setQuestion] = useState('');
     const [questionChild, setQuestionChild] = useState('');
-    const [reviewId, setReviewId] = useState('');
+    const [idComment, setIdComment] = useState('');
     const [buleanReview, setBuleanReview] = useState('');
     const [imageProduct, setImageProduct] = useState('');
     const [nameProduct, setNameProduct] = useState('');
@@ -222,7 +222,7 @@ const SingleProduct = ({ history, match }) => {
     // quenstion child
     const submitQuestionChild = (e) => {
         e.preventDefault();
-        dispatch(createProductCommentChild(productId, { questionChild, reviewId }));
+        dispatch(createProductCommentChild(productId, { questionChild, idComment }));
         setQuestionChild('');
     };
     function findProductUser(data) {
@@ -554,7 +554,21 @@ const SingleProduct = ({ history, match }) => {
                                                     }}
                                                 >
                                                     <div className="rating-review__flex">
-                                                        {findProductUser(review)}
+                                                        <img
+                                                            src={
+                                                                `/userProfile/${review?.user?.image}` ||
+                                                                '/images/logo.png'
+                                                            } // upload ảnh
+                                                            alt=""
+                                                            style={{
+                                                                height: '40px',
+                                                                width: '40px',
+                                                                borderRadius: '50%',
+                                                                marginRight: '5px',
+                                                                objectFit: 'cover',
+                                                            }}
+                                                            className="fix-none"
+                                                        />
                                                         <div className="review-rating">
                                                             <strong>{review.name}</strong>
                                                         </div>
@@ -673,7 +687,21 @@ const SingleProduct = ({ history, match }) => {
                                                     }}
                                                 >
                                                     <div className="rating-review__flex">
-                                                        {findProductUser(review)}
+                                                        <img
+                                                            src={
+                                                                `/userProfile/${review?.user?.image}` ||
+                                                                '/images/logo.png'
+                                                            }
+                                                            alt=""
+                                                            style={{
+                                                                height: '40px',
+                                                                width: '40px',
+                                                                borderRadius: '50%',
+                                                                marginRight: '5px',
+                                                                objectFit: 'cover',
+                                                            }}
+                                                            className="fix-none"
+                                                        />
                                                         <div className="review-rating">
                                                             <strong>{review.name}</strong>
                                                         </div>
@@ -698,7 +726,7 @@ const SingleProduct = ({ history, match }) => {
                                                     <span
                                                         className="commentChild"
                                                         onClick={() => {
-                                                            setReviewId(review._id);
+                                                            setIdComment(review._id);
                                                             setBuleanReview(review._id);
                                                         }}
                                                     >

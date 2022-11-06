@@ -35,6 +35,12 @@ import {
     PRODUCT_DELETE_IMAGE_REQUEST,
     PRODUCT_DELETE_IMAGE_SUCCESS,
     PRODUCT_DELETE_IMAGE_FAIL,
+    PRODUCT_DELETE_COMMENT_FAIL,
+    PRODUCT_DELETE_COMMENT_REQUEST,
+    PRODUCT_DELETE_COMMENT_SUCCESS,
+    PRODUCT_DELETE_COMMENTCHILD_REQUEST,
+    PRODUCT_DELETE_COMMENTCHILD_SUCCESS,
+    PRODUCT_DELETE_COMMENTCHILD_FAIL,
 } from '../Constants/ProductConstants';
 import axios from 'axios';
 import { logout } from './userActions';
@@ -373,6 +379,70 @@ export const deleteImageProduct = (productId, imageId) => async (dispatch, getSt
         }
         dispatch({
             type: PRODUCT_DELETE_IMAGE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const deleteCommentsProduct = (productId, idComment) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_DELETE_COMMENT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.post(`/api/products/${productId}/deleteComment`, { idComment }, config);
+
+        dispatch({ type: PRODUCT_DELETE_COMMENT_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_DELETE_COMMENT_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const deleteCommentsChildProduct = (productId, idComment, idCommentChild) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_DELETE_COMMENTCHILD_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.post(
+            `/api/products/${productId}/deleteCommentChild`,
+            { idComment, idCommentChild },
+            config,
+        );
+
+        dispatch({ type: PRODUCT_DELETE_COMMENTCHILD_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: PRODUCT_DELETE_COMMENTCHILD_FAIL,
             payload: message,
         });
     }

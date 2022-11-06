@@ -68,7 +68,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
 };
 
 // CREATE ORDER REVIEW
-export const createOrderReview = (orderId, orderItemId, rating, comment) => async (dispatch, getState) => {
+export const createOrderReview = (orderId, orderItemId, rating, comment, name) => async (dispatch, getState) => {
     try {
         dispatch({ type: ORDER_CREATE_REVIEW_REQUEST });
 
@@ -85,7 +85,7 @@ export const createOrderReview = (orderId, orderItemId, rating, comment) => asyn
 
         const { data } = await axios.post(
             `/api/orders/${orderId}/poductReview`,
-            { orderItemId, rating, comment },
+            { orderItemId, rating, comment, name },
             config,
         );
         dispatch({ type: ORDER_CREATE_REVIEW_SUCCESS, payload: data });
