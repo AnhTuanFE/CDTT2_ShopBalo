@@ -26,7 +26,7 @@ a.disabled {
 }
 .btn-primary {
     background-color: #1cb803 !important;
-    border: 1px solid #ee2624 !important;
+    border: 1px solid #00483d !important;
 }
 .Header-white {
     background-color: #fff;
@@ -934,14 +934,14 @@ ul.row-sm {
     margin-bottom: 0px !important;
 }
 .color-orange {
-    background-color: orangered !important;
+    background-color: #00483d !important;
 }
 .table-slide {
     max-height: 200px;
     overflow-y: scroll;
 }
 .header-color {
-    background-color: #ee2624;
+    background-color: #00483d;
 }
 /* pagition */
 .page-item:first-child .page-link,

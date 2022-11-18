@@ -411,7 +411,10 @@ const SingleProduct = ({ history, match }) => {
                                         // data-bs-toggle="modal"
                                         // data-bs-target="#staticBackdrop"
                                         >
-                                            <Link to="/byproduct"> Đánh giá ngay</Link>
+                                            <Link to="/byproduct" className="text-white">
+                                                {' '}
+                                                Đánh giá ngay
+                                            </Link>
                                         </button>
                                     </div>
                                 </div>

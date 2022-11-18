@@ -64,6 +64,30 @@ orderRouter.post(
     }),
 );
 
+//UPDATE AMOUNT PRODUCT
+orderRouter.put(
+    '/returnAmountProduct',
+    protect,
+    asyncHandler(async (req, res) => {
+        const { orderItems } = req.body;
+        if (orderItems) {
+            for (let i = 0; i < orderItems.length; i++) {
+                const findProduct = await Product.findById(orderItems[i].product);
+                const optionColor = findProduct?.optionColor;
+                const findColor = optionColor.find((option) => option.color == orderItems[i].color);
+                const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
+                if (findColor) {
+                    findColor.color = findColor.color;
+                    findColor.countInStock = findColor.countInStock + orderItems[i].qty;
+                }
+                let arrOption = [...filterOptionColor, findColor];
+                await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
+            }
+            res.status(201).json('success');
+        }
+    }),
+);
+
 //CREATE PRODUCT
 orderRouter.post(
     '/:id/poductReview',

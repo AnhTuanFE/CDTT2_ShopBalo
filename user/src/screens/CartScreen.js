@@ -200,7 +200,9 @@ const CartScreen = ({ match, location, history }) => {
                             </div>
                             {total > 0 && (
                                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                                    <button onClick={checkOutHandler}>Tiến hành thanh toán</button>
+                                    <button className="round-black-btn" onClick={checkOutHandler}>
+                                        Tiến hành thanh toán
+                                    </button>
                                 </div>
                             )}
                         </div>

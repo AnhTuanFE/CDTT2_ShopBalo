@@ -448,7 +448,7 @@ textarea:focus {
 }
 .round-black-btn {
     border-radius: 4px;
-    background: #ff5722;
+    background: #00483d;
     bottom: 0;
     color: #fff;
     width: 100%;
@@ -461,7 +461,7 @@ textarea:focus {
 }
 .round-black-btn:hover,
 .round-black-btn:focus {
-    background: #1cb803;
+    background: #056859;
 }
 .bg-orange {
     background: #ff5722;
@@ -655,7 +655,7 @@ textarea:focus {
     margin-top: 15px;
     padding: 15px 0;
     border: 0;
-    background-color: #ee2624;
+    background-color: #00483d;
     border-radius: 5px;
     text-transform: uppercase;
     color: white;
@@ -865,7 +865,7 @@ textarea:focus {
     margin-right: 10px;
     text-transform: uppercase;
     font-size: 13px;
-    background-color: #ee2624;
+    background-color: #00483d;
     color: #ffffff;
 }
 .cart-buttons a:nth-child(1) button {
@@ -970,8 +970,9 @@ textarea:focus {
     border: 0px;
     text-transform: uppercase;
     font-size: 13px;
-    background-color: #ee2624;
+    background-color: #00483d;
     color: #ffffff;
+    margin: 0 10px;
 }
 
 /* Pagination */

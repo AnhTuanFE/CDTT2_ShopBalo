@@ -36,6 +36,10 @@ import {
     ORDER_COMPLETE_USER_SUCCESS,
     ORDER_COMPLETE_USER_FAIL,
     ORDER_COMPLETE_USER_RESET,
+    ORDER_RETURN_AMOUNT_PRODUCT_REQUEST,
+    ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS,
+    ORDER_RETURN_AMOUNT_PRODUCT_FAIL,
+    ORDER_RETURN_AMOUNT_PRODUCT_RESET,
 } from '../Constants/OrderConstants';
 
 // CREATE ORDER
@@ -185,6 +189,21 @@ export const orderCompleteReducer = (state = {}, action) => {
         case ORDER_COMPLETE_USER_FAIL:
             return { loading: false, error: action.payload };
         case ORDER_COMPLETE_USER_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const returnAmountProductReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ORDER_RETURN_AMOUNT_PRODUCT_REQUEST:
+            return { loading: true };
+        case ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS:
+            return { loading: false, success: true, returnAmount: action.payload };
+        case ORDER_RETURN_AMOUNT_PRODUCT_FAIL:
+            return { loading: false, error: action.payload };
+        case ORDER_RETURN_AMOUNT_PRODUCT_RESET:
             return {};
         default:
             return state;

@@ -29,6 +29,9 @@ import {
     ORDER_COMPLETE_USER_REQUEST,
     ORDER_COMPLETE_USER_SUCCESS,
     ORDER_COMPLETE_USER_FAIL,
+    ORDER_RETURN_AMOUNT_PRODUCT_REQUEST,
+    ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS,
+    ORDER_RETURN_AMOUNT_PRODUCT_FAIL,
 } from '../Constants/OrderConstants';
 import axios from 'axios';
 import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
@@ -314,6 +317,36 @@ export const completeOrder = (id) => async (dispatch, getState) => {
         }
         dispatch({
             type: ORDER_COMPLETE_USER_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// RETURN AMOUNT PRODUCT
+export const returnAmountProduct = (orderItems) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: ORDER_RETURN_AMOUNT_PRODUCT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/orders/returnAmountProduct`, { orderItems }, config);
+        dispatch({ type: ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: ORDER_RETURN_AMOUNT_PRODUCT_FAIL,
             payload: message,
         });
     }

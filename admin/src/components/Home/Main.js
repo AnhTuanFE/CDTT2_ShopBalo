@@ -4,6 +4,8 @@ import LatestOrder from './LatestOrder';
 import SaleStatistics from './SalesStatistics';
 import BuyOrdersPrice from './BuyOrdersPrice';
 import OrderBuyingStatistics from './OrderBuyingStatistics';
+import NewsStatistics from './NewsStatistics';
+import ProductStatistics from './ProductStatistics';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../../Redux/Actions/ProductActions';
 import { getOrderCompleteAll } from '../../Redux/Actions/OrderActions';
@@ -37,6 +39,8 @@ const Main = () => {
                     <OrderBuyingStatistics />
                     <BuyOrdersPrice />
                     <SaleStatistics />
+                    <ProductStatistics />
+                    <NewsStatistics />
                 </div>
 
                 {/* LATEST ORDER */}

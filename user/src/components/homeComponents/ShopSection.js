@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Rating from './Rating';
 import Pagination from './pagination';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +10,14 @@ import { listCart } from '../../Redux/Actions/cartActions';
 import FilterSection from './FilterSection';
 
 const ShopSection = (props) => {
-    const { category, keyword, pageNumber } = props;
+    const { category, keyword, pageNumber, sortProducts, rating } = props;
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
-    const [rating, setRating] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
-    const [sortProducts, setSortProducts] = useState('1');
     const [keySearch, setKeySearch] = useState([]);
 
     useEffect(() => {
@@ -32,11 +31,41 @@ const ShopSection = (props) => {
             }
         }
     }, [products]);
+
     useEffect(() => {
         dispatch(listCart());
         dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts, keySearch));
     }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts]);
 
+    const handlerSort = (value) => {
+        if (rating === undefined && keyword === undefined && category === undefined) {
+            history.push(`/sortProducts/${value}/page/${'1'}`);
+        }
+        if (rating !== undefined && keyword === undefined && category === undefined) {
+            history.push(`/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        }
+        if (keyword !== undefined && category === undefined) {
+            history.push(`/search/${keyword}/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        }
+        if (keyword === undefined && category !== undefined) {
+            history.push(`/category/${category}/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        }
+    };
+
+    const handlerRating = (value) => {
+        if (rating === undefined && keyword === undefined && category === undefined) {
+            history.push(`/rating/${value}/page/${'1'}`);
+        }
+        if (sortProducts !== undefined && keyword === undefined && category === undefined) {
+            history.push(`/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        }
+        if (keyword !== undefined && category === undefined) {
+            history.push(`/search/${keyword}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        }
+        if (keyword === undefined && category !== undefined) {
+            history.push(`/category/${category}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        }
+    };
     return (
         <>
             <div className="container mt-2">
@@ -52,9 +81,12 @@ const ShopSection = (props) => {
                         <div className="">
                             <select
                                 className="form-select"
-                                value={sortProducts}
+                                value={sortProducts === undefined ? '1' : sortProducts}
+                                // onChange={(e) => {
+                                //     setSortProducts(e.target.value);
+                                // }}
                                 onChange={(e) => {
-                                    setSortProducts(e.target.value);
+                                    handlerSort(e.target.value);
                                 }}
                             >
                                 <option style={{ fontSize: '13px' }} value="1">
@@ -72,9 +104,12 @@ const ShopSection = (props) => {
                         <div className="ms-2">
                             <select
                                 className="form-select"
-                                value={rating}
+                                value={rating === undefined ? '0' : rating}
+                                // onChange={(e) => {
+                                //     setRating(e.target.value);
+                                // }}
                                 onChange={(e) => {
-                                    setRating(e.target.value);
+                                    handlerRating(e.target.value);
                                 }}
                             >
                                 <option style={{ fontSize: '13px' }} value="0">
@@ -119,30 +154,30 @@ const ShopSection = (props) => {
                                 ) : (
                                     <>
                                         {' '}
-                                        {products.length !== 0 ? (
+                                        {products?.length !== 0 ? (
                                             products?.map((product) => (
-                                                <div className="shop col-lg-3 col-md-4 col-sm-12" key={product._id}>
+                                                <div className="shop col-lg-3 col-md-4 col-sm-12" key={product?._id}>
                                                     <div className="border-product text-center">
-                                                        <Link to={`/products/${product._id}`}>
+                                                        <Link to={`/products/${product?._id}`}>
                                                             <div className="shopBack">
                                                                 <img
                                                                     src={`/productImage/${product?.image[0]?.image}`}
-                                                                    alt={product.name}
+                                                                    alt={product?.name}
                                                                 />
                                                             </div>
                                                         </Link>
 
                                                         <div className="shoptext">
                                                             <p>
-                                                                <Link to={`/products/${product._id}`}>
-                                                                    {product.name}
+                                                                <Link to={`/products/${product?._id}`}>
+                                                                    {product?.name}
                                                                 </Link>
                                                             </p>
 
                                                             <h3>{product?.price?.toLocaleString('de-DE')}đ</h3>
                                                             <Rating
-                                                                value={product.rating}
-                                                                text={`(${product.numReviews})`}
+                                                                value={product?.rating}
+                                                                text={`(${product?.numReviews})`}
                                                             />
                                                         </div>
                                                     </div>
@@ -160,6 +195,8 @@ const ShopSection = (props) => {
                                     page={page}
                                     category={category ? category : ''}
                                     keyword={keyword ? keyword : ''}
+                                    sortProducts={sortProducts ? sortProducts : ''}
+                                    rating={rating ? rating : ''}
                                 />
                             </div>
                         </div>

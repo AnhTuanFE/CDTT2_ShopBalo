@@ -10,6 +10,7 @@ import {
     createOrderReview,
     orderGetItemOrder,
     completeOrder,
+    returnAmountProduct,
 } from '../Redux/Actions/OrderActions';
 import { createProductReview } from '../Redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../Redux/Constants/ProductConstants';
@@ -77,6 +78,7 @@ const OrderScreen = ({ match }) => {
     const cancelOrderHandler = () => {
         if (window.confirm('Bạn có đồng ý hủy đơn hàng không?')) {
             dispatch(cancelOrder(order));
+            dispatch(returnAmountProduct(order.orderItems));
         }
     };
 

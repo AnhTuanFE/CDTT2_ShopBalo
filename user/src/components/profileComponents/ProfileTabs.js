@@ -23,7 +23,6 @@ import getCroppedImg from '../editAvatar/cropImage';
 import '../editAvatar/style.css';
 import { ListProvince } from '../../Redux/Actions/AdressProvinceActions';
 
-
 const ProfileTabs = () => {
     const [distric, setDistric] = useState([]);
     const [name, setName] = useState('');
@@ -65,9 +64,9 @@ const ProfileTabs = () => {
     } = userUpdateProfile;
 
     const province = useSelector((state) => state.province);
-    useEffect(()=> {
-        dispatch(ListProvince())
-    },[])
+    useEffect(() => {
+        dispatch(ListProvince());
+    }, []);
     const GetDataProvince = province.province;
 
     function checkProfile() {
@@ -261,26 +260,25 @@ const ProfileTabs = () => {
     }, [url]);
 
     // ================ đổi input = seclct
-    const handleChooseProvince = (e) => 
-    {
+    const handleChooseProvince = (e) => {
         const temp = e.target.value;
-        const arrDistric =  GetDataProvince.find((arr) => {
-            return arr.code == temp.toString()
-        })
+        const arrDistric = GetDataProvince.find((arr) => {
+            return arr.code == temp.toString();
+        });
         // obiect
-        setDistric(arrDistric)
-        setCountry(arrDistric.name)
-    }
-    const handleChooseCiTy = (e)=> {
-        setCity(e.target.value)
-    }
-    const GetDefaulDistrict = ()=> {
-        const tamp = country
-        const defaultDistric =  GetDataProvince.find((arr) => {
-            return arr.name == tamp.toString()
-        })
-        setDistric(defaultDistric)
-    }
+        setDistric(arrDistric);
+        setCountry(arrDistric.name);
+    };
+    const handleChooseCiTy = (e) => {
+        setCity(e.target.value);
+    };
+    const GetDefaulDistrict = () => {
+        const tamp = country;
+        const defaultDistric = GetDataProvince.find((arr) => {
+            return arr.name == tamp.toString();
+        });
+        setDistric(defaultDistric);
+    };
 
     // ================ đổi input = seclct
 
@@ -371,45 +369,41 @@ const ProfileTabs = () => {
                         </div>
 
                         {/* ĐỔI TỪ ĐÂY */}
-                        <div className="col-md-12"
+                        <div
+                            className="col-md-12"
                             style={{
                                 marginBottom: '32px',
                             }}
                         >
                             <div className="form">
                                 <label>Tỉnh/Thành phố</label>
-                                <select 
-                                    onChange={handleChooseProvince}
-                                    className='carSelect'
-                                    >
-                                    <option disabled selected hidden>{country}</option>
-                                    {
-                                        GetDataProvince.map((pro,index)=> (
-                                            <option key={index} value={pro.code}>{pro.name}</option>
-                                        ))
-                                    }
+                                <select onChange={handleChooseProvince} className="carSelect">
+                                    <option disabled selected hidden>
+                                        {country}
+                                    </option>
+                                    {GetDataProvince.map((pro, index) => (
+                                        <option key={index} value={pro.code}>
+                                            {pro.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
-                        <div className="col-md-12"
+                        <div
+                            className="col-md-12"
                             style={{
                                 marginBottom: '32px',
                             }}
                         >
                             <div className="form">
                                 <label>Huyện/Quận</label>
-                                <select
-                                    onChange={handleChooseCiTy}
-                                    className='carSelect'
-                                    onClick={GetDefaulDistrict}
-                                    >
-                                    <option disabled selected hidden>{city}</option>
-                                    {
-                                        distric?.districts
-                                        ?.map((dis,index)=> {
-                                            return (<option key={index} >{dis.name}</option>)
-                                        })
-                                    }
+                                <select onChange={handleChooseCiTy} className="carSelect" onClick={GetDefaulDistrict}>
+                                    <option disabled selected hidden>
+                                        {city}
+                                    </option>
+                                    {distric?.districts?.map((dis, index) => {
+                                        return <option key={index}>{dis.name}</option>;
+                                    })}
                                 </select>
                             </div>
                         </div>
@@ -429,7 +423,9 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
-                            <button type="submit">Cập nhật hồ sơ</button>
+                            <button style={{ backgroundColor: '#00483d' }} type="submit">
+                                Cập nhật hồ sơ
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -492,7 +488,9 @@ const ProfileTabs = () => {
                         </div>
 
                         <div className="button-submit">
-                            <button type="submit">Cập nhật mật khẩu</button>
+                            <button style={{ backgroundColor: '#00483d' }} type="submit">
+                                Cập nhật mật khẩu
+                            </button>
                         </div>
                     </form>
                 </div>

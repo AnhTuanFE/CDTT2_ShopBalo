@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './../components/Header';
 import ShopSection from './../components/homeComponents/ShopSection';
 import ContactInfo from './../components/homeComponents/ContactInfo';
@@ -10,11 +10,13 @@ import Corousel from '../components/SlideCorousel/Corousel';
 import CorouselOder from '../components/SlideCorousel/CourouselOder';
 import NewsMain from '../components/news/NewsMain';
 
-const HomeScreen = ({ match }) => {
+const HomeScreen = ({ match, location }) => {
     // window.scrollTo(0, 0);
     const keyword = match.params.keyword;
     const pageNumber = match.params.pageNumber;
     const category = match.params.category;
+    const rating = match.params.rating;
+    const sortProducts = match.params.sortProducts;
 
     return (
         <div>
@@ -24,7 +26,13 @@ const HomeScreen = ({ match }) => {
             {!keyword && !category ? <Corousel /> : ''}
             {!keyword && !category ? <CorouselOder /> : ''}
 
-            <ShopSection category={category} keyword={keyword} pageNumber={pageNumber} />
+            <ShopSection
+                category={category}
+                keyword={keyword}
+                pageNumber={pageNumber}
+                sortProducts={sortProducts}
+                rating={rating}
+            />
 
             {/* <CalltoActionSection /> */}
             {!keyword && !category ? <NewsMain /> : ''}
