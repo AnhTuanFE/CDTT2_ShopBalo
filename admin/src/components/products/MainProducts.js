@@ -51,7 +51,7 @@ const MainProducts = (props) => {
     return (
         <section className="content-main">
             <div className="content-header">
-                <h2 className="content-title">Các sản phẩm</h2>
+                <h2 className="content-title">Sản phẩm</h2>
                 <div>
                     <Link to="/addproduct" className="btn btn-primary color-orange">
                         Tạo mới
