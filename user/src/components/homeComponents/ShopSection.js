@@ -18,23 +18,10 @@ const ShopSection = (props) => {
     const { loading, error, products, page, pages } = productList;
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
-    const [keySearch, setKeySearch] = useState([]);
-
-    useEffect(() => {
-        const getSearch = JSON.parse(localStorage.getItem('keySearch'));
-        if (getSearch !== null) {
-            if (getSearch.length > 4) {
-                getSearch.shift();
-                setKeySearch([...getSearch]);
-            } else {
-                setKeySearch([...getSearch]);
-            }
-        }
-    }, [products]);
 
     useEffect(() => {
         dispatch(listCart());
-        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts, keySearch));
+        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
     }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts]);
 
     const handlerSort = (value) => {

@@ -36,8 +36,8 @@ const Main = () => {
 
                 <div className="row">
                     {/* STATICS */}
-                    <OrderBuyingStatistics />
-                    <BuyOrdersPrice />
+                    {/* <OrderBuyingStatistics />
+                    <BuyOrdersPrice /> */}
                     <SaleStatistics />
                     <ProductStatistics />
                     <NewsStatistics />

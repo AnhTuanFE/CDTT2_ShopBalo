@@ -71,16 +71,7 @@ export const getAllComments = (productId) => async (dispatch) => {
 
 // PRODUCT LIST
 export const listProduct =
-    (
-        category = '',
-        keyword = '',
-        pageNumber = '',
-        rating = '',
-        minPrice = '',
-        maxPrice = '',
-        sortProducts = '1',
-        keySearch,
-    ) =>
+    (category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortProducts = '1') =>
     async (dispatch) => {
         try {
             dispatch({ type: PRODUCT_LIST_REQUEST });
@@ -89,9 +80,6 @@ export const listProduct =
         &minPrice=${minPrice}&maxPrice=${maxPrice}&sortProducts=${sortProducts}`,
             );
             dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-            if (keySearch?.some((key) => key === keyword) === false) {
-                keyword !== '' && localStorage.setItem('keySearch', JSON.stringify([...keySearch, keyword]));
-            }
         } catch (error) {
             dispatch({
                 type: PRODUCT_LIST_FAIL,
