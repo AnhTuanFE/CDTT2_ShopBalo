@@ -25,21 +25,21 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
       }
       const secret = JWT_SECRET1 + oldUser.password;
       const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-        expiresIn: "120m",
+        expiresIn: "5m",
       });
       const link = `http://localhost:5000/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "tuandgtl7@gmail.com",
-          pass: "byyvdrcfifstgrph",
+          user: "balostore.owner@gmail.com",
+          pass: "amnbhcaioprqittf",
         },
       });
   
       var mailOptions = {
-        from: "tuandgtl7@gmail.com",
+        from: "balostore.owner@gmail.com",
         to: oldUser.email,
-        subject: "Password Reset",
+        subject: "BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu",
         text: link,
       };
   

@@ -32,7 +32,7 @@ const Sidebar = () => {
                         <li className="menu-item">
                             <NavLink activeClassName="active" className="menu-link" to="/products">
                                 <i className="icon fas fa-shopping-bag"></i>
-                                <span className="text">Các sản phẩm</span>
+                                <span className="text">Sản phẩm</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">
@@ -44,13 +44,13 @@ const Sidebar = () => {
                         <li className="menu-item">
                             <NavLink activeClassName="active" className="menu-link" to="/category">
                                 <i className="icon fas fa-list"></i>
-                                <span className="text">Danh mục</span>
+                                <span className="text">Danh mục sản phẩm</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">
                             <NavLink activeClassName="active" className="menu-link" to="/orders">
                                 <i className="icon fas fa-bags-shopping"></i>
-                                <span className="text">Các đơn hàng</span>
+                                <span className="text">Đơn hàng</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">
@@ -80,7 +80,7 @@ const Sidebar = () => {
                         <li className="menu-item">
                             <NavLink activeClassName="active" className="menu-link" to="/slider">
                                 <i className="icon fas fa-store-alt"></i>
-                                <span className="text">Ảnh quảng cáo</span>
+                                <span className="text">Ảnh Bìa</span>
                             </NavLink>
                         </li>
                     </ul>

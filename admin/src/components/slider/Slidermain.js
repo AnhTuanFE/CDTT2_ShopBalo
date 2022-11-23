@@ -30,7 +30,7 @@ export default function Slidermain() {
         <div className="content-main">
             <div className="content-header">
                 <h2 className="content-title" style={{ padding: '15px' }}>
-                    Ảnh quảng cáo
+                    Ảnh bìa
                 </h2>
             </div>
 

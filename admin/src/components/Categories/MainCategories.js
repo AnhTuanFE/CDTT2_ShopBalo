@@ -16,7 +16,7 @@ const MainCategories = () => {
     return (
         <section className="content-main">
             <div className="content-header">
-                <h2 className="content-title">Danh mục</h2>
+                <h2 className="content-title">Thêm danh mục</h2>
             </div>
 
             <div className="card shadow-sm">
