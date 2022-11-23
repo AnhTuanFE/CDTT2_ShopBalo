@@ -617,7 +617,7 @@ const OrderScreen = ({ match }) => {
                                             </button>
                                             <a
                                                 className="col-12 col-sm-12 col-md-12 col-lg-12 button-hover-cart"
-                                                href="https://www.youtube.com/watch?v=6IX9kq4Ovzc"
+                                                href="https://m.me/balostore.owner"
                                                 style={{ padding: '0px 0px' }}
                                             >
                                                 <button

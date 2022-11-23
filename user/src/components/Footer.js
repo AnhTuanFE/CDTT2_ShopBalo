@@ -42,7 +42,7 @@ const Footer = () => {
                             </li>
                             <li>
                                 <i class="fas fa-envelope"></i>
-                                <span className="fw-bold ps-1">Email: </span>Nguyenvanlich@gmail.com
+                                <span className="fw-bold ps-1">Email: </span>balostore.owner@gmail.com
                             </li>
                             <li>
                                 <i class="fas fa-map-marker-alt"></i>
