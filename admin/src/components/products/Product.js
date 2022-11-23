@@ -18,24 +18,24 @@ const Product = (props) => {
         <>
             {product && (
                 <tr>
-                    <td>{index + 1}</td>
-                    <td>
+                    <td style={{ width: '10%' }}>{index + 1}</td>
+                    <td style={{ width: '20%' }}>
                         <img
                             src={`/productImage/${product?.image[0]?.image}`}
                             alt="Product"
                             style={{ height: '40px', width: '40px' }}
                         />
                     </td>
-                    <td>
+                    <td style={{ width: '40%' }}>
                         <span> {product.name}</span>
                     </td>
-                    <td>
+                    <td style={{ width: '20%' }}>
                         <span> {product?.price?.toLocaleString('de-DE')}đ</span>
                     </td>
-                    <td>
+                    {/* <td>
                         <span> {product.countInStock}</span>
-                    </td>
-                    <td className="text-end">
+                    </td> */}
+                    <td className="text-end" style={{ width: '10%' }}>
                         <div className="dropdown">
                             <Link to="#" data-bs-toggle="dropdown" className="btn btn-light">
                                 <i className="fas fa-ellipsis-h"></i>

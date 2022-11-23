@@ -405,17 +405,16 @@ const SingleProduct = ({ history, match }) => {
                                     </div>
                                     <div className="buttonReview" style={{ textAlign: 'center', marginTop: '10px' }}>
                                         <p>Bạn đánh giá sao sản phẩm này</p>
-                                        <button
-                                        // type="submit"
-                                        // class="btn btn-primary pay-button"
-                                        // data-bs-toggle="modal"
-                                        // data-bs-target="#staticBackdrop"
-                                        >
-                                            <Link to="/byproduct" className="text-white">
-                                                {' '}
+                                        <Link to="/byproduct" className="text-white">
+                                            <button
+                                            // type="submit"
+                                            // class="btn btn-primary pay-button"
+                                            // data-bs-toggle="modal"
+                                            // data-bs-target="#staticBackdrop"
+                                            >
                                                 Đánh giá ngay
-                                            </Link>
-                                        </button>
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="col-md-12 product-rating">

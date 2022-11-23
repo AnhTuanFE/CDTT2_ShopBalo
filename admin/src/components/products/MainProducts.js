@@ -109,12 +109,13 @@ const MainProducts = (props) => {
                                 <table className="table slider-data">
                                     <thead>
                                         <tr>
-                                            <th>Stt</th>
-                                            <th>Sản phẩm</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Giá</th>
-                                            <th>Số lượng</th>
-                                            <th className="text-end">Action</th>
+                                            <th style={{ width: '10%' }}>Stt</th>
+                                            <th style={{ width: '20%' }}>Sản phẩm</th>
+                                            <th style={{ width: '40%' }}>Tên sản phẩm</th>
+                                            <th style={{ width: '20%' }}>Giá</th>
+                                            <th className="text-end" style={{ width: '10%' }}>
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>

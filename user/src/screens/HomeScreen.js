@@ -20,7 +20,7 @@ const HomeScreen = ({ match, location }) => {
 
     return (
         <div>
-            <Header />
+            <Header keysearch={keyword} />
             {/* <Silder /> */}
             {!keyword && !category ? <Sliders /> : ''}
             {!keyword && !category ? <Corousel /> : ''}
