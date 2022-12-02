@@ -196,7 +196,7 @@ const SingleProduct = ({ history, match }) => {
             history.push(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            toast.error(errorAddCart, Toastobjects);
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, successAddCart, errorAddCart]);
@@ -312,6 +312,7 @@ const SingleProduct = ({ history, match }) => {
                                                                         ? 'btn btn-outline-primary mx-1 active'
                                                                         : 'btn btn-outline-primary mx-1'
                                                                 }
+                                                                style={{ marginTop: '8px' }}
                                                             >
                                                                 {option.color}
                                                             </button>

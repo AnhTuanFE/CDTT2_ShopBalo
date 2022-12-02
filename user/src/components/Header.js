@@ -84,7 +84,7 @@ const Header = (props) => {
     function notiUser() {
         let returnUser;
         const valueUser = userInfo.name;
-        if (valueUser.length > 15) {
+        if (valueUser?.length > 15) {
             const arrayUser = valueUser.split(' ');
             returnUser = arrayUser[0];
         } else {

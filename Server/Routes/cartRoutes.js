@@ -10,7 +10,6 @@ cartRoutes.get(
     '/:id',
     asyncHandler(async (req, res) => {
         const cart = await Cart.findOne({ user: req.params.id }).populate('cartItems.product');
-        // .select('"name" "image" "price" "qty" "countInStock" "description"');
         if (cart) {
             res.json(cart.cartItems);
         } else {
@@ -28,7 +27,7 @@ cartRoutes.post(
         const cartExist = await Cart.findOne({ user: _id });
         if (req?.user?.disabled) {
             res.status(400);
-            throw new Error('account look up');
+            throw new Error('Tài khoản của bạn đã bị khóa');
         }
         if (cartExist) {
             const productExit = cartExist?.cartItems?.filter((value) => value.product == productId);

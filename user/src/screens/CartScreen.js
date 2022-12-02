@@ -36,7 +36,12 @@ const CartScreen = ({ match, location, history }) => {
     const { loading: loadingCreate, success: successCreate, error: errorCreate } = cartCreate;
     const total = cartItems
         ? cartItems
-              .filter((item) => item.isBuy == true)
+              .filter((item) => {
+                  const findOption = item?.product?.optionColor?.find((option) => option.color === item.color);
+                  if (findOption?.countInStock >= item.qty && item.isBuy === true) {
+                      return item;
+                  }
+              })
               .reduce((a, i) => a + i.qty * i.product?.price, 0)
               .toFixed(0)
         : 0;
@@ -47,7 +52,7 @@ const CartScreen = ({ match, location, history }) => {
         history.push('/login?redirect=shipping');
     };
     useEffect(() => {
-        if (errorCreate) {
+        if (errorCreate === 'account lock up') {
             toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
             dispatch({ type: CART_CREATE_RESET });
         }
@@ -68,15 +73,23 @@ const CartScreen = ({ match, location, history }) => {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
         return (
             <>
-                {findCart?.countInStock !== '' ? (
-                    <div className="col-md-1 col-2 cart-checkbok">
-                        <Checkbox
-                            checked={item?.isBuy}
-                            onChange={() => {
-                                dispatch(addToCart(item?.product._id, item?.color, true, userInfo._id));
-                            }}
-                        />
-                    </div>
+                {findCart?.countInStock !== 0 ? (
+                    findCart?.countInStock >= item?.qty ? (
+                        <div className="col-md-1 col-2 cart-checkbok">
+                            <Checkbox
+                                checked={item?.isBuy}
+                                onChange={() => {
+                                    dispatch(addToCart(item?.product._id, item?.color, true, userInfo._id));
+                                }}
+                            />
+                        </div>
+                    ) : (
+                        <div className="col-md-1 col-2 cart-checkbok">
+                            <span className="span" style={{ fontSize: '12px', color: 'red' }}>
+                                Sản phẩm không đủ đáp ứng bạn cần điều chỉnh lại số lượng
+                            </span>
+                        </div>
+                    )
                 ) : (
                     <div className="col-md-1 col-2 cart-checkbok">
                         <span className="span" style={{ fontSize: '12px', color: 'red' }}>
