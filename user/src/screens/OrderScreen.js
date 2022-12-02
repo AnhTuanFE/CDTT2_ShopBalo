@@ -83,7 +83,7 @@ const OrderScreen = ({ match }) => {
     };
 
     useEffect(() => {
-        if (errorCancel) {
+        if (errorCancel === 'account lock up') {
             dispatch({ type: ORDER_CANCEL_RESET });
             toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
         }

@@ -24,9 +24,22 @@ orderRouter.post(
             email,
         } = req.body;
 
+        if (orderItems.length != 0) {
+            for (let i = 0; i < orderItems.length; i++) {
+                const product = await Product.findById(orderItems[i].product);
+                const findCart = product.optionColor?.find((option) => option.color === orderItems[i].color);
+                if (findCart.countInStock < orderItems[i].qty) {
+                    res.status(400);
+                    throw new Error('Số lượng không đủ đáp ứng');
+                }
+            }
+        } else {
+            res.status(400);
+            throw new Error('Đặt hàng không thành công');
+        }
         if (req?.user?.disabled) {
             res.status(400);
-            throw new Error('account look up');
+            throw new Error('Tài khoản của bạn đã bị khóa');
         }
         if (orderItems && orderItems.length === 0) {
             res.status(400);

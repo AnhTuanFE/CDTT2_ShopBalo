@@ -45,7 +45,7 @@ const TopTotal = (props) => {
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
                             <span className="icon icon-sm rounded-circle alert-warning">
-                                <i className="text-warning fas fa-shopping-basket"></i>
+                                <i className="text-warning fad fa-shopping-cart"></i>
                             </span>
 
                             <h6 className="mb-1 fs-5">Tổng sản phẩm</h6>
@@ -61,7 +61,7 @@ const TopTotal = (props) => {
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
                             <span className="icon icon-sm rounded-circle alert-success">
-                                <i className="text-success fas fa-user"></i>
+                                <i className="text-success fas fa-user-alt"></i>
                             </span>
                             <h6 className="mb-1 fs-5">Tổng tài khoản</h6>
                         </div>

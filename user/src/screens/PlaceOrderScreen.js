@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { clearFromCart, listCart } from '../Redux/Actions/cartActions';
@@ -27,7 +27,12 @@ const PlaceOrderScreen = ({ history }) => {
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     const currenCartItems = cartItems
-        .filter((item) => item.isBuy == true)
+        .filter((item) => {
+            const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
+            if (findCart?.countInStock >= item?.qty && item?.isBuy === true) {
+                return true;
+            }
+        })
         .reduce((arr, pro) => {
             arr.push({
                 name: pro.product.name,
@@ -49,7 +54,12 @@ const PlaceOrderScreen = ({ history }) => {
 
     cart.itemsPrice = addDecimals(
         cart.cartItems
-            .filter((item) => item.isBuy == true)
+            .filter((item) => {
+                const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
+                if (findCart?.countInStock >= item?.qty && item?.isBuy === true) {
+                    return true;
+                }
+            })
             .reduce((a, i) => a + i.qty * i.product.price, 0)
             .toFixed(0),
     );
@@ -64,7 +74,7 @@ const PlaceOrderScreen = ({ history }) => {
     const { order, success, error } = orderCreate;
     useEffect(() => {
         if (error) {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            toast.error(error, Toastobjects);
             dispatch({ type: ORDER_CREATE_RESET });
         }
     }, [error]);
@@ -82,7 +92,6 @@ const PlaceOrderScreen = ({ history }) => {
         dispatch(
             createOrder({
                 orderItems: currenCartItems,
-                // shippingAddress: cart.shippingAddress,
                 shippingAddress: {
                     address: userInfo.address,
                     city: userInfo.city,
@@ -101,6 +110,55 @@ const PlaceOrderScreen = ({ history }) => {
             }),
         );
     };
+
+    function findCartCountInStock(item) {
+        const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
+        return (
+            <>
+                {findCart?.countInStock < item?.qty && (
+                    <div className="col-md-1 col-2">
+                        <span className="span" style={{ fontSize: '12px', color: 'red' }}>
+                            Sản phẩm không đủ đáp ứng bạn cần điều chỉnh lại số lượng
+                        </span>
+                    </div>
+                )}
+                {findCart?.countInStock < item?.qty ? (
+                    <div className="col-md-2 col-5">
+                        <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} />
+                    </div>
+                ) : (
+                    <div className="col-md-2 col-6">
+                        <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} />
+                    </div>
+                )}
+                {findCart?.countInStock < item?.qty ? (
+                    <div className="col-md-3 col-5 d-flex align-items-center">
+                        <Link to={`/products/${item.product}`}>
+                            <h6>{item.product.name}</h6>
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="col-md-4 col-6 d-flex align-items-center">
+                        <Link to={`/products/${item.product}`}>
+                            <h6>{item.product.name}</h6>
+                        </Link>
+                    </div>
+                )}
+                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
+                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Phân loại hàng</h4>
+                    <h6>{item?.color}</h6>
+                </div>
+                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
+                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
+                    <h6>{item?.qty}</h6>
+                </div>
+                <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-end  d-flex flex-column justify-content-center ">
+                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
+                    <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
+                </div>
+            </>
+        );
+    }
     return (
         <>
             <Header />
@@ -126,11 +184,11 @@ const PlaceOrderScreen = ({ history }) => {
                             </div>
                             <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
                                 <p>
-                                    <span style={{ fontWeight: '600' }}>Họ tên:</span>
+                                    <span style={{ fontWeight: '600' }}>Họ tên: </span>
                                     {userInfo.name}
                                 </p>
                                 <p>
-                                    <span style={{ fontWeight: '600' }}>Số điện thoại:</span>
+                                    <span style={{ fontWeight: '600' }}>Số điện thoại: </span>
                                     {userInfo.phone}
                                 </p>
                             </div>
@@ -189,29 +247,7 @@ const PlaceOrderScreen = ({ history }) => {
                                             key={index}
                                             style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
                                         >
-                                            <div className="col-md-2 col-6">
-                                                <img
-                                                    src={`/productImage/${item.product?.image[0].image}`}
-                                                    alt={item.name}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 col-6 d-flex align-items-center">
-                                                <Link to={`/products/${item.product}`}>
-                                                    <h6>{item.product.name}</h6>
-                                                </Link>
-                                            </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
-                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Phân loại hàng</h4>
-                                                <h6>{item?.color}</h6>
-                                            </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
-                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
-                                                <h6>{item?.qty}</h6>
-                                            </div>
-                                            <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-end  d-flex flex-column justify-content-center ">
-                                                <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
-                                                <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
-                                            </div>
+                                            {findCartCountInStock(item)}
                                         </div>
                                     ))}
                             </>
