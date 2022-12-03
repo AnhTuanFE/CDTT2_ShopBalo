@@ -502,10 +502,11 @@ const ProfileTabs = () => {
                     >
                         <img
                             src={
-                                (url?.filename === undefined
-                                    ? `/userProfile/${image}`
-                                    : `/userProfile/${url?.filename}`) ||
-                                (user?.image === undefined ? '/images/user.png' : `/userProfile/${image}`)
+                                url?.filename === undefined
+                                    ? user?.image === undefined
+                                        ? '/images/user.png'
+                                        : `/userProfile/${image}`
+                                    : `/userProfile/${url?.filename}`
                             }
                             style={{
                                 height: '120px',

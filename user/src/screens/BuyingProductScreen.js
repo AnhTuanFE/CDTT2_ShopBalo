@@ -43,7 +43,11 @@ const BuyingProductScreen = () => {
                                     }}
                                 >
                                     <img
-                                        src={`/userProfile/${userInfo?.image}` || './images/user.png'}
+                                        src={
+                                            userInfo?.image !== undefined
+                                                ? `/userProfile/${userInfo?.image}`
+                                                : './images/user.png'
+                                        }
                                         alt=""
                                         style={{
                                             height: '100px',
