@@ -16,7 +16,6 @@ import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
 
 dotenv.config();
-// import forgotPass from './Routes/forgotPassRouter.js';
 import { Server } from 'http';
 import imageProfile from './Routes/imageProfile.js';
 connectDatabase();
@@ -43,9 +42,10 @@ app.get('/api/config/paypal', (req, res) => {
 });
 app.use('/api/uploadAvatar', Upload);
 app.use('/api/imageProfile', imageProfile);
-app.use(express.static('public'));
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
+
+app.use(express.static('public'));
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);

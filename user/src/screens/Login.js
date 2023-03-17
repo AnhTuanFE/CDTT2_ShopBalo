@@ -15,7 +15,6 @@ const Login = ({ location, history }) => {
 
     const dispatch = useDispatch();
     const redirect = location.search ? location.search.split('=')[1] : '/';
-
     const userLogin = useSelector((state) => state.userLogin);
     const { error, loading, userInfo } = userLogin;
 

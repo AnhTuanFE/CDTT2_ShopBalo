@@ -75,6 +75,7 @@ export default function CorouselOder() {
                                             <img
                                                 src={`/productImage/${product?.image[0]?.image}`}
                                                 className="corousel-img"
+                                                alt=""
                                             ></img>
                                             <p className="corousel-noti">{product.name}</p>
                                             <p className="corousel-price">{product?.price?.toLocaleString('de-DE')}đ</p>

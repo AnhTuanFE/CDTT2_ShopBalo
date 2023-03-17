@@ -16,7 +16,6 @@ export default function NavBar({ onRemove }) {
     return (
         <>
             {/* Pc-navbar */}
-
             <div className="navbar-menu">
                 <ul className="navbar-list">
                     {categories.map((category) => (

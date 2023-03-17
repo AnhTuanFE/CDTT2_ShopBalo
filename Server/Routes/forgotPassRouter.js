@@ -32,7 +32,7 @@ forgotPassRouter.post("/forgotPassword", async (req, res) => {
         service: "gmail",
         auth: {
           user: "balostore.owner@gmail.com",
-          pass: "amnbhcaioprqittf",
+          pass: "ytmgtsqgkgtypwle",
         },
       });
   

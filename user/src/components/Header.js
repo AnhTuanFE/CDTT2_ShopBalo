@@ -237,7 +237,7 @@ const Header = (props) => {
                                                 className="form-control rounded search button-search dropdown-toggle"
                                                 data-toggle="dropdown"
                                                 aria-haspopup="true"
-                                                aria-expanded="false"
+                                                // aria-expanded="false"
                                             />
                                             <button type="submit" className="search-button">
                                                 <i className="fas fa-search submit-search"></i>
@@ -269,7 +269,7 @@ const Header = (props) => {
                                             className="form-control rounded search button-search dropdown-toggle"
                                             data-toggle="dropdown"
                                             aria-haspopup="true"
-                                            aria-expanded="false"
+                                            // aria-expanded="false"
                                         />
                                         <button type="submit" className="search-button">
                                             <i className="fas fa-search submit-search"></i>
