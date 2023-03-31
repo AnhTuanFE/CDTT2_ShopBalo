@@ -11,9 +11,6 @@ const Footer = () => {
                             <li>
                                 <span>Nguyễn Anh Tuấn</span>
                             </li>
-                            <li>
-                                <span>Nguyễn Văn Lịch</span>
-                            </li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6 col-sm-12 center">
