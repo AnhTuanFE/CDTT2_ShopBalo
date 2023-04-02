@@ -7,9 +7,8 @@ import Corousel from '../components/SlideCorousel/Corousel';
 import CorouselOder from '../components/SlideCorousel/CourouselOder';
 import NewsMain from '../components/news/NewsMain';
 
-import Silder from '../components/Silder';
-import ContactInfo from './../components/homeComponents/ContactInfo';
-import CalltoActionSection from './../components/homeComponents/CalltoActionSection';
+// import ContactInfo from './../components/homeComponents/ContactInfo';
+// import CalltoActionSection from './../components/homeComponents/CalltoActionSection';
 
 const HomeScreen = ({ match, location }) => {
     // window.scrollTo(0, 0);

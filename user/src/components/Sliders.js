@@ -14,6 +14,7 @@ export default function Sliders() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListSlider());
+        console.log('=> this is slider', slider);
     }, []);
     const settings = {
         dots: true,
@@ -33,7 +34,7 @@ export default function Sliders() {
                         {slider?.map((value, index) => {
                             return (
                                 <div key={index} className="slider-div__image">
-                                    <img className="slider-image" src={value.url}></img>
+                                    <img className="slider-image" src={value.url} alt="Slider"></img>
                                 </div>
                             );
                         })}
