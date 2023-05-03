@@ -16,6 +16,7 @@ import Message from '../LoadingError/Error';
 import moment from 'moment';
 // modal
 import CancelModal from '../Modal/CancelModal';
+import ConfirmModal from '../Modal/ConfirmModal';
 
 const OrderDetailmain = (props) => {
     const { orderId } = props;
@@ -123,6 +124,14 @@ const OrderDetailmain = (props) => {
                     setFalseCancel={setFalseCancel}
                 />
             )}
+            <div>
+                {/* <ConfirmModal
+                    Title="Mua hàng"
+                    Body="Bạn có đồng ý mua hay không?"
+                    HandleSubmit={handleStatus}
+                    Close="modal"
+                ></ConfirmModal> */}
+            </div>
             <div className="content-header">
                 <div className="col-lg-6 col-md-6">
                     <Link to="/orders" className="btn btn-dark text-white">

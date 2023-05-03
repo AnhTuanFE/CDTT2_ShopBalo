@@ -153,12 +153,15 @@ const OrderScreen = ({ match }) => {
     const handlerSuccessCart = () => {
         const filterCart = itemOrder.filter((item) => item.productReview.length === 0);
         if (filterCart.length === 0) {
-            if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
-                dispatch(completeOrder(orderId));
-            }
+            // if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
+            //     dispatch(completeOrder(orderId));
+            // }
+            toast.success('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!');
+            dispatch(completeOrder(orderId));
         } else {
-            if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
-            }
+            // if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
+            // }
+            toast.success('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng');
         }
     };
     return (

@@ -73,8 +73,10 @@ const SingleProduct = ({ history, match }) => {
     const productReviewCreate = useSelector((state) => state.productReviewCreate);
     const productCommentCreate = useSelector((state) => state.productCommentCreate); //comment
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
+
     const productList = useSelector((state) => state.productList);
     const { products, page, pages } = productList;
+
     const userList = useSelector((state) => state.userAll);
     const { users } = userList;
     const cartCreate = useSelector((state) => state.cartCreate);

@@ -1,4 +1,4 @@
-export default function PayModal({ Title, Body, HandleSubmit }) {
+export default function ConfirmModal({ Title, Body, HandleSubmit }) {
     return (
         <>
             <button

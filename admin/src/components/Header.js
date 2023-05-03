@@ -8,6 +8,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userLogin);
     const { userInfo } = user;
+    console.log(' = ', userInfo);
     useEffect(() => {
         $('[data-trigger]').on('click', function (e) {
             e.preventDefault();
@@ -49,7 +50,7 @@ const Header = () => {
                                     borderRadius: '50%',
                                     border: '1px solid #ccc',
                                 }}
-                                src={`/userProfile/${userInfo?.image}` || '/images/user.png'}
+                                src={`./userProfile/${userInfo?.image}` || '/images/user.png'}
                                 alt="User"
                             />
                         </Link>
