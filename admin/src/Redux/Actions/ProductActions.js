@@ -339,7 +339,7 @@ export const createImageProduct = (images) => async (dispatch) => {
             },
         };
 
-        const { data } = await axios.post(`/api/imageProfile/`, images, config);
+        const { data } = await axios.post(`/api/imageProduct/`, images, config);
 
         dispatch({ type: PRODUCT_CREATE_IMAGE_SUCCESS, payload: data });
     } catch (error) {

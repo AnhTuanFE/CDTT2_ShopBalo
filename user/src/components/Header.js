@@ -69,7 +69,9 @@ const Header = (props) => {
 
     useEffect(() => {
         if (user?.disabled) {
-            alert('Tài khoản đã bị khóa, vui lòng liên hệ sđt 0946402578 hay email balostore.owner@gmail.com để liên hệ lấy lại.');
+            alert(
+                'Tài khoản đã bị khóa, vui lòng liên hệ sđt 0946402578 hay email balostore.owner@gmail.com để liên hệ lấy lại.',
+            );
             dispatch(logout());
             history.push('/');
         }

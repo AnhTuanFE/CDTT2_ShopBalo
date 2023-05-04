@@ -63,7 +63,6 @@ export default function Corousel() {
                 <span className="section-title-main">Sản Phẩm Mới Nhất</span>
                 <b></b>
             </h2>
-            {/* <div></div> */}
             <div className="corousel">
                 <Slider {...settings}>
                     {products?.map((product, index) => {

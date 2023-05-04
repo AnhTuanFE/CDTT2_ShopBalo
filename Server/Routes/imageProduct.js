@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 
-const imageProfile = express.Router();
+const imageProduct = express.Router();
 //Upload file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     },
 });
 // app.use(express.static('/public'));
-imageProfile.post('/', async (req, res) => {
+imageProduct.post('/', async (req, res) => {
     let inputImage = multer({ storage: storage }).array('image');
     inputImage(req, res, function (err) {
         if (req.fileValidationError) {
@@ -30,4 +30,4 @@ imageProfile.post('/', async (req, res) => {
         res.send(req.files);
     });
 });
-export default imageProfile;
+export default imageProduct;

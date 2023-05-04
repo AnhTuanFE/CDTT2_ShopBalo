@@ -143,6 +143,8 @@ const AddProductMain = () => {
     };
     const handlerOnchane = (e) => {
         setInputImage(e.target.files);
+        console.log('input image = ', inputImage);
+        console.log('array image = ', arrImage);
         if (check === 0) {
             setCheck(1);
             setBle(true);
@@ -153,6 +155,7 @@ const AddProductMain = () => {
             setArrImage((image) => [...image, { image: inputImage[i], id: arrImage.length + i }]);
         }
     }, [inputImage]);
+
     const handlerSubmitImage = () => {
         let images = new FormData();
         for (let i = 0; i < arrImage.length; i++) {
@@ -292,6 +295,7 @@ const AddProductMain = () => {
                                                                                       )}`
                                                                                     : ''
                                                                             }
+                                                                            alt=""
                                                                         ></img>
                                                                         <p
                                                                             className="product_image_p"
@@ -325,11 +329,12 @@ const AddProductMain = () => {
                                                             type="button"
                                                             className="col-2 col-sm-2 col-md-2 col-lg-2 mt-2"
                                                             onClick={handlerSubmitImage}
-                                                            value="Lưu"
+                                                            value="Lưu ảnh"
                                                         ></input>
                                                     )}
                                                 </div>
                                             </div>
+                                            {/* ================================================ */}
                                             <div className="mb-0">
                                                 <label className="form-label">Nội dung</label>
                                                 <div
