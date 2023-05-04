@@ -4,8 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/public/productImage
-/public/userProfile
 # testing
 /coverage
 
