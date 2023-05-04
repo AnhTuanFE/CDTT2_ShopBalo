@@ -8,7 +8,6 @@ const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userLogin);
     const { userInfo } = user;
-    console.log(' = ', userInfo);
     useEffect(() => {
         $('[data-trigger]').on('click', function (e) {
             e.preventDefault();

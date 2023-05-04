@@ -15,7 +15,6 @@ import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import moment from 'moment';
 // modal
-import CancelModal from '../Modal/CancelModal';
 import ConfirmModal from '../Modal/ConfirmModal';
 
 const OrderDetailmain = (props) => {
@@ -23,6 +22,10 @@ const OrderDetailmain = (props) => {
     const dispatch = useDispatch();
     // modal
     const [cancel, setCancel] = useState(false);
+    const [confirm, setConfirm] = useState(false);
+    const [deliver, setDeliver] = useState(false);
+    const [paid, setPaid] = useState(false);
+    const [complete, setComplete] = useState(false);
 
     // const [hiden, setHiden] = useState(true);
 
@@ -53,11 +56,6 @@ const OrderDetailmain = (props) => {
         successCompleteAdmin,
     ]);
 
-    // const cancelOrderHandler = () => {
-    //     if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
-    //         dispatch(cancelOrder(order));
-    //     }
-    // };
     const setTrueCancel = () => {
         setCancel(true);
     };
@@ -65,36 +63,46 @@ const OrderDetailmain = (props) => {
         setCancel(false);
     };
     const [status, setStatus] = useState('0');
+    // ======================
+    const noHandle = () => {
+        setConfirm(false);
+        setComplete(false);
+        setDeliver(false);
+        setComplete(false);
+    };
+
+    const handleConfirm = () => {
+        dispatch(waitConfirmationOrder(order._id, true));
+        setConfirm(!confirm);
+    };
+    const handleDelivered = () => {
+        dispatch(deliverOrder(order));
+        setDeliver(!deliver);
+    };
+    const handlePaid = () => {
+        dispatch(paidOrder(order));
+        setPaid(!paid);
+    };
+    const handleComppleted = () => {
+        dispatch(completeAdminOrder(order._id));
+        setComplete(!complete);
+    };
+    // ==========================
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
-            if (window.confirm('Đồng ý xác nhận')) {
-                dispatch(waitConfirmationOrder(order._id, true));
-            } else {
-                setStatus('0');
-            }
+            setConfirm(true);
         }
         if (status === '2' && order?.isDelivered !== true) {
-            if (window.confirm('Đồng ý giao hàng')) {
-                dispatch(deliverOrder(order));
-            } else {
-                setStatus('1');
-            }
+            setDeliver(!deliver);
         }
         if (status === '3' && order?.isPaid !== true) {
-            if (window.confirm('Đồng ý thanh toán')) {
-                dispatch(paidOrder(order));
-            } else {
-                setStatus('2');
-            }
+            setPaid(!paid);
         }
         if (status === '4' && order?.completeAdmin !== true) {
-            if (window.confirm('Đồng ý hoàn tất')) {
-                dispatch(completeAdminOrder(order._id));
-            } else {
-                setStatus('3');
-            }
+            setComplete(!complete);
         }
     }, [status]);
+
     useEffect(() => {
         if (order?.waitConfirmation === true && order?.isDelivered !== true) {
             setStatus('1');
@@ -115,23 +123,57 @@ const OrderDetailmain = (props) => {
     };
     return (
         <section className="content-main">
-            {cancel && (
-                <CancelModal
-                    Title="Hủy đơn hàng"
-                    Body="Bạn có chắc chắn hủy đơn hàng này không?"
-                    HandleSubmit={cancelOrderHandler1}
-                    Close="modal"
-                    setFalseCancel={setFalseCancel}
-                />
-            )}
             <div>
-                {/* <ConfirmModal
-                    Title="Mua hàng"
-                    Body="Bạn có đồng ý mua hay không?"
-                    HandleSubmit={handleStatus}
-                    Close="modal"
-                ></ConfirmModal> */}
+                {cancel && (
+                    <ConfirmModal
+                        Title="Hủy đơn hàng"
+                        Body="Bạn có chắc chắn hủy đơn hàng này không?"
+                        HandleSubmit={cancelOrderHandler1}
+                        Close="modal"
+                        setFalseCancel={setFalseCancel}
+                    />
+                )}
+                {confirm && (
+                    <>
+                        <ConfirmModal
+                            Title="Xác nhận"
+                            Body="Đồng ý Xác nhận đơn hàng?"
+                            HandleSubmit={handleConfirm}
+                            Close="modal"
+                            setFalseCancel={noHandle}
+                        />
+                        <h1>chào anh em</h1>
+                    </>
+                )}
+                {deliver && (
+                    <ConfirmModal
+                        Title="Giao hàng"
+                        Body="Đồng ý giao hàng?"
+                        HandleSubmit={handleDelivered}
+                        Close="modal"
+                        setFalseCancel={noHandle}
+                    ></ConfirmModal>
+                )}
+                {paid && (
+                    <ConfirmModal
+                        Title="Thanh toán"
+                        Body="Đồng ý thanh toán?"
+                        HandleSubmit={handlePaid}
+                        Close="modal"
+                        setFalseCancel={noHandle}
+                    ></ConfirmModal>
+                )}
+                {complete && (
+                    <ConfirmModal
+                        Title="Hoàn tất"
+                        Body="Đồng ý hoàn tất?"
+                        HandleSubmit={handleComppleted}
+                        Close="modal"
+                        setFalseCancel={noHandle}
+                    ></ConfirmModal>
+                )}
             </div>
+
             <div className="content-header">
                 <div className="col-lg-6 col-md-6">
                     <Link to="/orders" className="btn btn-dark text-white">
