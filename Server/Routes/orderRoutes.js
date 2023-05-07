@@ -235,7 +235,9 @@ orderRouter.get(
     // protect,
     // admin,
     asyncHandler(async (req, res) => {
-        const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
+        // const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
+        const orders = await Order.find({ isPaid: true }).sort({ _id: -1 });
+
         if (orders) {
             res.json(orders);
         }

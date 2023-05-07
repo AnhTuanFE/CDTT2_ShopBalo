@@ -34,7 +34,6 @@ export default function News() {
         }
     }, [successDelete]);
 
-    console.log(newsDelete);
     const handleDeleteNews = (id) => {
         if (window.confirm('Are you sure??')) {
             dispatch(deleteNews(id));

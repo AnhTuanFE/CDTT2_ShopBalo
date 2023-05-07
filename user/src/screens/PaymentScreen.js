@@ -36,7 +36,6 @@ const PaymentScreen = ({ history }) => {
                                 value={paymentMethod}
                                 onChange={(e) => {
                                     setPaymentMethod(e.target.value);
-                                    console.log(e.target.value);
                                 }}
                             />
                             <label className="form-check-label">Thanh toán bằng tiền mặt</label>

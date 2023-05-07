@@ -14,7 +14,6 @@ export default function NewsScreen({ match }) {
 
     const getDetailNews = useSelector((state) => state.getDetailNews);
     const { detailNews, loading } = getDetailNews;
-    console.log(detailNews);
     useEffect(() => {
         dispatch(getNews(newsId));
     }, []);

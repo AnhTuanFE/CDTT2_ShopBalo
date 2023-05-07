@@ -29,7 +29,6 @@ const CartScreen = ({ match, location, history }) => {
     const [checked, setChecked] = useState(false);
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
-    // console.log(cartItems, 'heheh');
     const cartDel = useSelector((state) => state.cartDelete);
     const { loading: loa, success: suc, mesage: mes } = cartDel;
     const cartCreate = useSelector((state) => state.cartCreate);
@@ -115,7 +114,6 @@ const CartScreen = ({ match, location, history }) => {
                         disabled={findCart?.countInStock <= 0}
                         value={item?.qty}
                         onChange={(e) => {
-                            // console.log(item?.product._id, 'hehehe');
                             dispatch(addToCart(item?.product._id, item?.color, e.target.value, userInfo._id));
                         }}
                     >

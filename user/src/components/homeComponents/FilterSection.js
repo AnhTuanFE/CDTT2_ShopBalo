@@ -134,7 +134,6 @@ export default function FilterSection({ setRating, setMinPrice, setMaxPrice, rat
                                 id="five"
                                 value={'5'}
                                 onClick={(e) => {
-                                    console.log(e.target.value);
                                     setRating(e.target.value);
                                 }}
                             ></input>

@@ -92,9 +92,6 @@ const OrderScreen = ({ match }) => {
     //gọi thêm userLogin để lấy số điện thoại
     const orderCreateReviewsRetult = useSelector((state) => state.orderCreateReviewsRetult);
     const { success: successReviewOrder, orderReview } = orderCreateReviewsRetult;
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-
     useEffect(() => {
         if (orderId) {
             dispatch(listCart());
@@ -478,6 +475,7 @@ const OrderScreen = ({ match }) => {
                                                 style={{ border: '1px solid #dad8d8', borderRadius: '4px' }}
                                                 key={index}
                                             >
+                                                {console.log('item = ', item)}
                                                 <div
                                                     className={
                                                         order?.isPaid && itemOrder[index].productReview.length === 0
@@ -486,8 +484,8 @@ const OrderScreen = ({ match }) => {
                                                     }
                                                 >
                                                     <img
-                                                        // src={item.image}
-                                                        src={`/productImage/${item.image}`}
+                                                        // src={item.image} /productImage/${orderItems?.image[0]?.image}
+                                                        src={`/productImage/${item?.image}`}
                                                         alt={item.name}
                                                     />
                                                 </div>

@@ -94,7 +94,6 @@ const Register = ({ location, history }) => {
         if (Object.keys(msg).length > 0) return false;
         return true;
     };
-    // console.log(checkValidate);
 
     const submitHandler = (e) => {
         e.preventDefault();

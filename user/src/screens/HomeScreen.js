@@ -17,8 +17,6 @@ const HomeScreen = ({ match, location }) => {
     const category = match.params.category;
     const rating = match.params.rating;
     const sortProducts = match.params.sortProducts;
-    // console.log('===> match', match);
-    // console.log('===> location', location);
     return (
         <div>
             <Header keysearch={keyword} />

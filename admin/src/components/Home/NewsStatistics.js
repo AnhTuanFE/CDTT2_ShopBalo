@@ -7,6 +7,7 @@ export default function NewsStatistics() {
                 <article className="card-body">
                     <h5 className="card-title">Thống kê tin tức</h5>
                     <iframe
+                        title="tin tức"
                         style={{
                             background: '#FFFFFF',
                             border: 'none',

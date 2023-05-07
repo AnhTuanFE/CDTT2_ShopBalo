@@ -6,7 +6,6 @@ import CategoriesTable from './CategoriesTable';
 const MainCategories = () => {
     const [editInfo, setEditInfo] = useState(false);
     const [currentCategory, setCurrentCategory] = useState('');
-    console.log(currentCategory);
     const handleEditInfo = () => {
         setEditInfo(true);
     };

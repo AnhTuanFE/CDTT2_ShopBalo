@@ -19,7 +19,6 @@ export default function Slidermain() {
         if (newSlider) {
             dispatch(createSlider(newSlider, id));
         }
-        console.log(newSlider);
     };
     const handleDeleteSlider = (id) => {
         if (window.confirm('Are you sure??')) {

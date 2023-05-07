@@ -143,8 +143,6 @@ const AddProductMain = () => {
     };
     const handlerOnchane = (e) => {
         setInputImage(e.target.files);
-        console.log('input image = ', inputImage);
-        console.log('array image = ', arrImage);
         if (check === 0) {
             setCheck(1);
             setBle(true);

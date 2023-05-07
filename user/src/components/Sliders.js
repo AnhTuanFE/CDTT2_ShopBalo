@@ -14,7 +14,6 @@ export default function Sliders() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListSlider());
-        console.log('=> this is slider', slider);
     }, []);
     const settings = {
         dots: true,

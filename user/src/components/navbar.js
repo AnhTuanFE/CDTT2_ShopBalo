@@ -19,7 +19,7 @@ export default function NavBar({ onRemove }) {
             <div className="navbar-menu">
                 <ul className="navbar-list">
                     {categories.map((category) => (
-                        <li className="navbar-list__li">
+                        <li className="navbar-list__li" key={category._id}>
                             <Link to={`/category/${category._id}`}>{category.name}</Link>
                         </li>
                     ))}
@@ -34,7 +34,7 @@ export default function NavBar({ onRemove }) {
                     </div>
                     <ul className="modal-nav__list">
                         {categories.map((category) => (
-                            <Link to={`/category/${category._id}`}>
+                            <Link to={`/category/${category._id}`} key={category._id}>
                                 <li className="navbar-list__li" onClick={onRemove}>
                                     {category.name}
                                 </li>
