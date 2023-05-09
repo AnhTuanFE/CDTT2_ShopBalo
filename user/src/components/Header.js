@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, updateUserProfile, getUserDetails } from '../Redux/Actions/userActions';
-import { listCart } from '../Redux/Actions/cartActions';
-import { ListAvatar } from '../Redux/Actions/avatarAction';
+import { logout, getUserDetails } from '../Redux/Actions/userActions';
 import NavBar from './navbar';
 import Suggestions from './suggestions/Suggestions';
 import './suggestions/style.css';
@@ -12,18 +10,19 @@ const Header = (props) => {
     const { keysearch } = props;
     const [keyword, setKeyword] = useState('');
     const [navbar, setNavbar] = useState(false);
-    const dispatch = useDispatch();
-    let history = useHistory();
-    const cart = useSelector((state) => state.cart);
-    const { cartItems } = cart;
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-    const { error } = userLogin;
-    const userDetail = useSelector((state) => state.userDetails);
-    const { user } = userDetail;
-
     const [checkScroll, setCheckScroll] = useState(false);
     const [key, setKey] = useState([]);
+    const dispatch = useDispatch();
+    let history = useHistory();
+
+    const cart = useSelector((state) => state.cart);
+    const { cartItems } = cart;
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
+    const userDetail = useSelector((state) => state.userDetails);
+    const { user } = userDetail;
 
     useEffect(() => {
         const getSearch = JSON.parse(localStorage.getItem('keySearch'));
@@ -77,11 +76,11 @@ const Header = (props) => {
         }
     }, [user]);
 
-    function avatarUser() {
-        const stringUser = userInfo.name;
-        const value = stringUser.slice(0, 1);
-        return value;
-    }
+    // function avatarUser() {
+    //     const stringUser = userInfo.name;
+    //     const value = stringUser.slice(0, 1);
+    //     return value;
+    // }
     // xư lý lấy 1 phần kí tự từ chuổi username khi trả dữ liệu ra màn hình
     function notiUser() {
         let returnUser;
