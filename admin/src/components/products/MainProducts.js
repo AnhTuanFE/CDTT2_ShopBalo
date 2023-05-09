@@ -10,6 +10,7 @@ import Pagination from '../Home/pagination';
 
 const MainProducts = (props) => {
     const { category, keyword, pageNumber } = props;
+
     const dispatch = useDispatch();
     let history = useHistory();
 
@@ -25,6 +26,7 @@ const MainProducts = (props) => {
     const [kewywordSearch, setKewywordSearch] = useState('');
     const handleSearch = (e) => {
         e.preventDefault();
+
         if (kewywordSearch !== undefined) {
             if (kewywordSearch.trim() && kewywordSearch) {
                 history.push(`/products/search/${kewywordSearch}`);

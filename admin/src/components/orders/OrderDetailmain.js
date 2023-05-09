@@ -26,6 +26,7 @@ const OrderDetailmain = (props) => {
     const [deliver, setDeliver] = useState(false);
     const [paid, setPaid] = useState(false);
     const [complete, setComplete] = useState(false);
+    const [recal, setRecal] = useState(false);
 
     // const [hiden, setHiden] = useState(true);
 
@@ -59,18 +60,27 @@ const OrderDetailmain = (props) => {
     const setTrueCancel = () => {
         setCancel(true);
     };
-    const setFalseCancel = () => {
-        setCancel(false);
-    };
     const [status, setStatus] = useState('0');
     // ======================
-    const noHandle = () => {
-        setConfirm(false);
-        setComplete(false);
-        setDeliver(false);
-        setComplete(false);
+    const hanldeCancelOrder = () => {
+        setCancel(false);
     };
-
+    const noConFirm = () => {
+        setConfirm(false);
+        setStatus('0');
+    };
+    const noDeliver = () => {
+        setDeliver(false);
+        setStatus('1');
+    };
+    const noPaid = () => {
+        setPaid(false);
+        setStatus('2');
+    };
+    const noComplete = () => {
+        setComplete(false);
+        setStatus('3');
+    };
     const handleConfirm = () => {
         dispatch(waitConfirmationOrder(order._id, true));
         setConfirm(!confirm);
@@ -86,6 +96,15 @@ const OrderDetailmain = (props) => {
     const handleComppleted = () => {
         dispatch(completeAdminOrder(order._id));
         setComplete(!complete);
+    };
+    const handleRecall = () => {
+        setStatus('0');
+        setRecal(false);
+        dispatch(waitConfirmationOrder(order._id, false));
+    };
+    const noRecall = () => {
+        setRecal(false);
+        setStatus('1');
     };
     // ==========================
     useEffect(() => {
@@ -130,7 +149,7 @@ const OrderDetailmain = (props) => {
                         Body="Bạn có chắc chắn hủy đơn hàng này không?"
                         HandleSubmit={cancelOrderHandler1}
                         Close="modal"
-                        setFalseCancel={setFalseCancel}
+                        setFalseCancel={hanldeCancelOrder}
                     />
                 )}
                 {confirm && (
@@ -140,9 +159,8 @@ const OrderDetailmain = (props) => {
                             Body="Đồng ý Xác nhận đơn hàng?"
                             HandleSubmit={handleConfirm}
                             Close="modal"
-                            setFalseCancel={noHandle}
+                            setFalseCancel={noConFirm}
                         />
-                        <h1>chào anh em</h1>
                     </>
                 )}
                 {deliver && (
@@ -151,7 +169,7 @@ const OrderDetailmain = (props) => {
                         Body="Đồng ý giao hàng?"
                         HandleSubmit={handleDelivered}
                         Close="modal"
-                        setFalseCancel={noHandle}
+                        setFalseCancel={noDeliver}
                     ></ConfirmModal>
                 )}
                 {paid && (
@@ -160,7 +178,7 @@ const OrderDetailmain = (props) => {
                         Body="Đồng ý thanh toán?"
                         HandleSubmit={handlePaid}
                         Close="modal"
-                        setFalseCancel={noHandle}
+                        setFalseCancel={noPaid}
                     ></ConfirmModal>
                 )}
                 {complete && (
@@ -169,7 +187,16 @@ const OrderDetailmain = (props) => {
                         Body="Đồng ý hoàn tất?"
                         HandleSubmit={handleComppleted}
                         Close="modal"
-                        setFalseCancel={noHandle}
+                        setFalseCancel={noComplete}
+                    ></ConfirmModal>
+                )}
+                {recal && (
+                    <ConfirmModal
+                        Title="Thu hồi"
+                        Body="Đồng ý Thu hồi?"
+                        HandleSubmit={handleRecall}
+                        Close="modal"
+                        setFalseCancel={noRecall}
                     ></ConfirmModal>
                 )}
             </div>
@@ -185,12 +212,13 @@ const OrderDetailmain = (props) => {
                         <button
                             className="btn btn-success text-white"
                             onClick={() => {
-                                if (window.confirm('Đồng ý thu hồi')) {
-                                    dispatch(waitConfirmationOrder(order._id, false));
-                                    setStatus('0');
-                                } else {
-                                    setStatus('1');
-                                }
+                                // if (window.confirm('Đồng ý thu hồi')) {
+                                //     dispatch(waitConfirmationOrder(order._id, false));
+                                //     setStatus('0');
+                                // } else {
+                                //     setStatus('1');
+                                // }
+                                setRecal(true);
                             }}
                         >
                             Thu hồi
@@ -198,6 +226,7 @@ const OrderDetailmain = (props) => {
                     </div>
                 )}
                 <div className="col-lg-3 col-md-3">
+                    {/*  */}
                     <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
                         {order?.cancel !== 1 && (
                             <>
@@ -207,11 +236,11 @@ const OrderDetailmain = (props) => {
                                 {order?.waitConfirmation && order?.isDelivered && (
                                     <option value={'3'}>Thanh toán</option>
                                 )}
-                                {order?.waitConfirmation &&
-                                    order?.isDelivered &&
-                                    order?.isPaid &&
-                                    order?.completeUser && <option value={'4'}>Hoàn tất</option>}
+                                {order?.waitConfirmation && order?.isDelivered && order?.isPaid && (
+                                    <option value={'4'}>Hoàn tất</option>
+                                )}
                             </>
+                            // order?.completeUser &&
                         )}
                     </select>
                 </div>

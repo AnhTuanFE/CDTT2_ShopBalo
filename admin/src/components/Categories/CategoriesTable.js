@@ -6,8 +6,11 @@ import Loading from '../LoadingError/Loading';
 import { toast } from 'react-toastify';
 import Toast from '../LoadingError/Toast';
 import { CATEGORY_DELETE_RESET } from '../../Redux/Constants/CategoryConstants';
+import ConfirmModal from '../Modal/ConfirmModal';
 
 const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
+    const [checkDelete, setCheckDelete] = useState(false);
+
     const ToastObjects = {
         pauseOnFocusLoss: false,
         draggable: false,
@@ -27,9 +30,8 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
     const { success: successDelete, loading: loadingDelete, error: errorDelete } = notifiDeleteCategory;
 
     const handleDeleteCategory = (index) => {
-        if (window.confirm('Are you sure??')) {
-            dispatch(DeleteCategory(categories[index]._id));
-        }
+        setCheckDelete(false);
+        dispatch(DeleteCategory(categories[index]._id));
     };
 
     const cCategory = useSelector((state) => state.CategoryAdd);
@@ -48,8 +50,21 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
     useEffect(() => {
         dispatch(ListCategory());
     }, [csuccess, success, updateSuccess]);
+
+    const noHandle = () => {
+        setCheckDelete(false);
+    };
     return (
         <div className="col-md-8 col-lg-8">
+            {checkDelete && (
+                <ConfirmModal
+                    Title="Xóa thể loại"
+                    Body="Bạn có chắc chắn xóa thể loại sản phẩm này không?"
+                    HandleSubmit={handleDeleteCategory}
+                    Close="modal"
+                    setFalseCancel={noHandle}
+                />
+            )}
             {loadingUpdate && <Loading />}
             <Toast />
             <table className="table slider-data">
@@ -97,7 +112,8 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                                             <button
                                                 className="dropdown-item"
                                                 onClick={() => {
-                                                    handleDeleteCategory(index);
+                                                    // handleDeleteCategory(index);
+                                                    setCheckDelete(true);
                                                 }}
                                             >
                                                 Xóa

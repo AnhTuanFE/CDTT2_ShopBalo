@@ -6,6 +6,7 @@ import generateToken from '../utils/generateToken.js';
 import User from './../Models/UserModel.js';
 import path from 'path';
 import fs from 'fs';
+import { log } from 'console';
 
 const __dirname = path.resolve();
 const userRouter = express.Router();
@@ -98,6 +99,7 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
+        console.log('req.user = ', req.user);
         const user = await User.findById(req.user._id);
         if (user) {
             res.json({

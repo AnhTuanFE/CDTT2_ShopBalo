@@ -32,7 +32,7 @@ const TopTotal = (props) => {
                             <span className="icon icon-sm rounded-circle alert-success">
                                 <i className="text-success fas fa-bags-shopping"></i>
                             </span>
-                            <h6 className="mb-1 fs-5">Tổng đơn hàng hoàn tất</h6>
+                            <h6 className="mb-1 fs-5">Tổng đơn hàng đã thanh toán</h6>
                         </div>
                     </article>
                     <div className="text ps-3 fs-5 fw-semibold">

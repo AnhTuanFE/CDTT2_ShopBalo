@@ -8,6 +8,7 @@ import Loading from '../LoadingError/Loading';
 import Toast from '../LoadingError/Toast';
 import './style.css';
 import { Link } from 'react-router-dom';
+import ConfirmModal from '../Modal/ConfirmModal';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -16,6 +17,11 @@ const ToastObjects = {
     autoClose: 2000,
 };
 export default function News() {
+    const [checkDelete, setCheckDelete] = useState(false);
+    const noHandle = () => {
+        setCheckDelete(false);
+    };
+
     const newsList = useSelector((state) => state.newsList);
     const { news } = newsList;
     const newsDelete = useSelector((state) => state.deleteNews);
@@ -35,12 +41,20 @@ export default function News() {
     }, [successDelete]);
 
     const handleDeleteNews = (id) => {
-        if (window.confirm('Are you sure??')) {
-            dispatch(deleteNews(id));
-        }
+        setCheckDelete(false);
+        dispatch(deleteNews(id));
     };
     return (
         <div className="content-main" style={{ backgroundColor: '#fff' }}>
+            {checkDelete && (
+                <ConfirmModal
+                    Title="Xóa sản phẩm"
+                    Body="Bạn có chắc chắn muốn xóa sản phẩm này không?"
+                    HandleSubmit={handleDeleteNews}
+                    Close="modal"
+                    setFalseCancel={noHandle}
+                />
+            )}
             <div className="">
                 <div className="content-header" style={{ marginBottom: '20px' }}>
                     <h2 className="content-title">Tin tức</h2>
@@ -79,7 +93,8 @@ export default function News() {
                                                 <button
                                                     className="dropdown-item"
                                                     onClick={() => {
-                                                        handleDeleteNews(newcontent._id);
+                                                        // handleDeleteNews(newcontent._id);
+                                                        setCheckDelete(true);
                                                     }}
                                                 >
                                                     Xóa

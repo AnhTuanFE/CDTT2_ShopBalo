@@ -7,7 +7,7 @@ import { listProduct } from '../../Redux/Actions/ProductActions';
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import { listCart } from '../../Redux/Actions/cartActions';
-import FilterSection from './FilterSection';
+// import FilterSection from './FilterSection';
 
 const ShopSection = (props) => {
     const { category, keyword, pageNumber, sortProducts, rating } = props;
