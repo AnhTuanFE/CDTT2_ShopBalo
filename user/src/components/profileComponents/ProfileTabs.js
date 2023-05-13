@@ -7,9 +7,9 @@ import { toast } from 'react-toastify';
 import { updateUserPassword, updateUserProfile } from '../../Redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '../../Redux/Constants/UserContants';
 import isEmpty from 'validator/lib/isEmpty';
-import { listCart } from '../../Redux/Actions/cartActions';
-import { ListAvatar } from '../../Redux/Actions/avatarAction';
-import App from '../editAvatar/index';
+// import { listCart } from '../../Redux/Actions/cartActions';
+// import { ListAvatar } from '../../Redux/Actions/avatarAction';
+// import App from '../editAvatar/index';
 import axios from 'axios';
 // import Demo from '../editAvatar/index';
 import ReactDOM from 'react-dom';
@@ -191,7 +191,8 @@ const ProfileTabs = () => {
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image }));
+        //  email,
+        dispatch(updateUserProfile({ id: user._id, name, phone, country, city, address, image }));
     };
     const submitUpdatePassword = (e) => {
         e.preventDefault();

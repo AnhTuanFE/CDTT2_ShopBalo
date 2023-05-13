@@ -20,7 +20,7 @@ const ShopSection = (props) => {
     const [maxPrice, setMaxPrice] = useState('');
 
     useEffect(() => {
-        dispatch(listCart());
+        dispatch(listCart()); //lấy list product trong card và setItem cardItem
         dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
     }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts]);
 

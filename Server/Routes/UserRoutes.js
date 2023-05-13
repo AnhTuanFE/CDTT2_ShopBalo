@@ -6,7 +6,6 @@ import generateToken from '../utils/generateToken.js';
 import User from './../Models/UserModel.js';
 import path from 'path';
 import fs from 'fs';
-import { log } from 'console';
 
 const __dirname = path.resolve();
 const userRouter = express.Router();
@@ -99,7 +98,7 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
-        console.log('req.user = ', req.user);
+        // console.log('req.user = ', req.user);
         const user = await User.findById(req.user._id);
         if (user) {
             res.json({
@@ -137,9 +136,9 @@ userRouter.put(
                 if (err) console.log('Delete old avatar have err:', err);
             });
         }
+        // user.email = req.body.email || user.email;
         if (user) {
             user.name = req.body.name || user.name;
-            user.email = req.body.email || user.email;
             user.phone = req.body.phone || user.phone;
             user.address = req.body.address || user.address;
             user.city = req.body.city || user.city;

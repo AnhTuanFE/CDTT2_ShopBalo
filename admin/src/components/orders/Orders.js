@@ -63,7 +63,7 @@ const Orders = (props) => {
                         </div>
                         <div className="col-lg-2 col-3 col-md-3 me-2">
                             <select className="form-select" value={status} onChange={handleStatus}>
-                                <option value={'0'}>Lựa chọn...</option>
+                                <option value={'0'}>Trạng thái...</option>
                                 <option value={'1'}>Chờ xác nhận</option>
                                 <option value={'2'}>Đã xác nhận</option>
                                 <option value={'3'}>Giao hàng</option>
